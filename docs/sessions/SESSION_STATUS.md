@@ -1,76 +1,57 @@
-# Session Status — 2026-07-10 — Autonomous /loop command-handler sweep COMPLETE (10 fixes, LOCAL/UNPUSHED)
+# Session Status — 2026-07-10 — Autonomous /loop backlog drain COMPLETE (9 gaps + live crash, LOCAL/UNPUSHED)
 
 ## Current State
 
-- **Active focus**: **Source-read + parallel-hunter sweep of unswept command
-  handlers** — still the productive mode. Hunters compare batches of command
-  functions against ROM C; every candidate is re-verified against `src/*.c` by
-  hand before closing. This run closed **8 real parity divergences** the per-file
-  audits had marked complete (spurious inserted guard, wrong key threshold, wrong
-  guard order, dropped message bytes, a phantom-attribute dead-code block).
-- **This run (v2.14.288 → v2.14.298, all committed LOCALLY on `master`, NOT
-  pushed) — the loop is now COMPLETE and STOPPED:** 10 `fix(parity)` commits +
-  several `docs(parity)` filing commits. See the summary for the full table.
-  - **LOCK-001 / LOCK-002** — container lock/unlock guard sequence (spurious
-    `CLOSEABLE` check; `<=0` vs `<0` key threshold).
-  - **PASSWORD-002** — `do_password` syntax period + wrong-password double-space.
-  - **HEALER-007** — `heal` price-list header capitalization.
-  - **LOOK-016** (HIGH) — `look <char>` never showed worn equipment (phantom
-    `char.equipped` attribute; real attr is `char.equipment`).
-  - **LOOK-017** — room list omitted a standing PC's title.
-  - **KICK-001** — `do_kick` level gate must precede the `fighting==NULL` check.
-  - **TRIP-001** — `do_trip` no-skill message double-space.
-  - **BASH-001** — `do_bash` attacker flavor TO_CHAR line + `{5…{x` color
-    (ROM `damage(…,FALSE)` suppresses the dam_message; flavor replaces it).
-  - **PUT-005** — `put all <container>` with nothing eligible now silent (ROM has
-    no message).
+- **Active focus**: the documented per-file gap backlog is now **drained**. With
+  the per-file audit tracker at 100% (no ⚠️ Partial / ❌ Not Audited rows) and the
+  minor-gap backlog closed, the next active mode is the **cross-file invariants /
+  divergence-class** pass (probe-then-scope; see AGENTS.md "Cross-File Invariants"
+  and `docs/parity/DIVERGENCE_CLASS_ROSTER.md`).
+- **This run (v2.14.298 → v2.14.307, all committed LOCALLY on `master`, NOT
+  pushed):** 9 `fix(parity)` commits + 1 `docs(parity)` policy commit. A 10-iteration
+  autonomous loop that drained the remaining documented gap backlog and fixed a
+  **live `inventory`/`equipment` crash** the user reported mid-session.
+  - **AURA-001** (live crash) — `_char_affected` imported a non-existent
+    `skill_lookup`; rewritten to ROM's `IS_AFFECTED(ch, AFF_DETECT_*)` bitfield test.
+  - **DROP-001 + WIMPY-002** — new shared `rom_is_number`/`rom_atoi` helpers
+    (C `is_number`/`atoi`); the `is_number`/`atoi` class is now fully closed.
+  - **STEAL-001** — `do_steal` now calls `check_improve` on all three ROM paths.
+  - **RESCUE-002** — `rescue` renders NPC parties via ROM `act_format`/PERS.
+  - **TRIP-002** — `do_trip` miss no longer double-delivers (void; failure returns "").
+    The "size shift ~7 not 20" suspicion was resolved as a `check_improve` sweep
+    artifact — the size modifier is ROM-correct (10 per step).
+  - **PUT-006** — `do_put` container is `arg2` (second token), not the last word.
+  - **LOCK-003** — door lock/unlock key guard uses ROM `key < 0` (was `<= 0`).
+  - **GIVE-006** — worn-item give reports ROM's "You do not have that item."
+    (strict parity; revertible).
+  - **ROM-FAITHFUL directive** — added to AGENTS.md at the user's request.
 - **Pointer to latest summary**:
-  [SESSION_SUMMARY_2026-07-10_AUTONOMOUS_LOOP_COMMAND_SWEEP.md](SESSION_SUMMARY_2026-07-10_AUTONOMOUS_LOOP_COMMAND_SWEEP.md)
+  [SESSION_SUMMARY_2026-07-10_AUTONOMOUS_LOOP_BACKLOG_DRAIN.md](SESSION_SUMMARY_2026-07-10_AUTONOMOUS_LOOP_BACKLOG_DRAIN.md)
 
 ## Project Status (snapshot)
 
 | Metric | Value |
 |--------|-------|
-| Version | 2.14.298 |
-| Tests | **6163 passed, 4 skipped** (full parallel run). One run exited 0; a second showed the 2 documented cross-file RNG-leak order flakes (`test_mobprog_triggers::test_event_hooks_fire_rom_triggers`, `test_skills_combat::test_trip_knocks_target_wait_daze_and_improve`) — both **pass in isolation** (`-n0`), confirmed, plus the harmless xdist `sessionfinish` teardown error. No regression from this run's 8 fixes. |
+| Version | 2.14.307 |
+| Tests | **6186 passed, 4 skipped** (full parallel run, 278s, zero failures) |
 | ROM C files audited | 43 / 43 |
 | Push status | **All local on `master`, UNPUSHED** — awaiting user review |
-| Active focus | Source-read + hunter sweep of unswept command handlers |
+| Active focus | Cross-file invariants / divergence-class pass (per-file backlog drained) |
 
-## Outstanding — verified rows filed for a future pass
+## Outstanding — deferred by design
 
-- **~~BASH-001~~ ✅ FIXED (2.14.297)** — `do_bash` flavor TO_CHAR line + `{5…{x`
-  color. ROM's `damage(…, FALSE)` suppresses the dam_message so the flavor line
-  replaces it; rendered via `act_format`, single-delivery via `show=False`.
-- **TRIP-002** (CONFIRMED REAL, DEFERRED — filed in `FIGHT_C_AUDIT`) — `do_trip`
-  failure double-delivers the miss dam_message (push at `engine.py:231` + command
-  return; empirically count==2). The fix is one line (`return ""`) but it breaks
-  `TestTripRomParity::test_trip_chance_{size,level}_...`, which are themselves
-  mis-specified (expected chances ignore the dex modifier). Rewriting those as
-  differentials surfaced a **second unverified suspicion**: the trip size modifier
-  shifts chance by ~7 where ROM's `*10` predicts 20 — needs its own probe. Deferred
-  to a dedicated pass (fix + 3 chance-test rewrites + size-delta probe) rather than
-  force it through a red/questionable suite.
-- **STEAL-001** (minor) — `do_steal` never calls `check_improve`.
-- **RESCUE-002** (low) — `skill_handlers.rescue` name vs ROM `$N`/PERS (NPC edge).
-- **is_number/atoi class** — DROP-001 + WIMPY-002 want one shared
-  `rom_is_number`/`rom_atoi` helper.
-- **Latent (unreachable in stock data):** LOCK-003 (door key `<=0`), DESC-001
-  (`do_description` plain-replace 1024 guard).
+- **DESC-001** (latent) — ROM's plain-replace description path has no length guard;
+  Python rejects a ≥1024-char plain replace. Unreachable while `MAX_INPUT_LENGTH ==
+  256` (a single `description` command can't reach 1024 chars). Removing the Python
+  guard drops a harmless safety cap for zero parity benefit — left as-is by design;
+  revisit only if the input layer starts accepting single commands ≥1024 chars.
 
 ## Next Intended Task
 
-The autonomous `/loop` run is **complete and stopped** — five hunter batches plus
-extensive manual probing have thoroughly swept the command surface (recent
-batches mostly clean; only edge-cases and judgment calls remain).
-
-1. **Review + push** the `v2.14.289 → v2.14.298` commits (all local on `master`).
+1. **Review + push** the `v2.14.299 → v2.14.307` commits (all local on `master`).
    This is the gating next action.
-2. **Close TRIP-002** (dedicated pass): one-line `return ""` fix + rewrite the 3
-   mis-specified `TestTripRomParity` chance tests as differentials + probe the
-   trip size-modifier suspicion (chance shifts ~7 where ROM's `*10` predicts 20).
-3. **Decide GIVE-006** (parity-vs-UX): keep the helpful "You must remove it
-   first." or match ROM's "You do not have that item."
-4. **Close the `is_number`/`atoi` class** (DROP-001 + WIMPY-002) with one shared
-   `rom_is_number`/`rom_atoi` helper.
-5. Lower priority: STEAL-001, RESCUE-002, PUT-006; latent LOCK-003, DESC-001.
+2. Resume the **cross-file invariants / divergence-class** pass: pick a candidate
+   area not yet covered by an INV row (affect ticks, position transitions,
+   mob-script triggers, group/follower chains), run a 5-minute probe (read ROM C
+   contract → read Python equivalent → write one failing test), then close as a
+   gap (single commit) or file as the next free INV-NNN.
