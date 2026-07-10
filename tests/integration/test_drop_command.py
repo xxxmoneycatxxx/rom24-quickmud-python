@@ -266,6 +266,25 @@ def test_drop_numeric_invalid_money_keyword_is_rejected(movable_char_factory, te
     assert not test_room_3001.contents
 
 
+def test_drop_negative_coin_amount_enters_coin_branch_like_rom_is_number(movable_char_factory, test_room_3001):
+    """DROP-001: ROM src/act_obj.c:511 gates the coin branch on is_number(arg),
+    and is_number (src/interp.c:696) accepts a leading '-'. So `drop -5 coins`
+    enters the coin branch → atoi("-5")=-5 → amount <= 0 → "Sorry, you can't do
+    that." Python previously used arg.isdigit() (False for "-5"), so it fell
+    through to the item path and returned "You do not have that item."
+    """
+    player = movable_char_factory("Dropper", 3001)
+    player.gold = 10
+    player.silver = 10
+
+    result = process_command(player, "drop -5 coins")
+
+    assert result == "Sorry, you can't do that."
+    assert player.gold == 10
+    assert player.silver == 10
+    assert not test_room_3001.contents
+
+
 def test_drop_money_broadcasts_some_coins_to_room(movable_char_factory, test_room_3001):
     """ROM act_obj.c:586: numeric money drops emit the room coin-drop message."""
     player = movable_char_factory("Dropper", 3001)

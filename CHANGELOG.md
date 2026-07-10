@@ -37,6 +37,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **DROP-001 — `drop -5 coins` now matches ROM.** The coin-drop branch gated on
+  `str.isdigit()` where ROM gates on `is_number` (`src/act_obj.c:511`,
+  `src/interp.c:696`), which accepts a leading sign. A signed amount now enters
+  the coin branch (→ "Sorry, you can't do that." on `amount <= 0`) instead of
+  falling through to the item path. Closes the `is_number`/`atoi` parity class
+  with shared `rom_is_number`/`rom_atoi` helpers in `mud/math/c_compat.py`.
 - **PUT-005 — `put all <container>` with nothing eligible now silent (was a
   non-ROM "You have nothing to put.").** ROM's put-all loop
   (`src/act_obj.c:451-491`) has no such message.

@@ -7,6 +7,7 @@ from mud.ai import _can_loot
 from mud.commands.group_commands import do_split, is_same_group
 from mud.commands.obj_manipulation import CONT_CLOSED, _can_drop_obj, _get_weight_mult, _obj_from_char, get_obj_list
 from mud.handler import create_money
+from mud.math.c_compat import rom_atoi, rom_is_number
 from mud.models.character import Character
 from mud.models.constants import (
     LEVEL_IMMORTAL,
@@ -641,8 +642,11 @@ def do_drop(char: Character, args: str) -> str:
     if room is None:
         return "You can't do that here."
 
-    if arg.isdigit():
-        amount = int(arg)
+    # ROM src/act_obj.c:511 gates the coin branch on is_number(arg), which
+    # accepts a leading '+'/'-' (src/interp.c:696) — unlike str.isdigit(). So
+    # `drop -5 coins` enters here and atoi("-5")=-5 hits the amount<=0 reject.
+    if rom_is_number(arg):
+        amount = rom_atoi(arg)
         coin_type, _unused = _one_argument(_rest)
         coin_type = coin_type.lower()
 
