@@ -45,6 +45,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   wired `format_obj_to_char` into those displays. Rewrote the helper to be ROM's
   `IS_AFFECTED(ch, AFF_DETECT_*)` bitfield test (`src/act_info.c`) — the
   ROM-faithful contract — instead of a non-ROM affect-list walk.
+- **LOCK-003 — door lock/unlock key guard now uses ROM's `key < 0`.** A door with
+  key vnum 0 is not "It can't be [un]locked." — ROM falls through to `has_key`, so
+  a keyless actor gets "You lack the key." (`src/act_move.c:669,805`). Latent in
+  stock data (all exit keys are −1); corrected for source-faithfulness. Also fixed
+  a mis-specified test that asserted a non-ROM exit EX_NOLOCK block.
 - **PUT-006 — `put <item> <container> <junk>` now targets the container, not the
   trailing word.** ROM reads the container from the second token (`arg2`,
   `src/act_obj.c:354-362`); the port used the last word, so trailing garbage

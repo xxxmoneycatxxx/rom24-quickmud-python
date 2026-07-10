@@ -412,7 +412,10 @@ def do_lock(char: Character, args: str) -> str:
 
     if not (exit_info & EX_CLOSED):
         return "It's not closed."
-    if key_vnum <= 0:
+    # LOCK-003: ROM src/act_move.c:669 gates on `pexit->key < 0` (not `<= 0`).
+    # A key vnum of 0 falls through to has_key → "You lack the key.", matching
+    # the container/portal sibling arms (LOCK-002) which already use `< 0`.
+    if key_vnum < 0:
         return "It can't be locked."
     if not _has_key(char, key_vnum):
         return "You lack the key."
@@ -518,7 +521,9 @@ def do_unlock(char: Character, args: str) -> str:
 
     if not (exit_info & EX_CLOSED):
         return "It's not closed."
-    if key_vnum <= 0:
+    # LOCK-003: ROM src/act_move.c:805 gates on `pexit->key < 0` (not `<= 0`).
+    # A key vnum of 0 falls through to has_key → "You lack the key.".
+    if key_vnum < 0:
         return "It can't be unlocked."
     if not _has_key(char, key_vnum):
         return "You lack the key."

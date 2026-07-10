@@ -98,10 +98,16 @@ def test_lock_door_sets_locked_flag(door_test_setup, object_factory):
     assert "click" in result.lower() or "lock" in result.lower(), "Should return lock success message"
 
 
-def test_lock_nolock_door_blocked(door_test_setup):
-    """Test that EX_NOLOCK doors cannot be locked
+def test_lock_keyless_door_reports_lack_of_key(door_test_setup):
+    """A keyless door (key vnum 0) can't be locked without a key.
 
-    ROM Parity: src/act_move.c lines 229-233 (EX_NOLOCK check)
+    LOCK-003 correction: ROM's `do_lock` DOOR branch (src/act_move.c:659-702)
+    gates only on `pexit->key < 0` → "It can't be locked."; it has NO EX_NOLOCK
+    check (that flag is only tested on the CONTAINER arm, src/act_move.c:602).
+    The Exit default `key` is 0, which is NOT < 0, so ROM falls through to
+    `has_key(ch, 0)` — no real key matches → "You lack the key." The door stays
+    unlocked. This test previously asserted "It can't be locked." (via `"can" in
+    result`), which only held because of the pre-LOCK-003 `key <= 0` bug.
     """
     char, room1, room2 = door_test_setup
 
@@ -110,8 +116,8 @@ def test_lock_nolock_door_blocked(door_test_setup):
 
     result = do_lock(char, "north")
 
-    assert not (exit_north.exit_info & EX_LOCKED), "NOLOCK door should remain unlocked"
-    assert "can" in result.lower(), "Should return cannot lock message"
+    assert not (exit_north.exit_info & EX_LOCKED), "door with no key held should remain unlocked"
+    assert result == "You lack the key.", f"ROM key-0 door → 'You lack the key.'; got {result!r}"
 
 
 def test_lock_without_key_fails(door_test_setup):
