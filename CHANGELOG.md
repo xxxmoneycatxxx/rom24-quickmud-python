@@ -45,6 +45,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   wired `format_obj_to_char` into those displays. Rewrote the helper to be ROM's
   `IS_AFFECTED(ch, AFF_DETECT_*)` bitfield test (`src/act_info.c`) — the
   ROM-faithful contract — instead of a non-ROM affect-list walk.
+- **RESCUE-002 — NPC parties to a rescue now render via ROM PERS.** `rescue`
+  built its three lines from raw `name`, so an NPC rescuer leaked its keyword
+  name (`fido dog rescues you!`) instead of ROM's `short_descr`
+  (`A scruffy dog rescues you!`). Now uses `act_format` (= ROM `act()`/`$n`/`$N`
+  PERS), matching `src/fight.c:3089-3091`. PC-rescues-PC is unchanged.
 - **STEAL-001 — the `steal` skill now improves through use.** ROM calls
   `check_improve(ch, gsn_steal, …)` on the caught (`FALSE,2`), coin-steal
   (`TRUE,2`), and item-steal (`TRUE,2`) paths (`src/act_obj.c:2249,2295,2328`);

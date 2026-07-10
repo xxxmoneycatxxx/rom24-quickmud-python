@@ -126,3 +126,45 @@ def test_rescue_single_delivers_all_three_legs_to_connected_pcs(monkeypatch) -> 
         f"room line not on the async channel (MAGIC-003 wrong-channel shape); sent={witness_sent}"
     )
     assert witness_mailbox == [], f"room line stranded in mailbox: {witness_mailbox}"
+
+
+def test_rescue_renders_npc_party_via_pers_short_descr(monkeypatch) -> None:
+    """RESCUE-002: an NPC party to a rescue must render via ROM PERS (short_descr),
+    not its raw keyword `name`.
+
+    ROM `do_rescue` (src/fight.c:3089-3091) emits the three lines via `act()`
+    with `$n`/`$N`, which resolve through PERS(ch, looker): an NPC renders as
+    `short_descr`, a PC as `name`. For the common PC-rescues-PC case PERS==name,
+    so it was invisible — but the port built the strings from raw
+    `getattr(x, "name")`, so an NPC rescuer leaked its keyword name
+    (`"fido dog rescues you!"`) instead of ROM's `"a scruffy dog rescues you!"`.
+    """
+    import mud.skills.handlers as handlers
+
+    captured: list[tuple[object, str]] = []
+    monkeypatch.setattr(handlers, "_send_to_char", lambda ch, msg: captured.append((ch, msg)))
+
+    room = Room(vnum=9301, name="Battlefield")
+    # NPC rescuer whose keyword name differs from its short_descr.
+    dog = Character(name="fido dog", is_npc=True, level=30, position=int(Position.STANDING))
+    dog.short_descr = "a scruffy dog"
+    room.add_character(dog)
+
+    ally = Character(name="Ally", is_npc=False, level=30, position=int(Position.FIGHTING))
+    ally.messages = []
+    room.add_character(ally)
+
+    foe = Character(name="Ogre", is_npc=True, level=20, position=int(Position.FIGHTING))
+    room.add_character(foe)
+    ally.fighting = foe
+    foe.fighting = ally
+
+    handlers.rescue(dog, ally, opponent=foe)
+
+    # TO_VICT leg: ROM act("{5$n rescues you!{x", ch=dog, ...) → PERS(dog)=short_descr.
+    # ROM caps the char after the leading `{5` colour code (INV-029, the act_new
+    # kludge at src/comm.c:2376-2379), so "a scruffy dog" → "A scruffy dog".
+    vict_lines = [m for (ch, m) in captured if ch is ally]
+    assert vict_lines, "victim received no rescue line"
+    assert any("A scruffy dog rescues you!" in m for m in vict_lines), vict_lines
+    assert not any("fido" in m for m in vict_lines), f"leaked NPC keyword name: {vict_lines}"

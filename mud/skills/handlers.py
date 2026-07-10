@@ -7409,12 +7409,13 @@ def rescue(
     if foe is None:
         raise ValueError("rescue requires an opponent")
 
-    rescuer_name = getattr(caster, "name", "someone") or "someone"
-    victim_name = getattr(target, "name", "someone") or "someone"
-
-    char_msg = f"{{5You rescue {victim_name}!{{x"
-    vict_msg = f"{{5{rescuer_name} rescues you!{{x"
-    room_msg = f"{{5{rescuer_name} rescues {victim_name}!{{x"
+    # RESCUE-002 — ROM renders $n/$N through PERS (src/merc.h:2145): an NPC party
+    # shows its short_descr, a PC its name, masked to "someone" when unseen. The
+    # port built these from raw getattr(name), leaking an NPC rescuer's keyword
+    # name. act_format IS ROM's act()/PERS, so use it (TO_CHAR has no $n self-case
+    # — ROM writes literal "You ...").
+    char_msg = act_format("{5You rescue $N!{x", recipient=caster, actor=caster, arg2=target)
+    vict_msg = act_format("{5$n rescues you!{x", recipient=target, actor=caster, arg2=target)
 
     # mirroring ROM src/fight.c:3089-3091 — do_rescue is void; all three lines
     # write straight to the descriptor via act() (TO_CHAR / TO_VICT / TO_NOTVICT).
@@ -7432,6 +7433,9 @@ def rescue(
         for occupant in list(getattr(room, "people", []) or []):
             if occupant is caster or occupant is target:
                 continue
+            # TO_NOTVICT is rendered per-observer so PERS visibility masking
+            # (src/fight.c:3091) applies to each bystander individually.
+            room_msg = act_format("{5$n rescues $N!{x", recipient=occupant, actor=caster, arg2=target)
             _send_to_char(occupant, room_msg)
 
     stop_fighting(foe, False)
