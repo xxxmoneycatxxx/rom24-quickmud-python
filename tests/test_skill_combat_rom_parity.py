@@ -2026,6 +2026,64 @@ class TestTripRomParity:
         assert result == "ok" or "trip" in result.lower()
         assert victim.position == Position.RESTING
 
+    @staticmethod
+    def _expected_trip_chance(char, victim) -> int:
+        """Recompute ROM do_trip's `chance` the way the engine does (src/fight.c
+        :2906-2923), using the SAME `get_curr_stat` accessor so the boundary is
+        robust to stat clamping/racial mods. Locks the size/dex/level coefficients.
+        """
+        chance = int(char.skills.get("trip", 0) or 0)
+        if int(char.size) < int(victim.size):
+            chance += (int(char.size) - int(victim.size)) * 10  # size: 10 per step
+        char_dex = char.get_curr_stat(Stat.DEX) or 0
+        victim_dex = victim.get_curr_stat(Stat.DEX) or 0
+        chance += char_dex - victim_dex * 3 // 2  # dex: floor(3/2) on victim
+        chance += (int(char.level) - int(victim.level)) * 2  # level: 2 per level
+        return chance
+
+    def _assert_trip_boundary(self, char, victim):
+        """do_trip succeeds iff number_percent() < chance. Drive the roll to
+        chance-1 (success) and chance (failure) and assert on the OUTCOME, not a
+        truthy return: TRIP-002 makes the failure branch return "" (void do_trip;
+        damage() single-delivers the miss), so a truthy-return check is invalid.
+
+        `check_improve` is disabled for the run so a mid-test skill bump can't
+        drift `chance` between the two rolls (that drift is what silently broke the
+        original assertions — the differential was measuring a rising skill, not
+        the modifier). With it off, the measured boundary equals ROM's formula, so
+        this simultaneously locks the size/dex/level coefficients.
+        """
+        chance = self._expected_trip_chance(char, victim)
+
+        def _reset():
+            victim.position = Position.FIGHTING
+            char.wait = 0
+            victim.wait = 0
+            victim.daze = 0
+
+        _reset()
+        with (
+            patch("mud.commands.combat.apply_damage", return_value="ok"),
+            patch("mud.commands.combat.rng_mm.number_range", return_value=2),
+            patch("mud.commands.combat.rng_mm.number_percent", return_value=chance - 1),
+            patch.object(skill_registry, "_check_improve", lambda *a, **k: None),
+        ):
+            success = do_trip(char, "mob")
+        assert "You trip" in success, f"percent {chance - 1} < chance {chance} must succeed; got {success!r}"
+        assert victim.position == Position.RESTING, "a successful trip knocks the victim to RESTING"
+
+        _reset()
+        with (
+            patch("mud.commands.combat.apply_damage", return_value="ok"),
+            patch("mud.commands.combat.rng_mm.number_percent", return_value=chance),
+            patch.object(skill_registry, "_check_improve", lambda *a, **k: None),
+        ):
+            failure = do_trip(char, "mob")
+        assert failure == "", (
+            f"percent {chance} !< chance {chance} must fail with no return (TRIP-002); got {failure!r}"
+        )
+        assert victim.position == Position.FIGHTING, "a failed trip does not knock the victim down"
+
     def test_trip_chance_size_penalty_is_10_per_size(self, movable_char_factory, movable_mob_factory):
         """ROM L2906-2909: If attacker smaller, `chance += (ch->size - victim->size) * 10`."""
         char = movable_char_factory("warrior", 3001)
@@ -2036,30 +2094,12 @@ class TestTripRomParity:
 
         victim = movable_mob_factory(3001, 3001)
         victim.name = "mob"
-        victim.size = 3
+        victim.size = 3  # attacker smaller by 2 → -20 to chance
         victim.level = 20
         victim.perm_stat = [13, 13, 13, 13, 13]
         victim.position = Position.FIGHTING
 
-        # Base 50, size penalty (1-3)*10=-20 => chance=30
-        with (
-            patch("mud.commands.combat.apply_damage", return_value="ok"),
-            patch("mud.commands.combat.rng_mm.number_range", return_value=2),
-            patch("mud.commands.combat.rng_mm.number_percent", return_value=29),
-        ):
-            result_success = do_trip(char, "mob")
-
-        victim.position = Position.FIGHTING
-        char.wait = 0
-        victim.wait = 0
-        with (
-            patch("mud.commands.combat.apply_damage", return_value="ok"),
-            patch("mud.commands.combat.rng_mm.number_percent", return_value=30),
-        ):
-            result_fail = do_trip(char, "mob")
-
-        assert result_success
-        assert result_fail
+        self._assert_trip_boundary(char, victim)
 
     def test_trip_chance_dex_modifier_uses_floor_3_over_2(self, movable_char_factory, movable_mob_factory):
         """ROM L2910-2913: `chance += dex(ch) - dex(victim) * 3 / 2` (integer division)."""
@@ -2073,28 +2113,10 @@ class TestTripRomParity:
         victim.name = "mob"
         victim.size = 2
         victim.level = 20
-        victim.perm_stat = [13, 15, 13, 13, 13]
+        victim.perm_stat = [13, 15, 13, 13, 13]  # higher victim DEX → floor(3/2) penalty
         victim.position = Position.FIGHTING
 
-        # chance = 60 + 10 - (15*3//2=22) = 48
-        with (
-            patch("mud.commands.combat.apply_damage", return_value="ok"),
-            patch("mud.commands.combat.rng_mm.number_range", return_value=2),
-            patch("mud.commands.combat.rng_mm.number_percent", return_value=47),
-        ):
-            result_success = do_trip(char, "mob")
-
-        victim.position = Position.FIGHTING
-        char.wait = 0
-        victim.wait = 0
-        with (
-            patch("mud.commands.combat.apply_damage", return_value="ok"),
-            patch("mud.commands.combat.rng_mm.number_percent", return_value=48),
-        ):
-            result_fail = do_trip(char, "mob")
-
-        assert result_success
-        assert result_fail
+        self._assert_trip_boundary(char, victim)
 
     def test_trip_chance_level_modifier_is_2_per_level(self, movable_char_factory, movable_mob_factory):
         """ROM L2921-2923: `chance += (ch->level - victim->level) * 2`."""
@@ -2107,29 +2129,11 @@ class TestTripRomParity:
         victim = movable_mob_factory(3001, 3001)
         victim.name = "mob"
         victim.size = 2
-        victim.level = 10
+        victim.level = 10  # attacker 10 levels higher → +20 to chance
         victim.perm_stat = [13, 13, 13, 13, 13]
         victim.position = Position.FIGHTING
 
-        # chance = 20 + (20-10)*2 = 40
-        with (
-            patch("mud.commands.combat.apply_damage", return_value="ok"),
-            patch("mud.commands.combat.rng_mm.number_range", return_value=2),
-            patch("mud.commands.combat.rng_mm.number_percent", return_value=39),
-        ):
-            result_success = do_trip(char, "mob")
-
-        victim.position = Position.FIGHTING
-        char.wait = 0
-        victim.wait = 0
-        with (
-            patch("mud.commands.combat.apply_damage", return_value="ok"),
-            patch("mud.commands.combat.rng_mm.number_percent", return_value=40),
-        ):
-            result_fail = do_trip(char, "mob")
-
-        assert result_success
-        assert result_fail
+        self._assert_trip_boundary(char, victim)
 
     def test_dirt_kicking_requires_victim_or_fighting(self, movable_char_factory):
         """ROM L2505-2512: Requires victim argument or ch->fighting."""

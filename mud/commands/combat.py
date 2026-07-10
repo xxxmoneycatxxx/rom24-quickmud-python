@@ -1355,15 +1355,23 @@ def do_trip(char: Character, args: str, *, victim: Character | None = None) -> s
         skill_registry._check_improve(char, _trip_skill, "trip", True)
         message = act_format("{5You trip $N and $N goes down!{x", recipient=char, actor=char, arg2=victim)
     else:
-        # FIGHT-088: ROM :2749 — the failure branch calls damage(ch, victim, 0,
-        # gsn_trip, DAM_BASH, TRUE) BEFORE the wait, delivering the miss dam_message
-        # and starting the fight (set_fighting). apply_damage returns the attacker's
-        # TO_CHAR line unpushed (single-delivery), so returning it is correct.
-        message = apply_damage(char, victim, 0, DamageType.BASH, dt="trip")
+        # ROM :2749 — the failure branch calls damage(ch, victim, 0, gsn_trip,
+        # DAM_BASH, TRUE) BEFORE the wait, delivering the miss dam_message and
+        # starting the fight (set_fighting).
+        #
+        # TRIP-002: do_trip is a *void* function — damage() delivers the miss
+        # line to attacker/victim/room exactly once via its own act(). apply_damage
+        # (show=True default) PUSHES the attacker's miss line to char.messages, so
+        # returning that same line double-delivers it on the connection loop's
+        # return-value channel (INV-001 SINGLE-DELIVERY / FIGHT-020 shape). The
+        # push is the single delivery; discard the return. (The prior comment
+        # claiming apply_damage "returns the TO_CHAR line unpushed" was stale.)
+        apply_damage(char, victim, 0, DamageType.BASH, dt="trip")
         # ROM :2750 — WAIT_STATE(ch, skill_table[gsn_trip].beats * 2 / 3), after damage.
         skill_registry._apply_wait_state(char, trip_beats * 2 // 3)
         # ROM src/fight.c:2752 — check_improve(ch, gsn_trip, FALSE, 1). FIGHT-090.
         skill_registry._check_improve(char, _trip_skill, "trip", False)
+        message = ""
 
     check_killer(char, victim)  # mirroring ROM src/fight.c:2753 — unconditional
     return message

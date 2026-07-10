@@ -45,6 +45,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   wired `format_obj_to_char` into those displays. Rewrote the helper to be ROM's
   `IS_AFFECTED(ch, AFF_DETECT_*)` bitfield test (`src/act_info.c`) — the
   ROM-faithful contract — instead of a non-ROM affect-list walk.
+- **TRIP-002 — a missed `trip` no longer double-delivers the miss message.**
+  ROM `do_trip` is void; `damage(…, TRUE)` sends the miss line once
+  (`src/fight.c:2749`). The port returned `apply_damage`'s already-pushed line,
+  so a connected attacker saw `Your trip misses X.` twice. The failure branch now
+  returns `""`. Also verified the trip size modifier is `(ch->size − victim->size)
+  * 10` (a prior "shift ~7" reading was a `check_improve` skill-drift artifact in
+  the test, not an engine bug).
 - **RESCUE-002 — NPC parties to a rescue now render via ROM PERS.** `rescue`
   built its three lines from raw `name`, so an NPC rescuer leaked its keyword
   name (`fido dog rescues you!`) instead of ROM's `short_descr`
