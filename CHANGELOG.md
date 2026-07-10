@@ -45,6 +45,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   wired `format_obj_to_char` into those displays. Rewrote the helper to be ROM's
   `IS_AFFECTED(ch, AFF_DETECT_*)` bitfield test (`src/act_info.c`) — the
   ROM-faithful contract — instead of a non-ROM affect-list walk.
+- **PUT-006 — `put <item> <container> <junk>` now targets the container, not the
+  trailing word.** ROM reads the container from the second token (`arg2`,
+  `src/act_obj.c:354-362`); the port used the last word, so trailing garbage
+  hijacked the target. Parse rewritten to the faithful ROM `arg1`/`arg2` form.
 - **TRIP-002 — a missed `trip` no longer double-delivers the miss message.**
   ROM `do_trip` is void; `damage(…, TRUE)` sends the miss line once
   (`src/fight.c:2749`). The port returned `apply_damage`'s already-pushed line,

@@ -72,16 +72,18 @@ def do_put(char: Character, args: str) -> str:
     if not args or not args.strip():
         return "Put what in what?"
 
+    # PUT-006 — ROM parse (src/act_obj.c:354-362): arg1 = first token, arg2 =
+    # SECOND token, re-read to the third only when arg2 is "in"/"on". The
+    # container is arg2, NOT the last word — trailing garbage must not hijack the
+    # target. Empty arg1 or arg2 → "Put what in what?".
     parts = args.strip().split()
-    if len(parts) < 2:
+    item_name = parts[0] if len(parts) >= 1 else ""
+    container_name = parts[1] if len(parts) >= 2 else ""
+    if container_name.lower() in ("in", "on"):
+        container_name = parts[2] if len(parts) >= 3 else ""
+
+    if not item_name or not container_name:
         return "Put what in what?"
-
-    item_name = parts[0]
-    container_name = parts[-1]
-
-    # Handle "put x in y" or "put x on y"
-    if len(parts) >= 3 and parts[1].lower() in ("in", "on"):
-        container_name = parts[2] if len(parts) > 2 else parts[-1]
 
     # Can't put into all
     if container_name.lower() == "all" or container_name.lower().startswith("all."):

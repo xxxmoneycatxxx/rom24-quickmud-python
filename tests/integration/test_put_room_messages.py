@@ -494,3 +494,67 @@ def test_put_in_container_vs_put_on_container(test_room_3001):
     result2 = do_put(char, "book2 table")
     assert "on" in result2.lower()
     assert book2 in table.contained_items
+
+
+def test_put_006_container_is_second_token_not_last_word(test_room_3001):
+    """PUT-006: ROM `do_put` reads the container from arg2 (the SECOND token),
+    re-read to the third only when arg2 is `in`/`on` (src/act_obj.c:354-358).
+
+    The port defaulted the container to the LAST word (`parts[-1]`), so trailing
+    garbage hijacked the target: `put sword bag junk` targeted `junk` (→ "I see
+    no junk here.") instead of ROM's `bag`. With the ROM parse, `bag` (arg2) is
+    the container and the sword lands in it.
+    """
+    from mud.models.character import Character
+
+    char = Character(name="TestChar", is_npc=False, race=0, ch_class=0)
+    char.room = test_room_3001
+    char.location = test_room_3001
+    char.level = 5
+    char.inventory = []
+    char.carry_weight = 0
+    char.carry_number = 0
+    test_room_3001.people = [char]
+
+    bag_vnum = _get_unique_vnum()
+    bag_proto = ObjIndex(
+        vnum=bag_vnum,
+        name="bag",
+        short_descr="a leather bag",
+        description="A leather bag lies here.",
+        item_type=ItemType.CONTAINER,
+        wear_flags=1,
+        value=[100, 0, 0, 100, 100],
+    )
+    obj_registry[bag_vnum] = bag_proto
+    bag = Object(prototype=bag_proto, instance_id=None)
+    bag.value = bag_proto.value
+    bag.carried_by = char
+    bag.wear_loc = -1
+    bag.contained_items = []
+    char.inventory.append(bag)
+
+    sword_vnum = _get_unique_vnum()
+    sword_proto = ObjIndex(
+        vnum=sword_vnum,
+        name="sword",
+        short_descr="a steel sword",
+        description="A steel sword lies here.",
+        item_type=ItemType.WEAPON,
+        wear_flags=1,
+        weight=50,
+    )
+    obj_registry[sword_vnum] = sword_proto
+    sword = Object(prototype=sword_proto, instance_id=None)
+    sword.carried_by = char
+    sword.wear_loc = -1
+    char.inventory.append(sword)
+    char.carry_number = 2
+    char.carry_weight = 50
+
+    # Trailing "junk" must NOT become the container — ROM uses arg2 ("bag").
+    result = do_put(char, "sword bag junk")
+
+    assert "you put" in result.lower(), f"expected a put into 'bag'; got {result!r}"
+    assert sword in bag.contained_items
+    assert sword not in char.inventory
