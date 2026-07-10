@@ -52,6 +52,28 @@ run the area-specific integration test suite to catch regressions.
 
 These are non-negotiable. Violations are bugs even if tests pass.
 
+- **ALWAYS fix ROM-FAITHFULLY, NEVER with a quick hack.** Every fix — even a
+  crash fix, even a one-liner, even a "just make the error go away" — MUST
+  reproduce what the original ROM 2.4b6 C engine actually does. Before you write
+  a fix, read the corresponding ROM C function and make the Python behavior match
+  it. A change that merely stops an exception, silences a test, or "looks
+  reasonable" is a FAILURE if it does not match ROM. This project's entire
+  purpose is behavioral parity, not working software — a plausible-but-non-ROM
+  fix is worse than the bug because it hides the divergence behind green tests.
+  - **Anti-pattern (the AURA-001 trap):** `inventory` crashed on a broken
+    `from mud.skills.registry import skill_lookup`. The quick hack — swap in a
+    lookup that happens to exist so the import resolves — stops the crash but
+    preserves a *non-ROM affect-list walk*. The ROM-faithful fix: read
+    `format_obj_to_char` (`src/act_info.c`), see it uses `IS_AFFECTED(ch,
+    AFF_DETECT_*)` (a bitfield test on `ch->affected_by`), and rewrite the helper
+    to BE that bitfield test — deleting the non-ROM branch entirely.
+  - **Test to the ROM contract, not to "no longer throws."** The regression test
+    must assert the ROM behavior (e.g. bit set → `(Magical)` tag renders), so a
+    future non-ROM "fix" that passes by accident still fails the test.
+  - If ROM's behavior is genuinely unclear after reading the C, say so and ask —
+    do not guess and ship a hack. "I couldn't find the ROM source, so I made it
+    reasonable" is not acceptable here.
+
 - **RNG:** use `mud.math.rng_mm.number_*`, never `random.*` in combat/affects.
 - **Integer math:** use `c_div`/`c_mod` from `mud.math.c_compat` whenever an
   operand **can be negative**. ROM is C: integer division truncates toward zero
