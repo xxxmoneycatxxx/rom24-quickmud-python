@@ -340,32 +340,26 @@ def _obj_flag(obj: Any, flag: Any) -> bool:
 
 
 def _char_affected(char: Any, name: str) -> bool:
-    for aff in getattr(char, "affected", []) or []:
-        if getattr(aff, "name", None) == name or getattr(aff, "spell_name", None) == name:
-            return True
-        sn = getattr(aff, "type", None)
-        if sn is not None:
-            from mud.skills.registry import skill_lookup
+    """ROM ``IS_AFFECTED(ch, AFF_*)`` — a bitfield test on ``ch->affected_by``.
 
-            sk = skill_lookup(sn) if isinstance(sn, str) else None
-            if sk and getattr(sk, "name", None) == name:
-                return True
-    aff_flags = getattr(char, "affected_by", 0)
-    if aff_flags is None:
-        aff_flags = 0
+    ``format_obj_to_char`` (src/act_info.c) gates the aura tags with
+    ``IS_AFFECTED(ch, AFF_DETECT_EVIL/GOOD/MAGIC)``, i.e. ``ch->affected_by &
+    flag`` — NOT a walk over the affect list. The detect spells set the bit via
+    ``add_affect`` on cast (``apply_spell_effect`` → ``add_affect``), so the
+    ``affected_by`` bitfield is authoritative and matches ROM exactly.
+    """
+    from mud.models.constants import AffectFlag
+
     flag_map = {
-        "detect_evil": "DETECT_EVIL",
-        "detect_good": "DETECT_GOOD",
-        "detect_magic": "DETECT_MAGIC",
+        "detect_evil": AffectFlag.DETECT_EVIL,
+        "detect_good": AffectFlag.DETECT_GOOD,
+        "detect_magic": AffectFlag.DETECT_MAGIC,
     }
-    flag_name = flag_map.get(name)
-    if flag_name:
-        from mud.models.constants import AffectFlag
-
-        if hasattr(AffectFlag, flag_name):
-            if int(aff_flags) & int(getattr(AffectFlag, flag_name)):
-                return True
-    return False
+    flag = flag_map.get(name)
+    if flag is None:
+        return False
+    aff_flags = getattr(char, "affected_by", 0) or 0
+    return bool(int(aff_flags) & int(flag))
 
 
 def show_list_to_char(

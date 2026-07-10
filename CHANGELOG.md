@@ -37,6 +37,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **AURA-001 — `inventory`/`equipment` no longer crash with "Sorry, there was an
+  error processing that command."** The object aura tags (`(Red Aura)`/`(Blue
+  Aura)`/`(Magical)`) went through a helper (`_char_affected`) that imported a
+  non-existent `skill_lookup` from `mud.skills.registry`, raising `ImportError`
+  for any player carrying a string-typed affect. Latent until INVEN-001/EQUIP-002
+  wired `format_obj_to_char` into those displays. Rewrote the helper to be ROM's
+  `IS_AFFECTED(ch, AFF_DETECT_*)` bitfield test (`src/act_info.c`) — the
+  ROM-faithful contract — instead of a non-ROM affect-list walk.
 - **DROP-001 — `drop -5 coins` now matches ROM.** The coin-drop branch gated on
   `str.isdigit()` where ROM gates on `is_number` (`src/act_obj.c:511`,
   `src/interp.c:696`), which accepts a leading sign. A signed amount now enters
