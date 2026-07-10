@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING
 
 from mud.advancement import exp_per_level
 from mud.commands.imm_commands import MAX_LEVEL, get_char_world, get_trust
+from mud.math.c_compat import rom_atoi
 from mud.models.character import Character
 from mud.models.constants import (
     ActFlag,
@@ -117,14 +118,11 @@ def do_wimpy(char: Character, args: str) -> str:
     if not args or not args.strip():
         wimpy = max_hit // 5
     else:
-        # WIMPY-001 — ROM do_wimpy uses `atoi(arg)` (src/act_info.c:2811), which
-        # returns 0 for non-numeric input; it does NOT reject. Mirror that (the
-        # prior "Wimpy must be a number." was a Python invention). Same atoi
-        # pattern as do_split (mud/commands/group_commands.py).
-        try:
-            wimpy = int(args.strip().split()[0])
-        except ValueError:
-            wimpy = 0
+        # WIMPY-001/002 — ROM do_wimpy uses `wimpy = atoi(arg)` (src/act_info.c:2811).
+        # C atoi returns 0 for non-numeric input (does NOT reject — the prior
+        # "Wimpy must be a number." was a Python invention) and parses a leading
+        # numeric prefix, so `wimpy 12x` sets 12, not 0. rom_atoi mirrors both.
+        wimpy = rom_atoi(args.strip().split()[0])
 
     if wimpy < 0:
         return "Your courage exceeds your wisdom."

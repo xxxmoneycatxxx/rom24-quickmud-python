@@ -45,6 +45,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   wired `format_obj_to_char` into those displays. Rewrote the helper to be ROM's
   `IS_AFFECTED(ch, AFF_DETECT_*)` bitfield test (`src/act_info.c`) — the
   ROM-faithful contract — instead of a non-ROM affect-list walk.
+- **WIMPY-002 — `wimpy 12x` now sets 12, matching ROM `atoi`.** ROM parses a
+  leading numeric prefix (`src/act_info.c:2811`); Python's `int()` raised on the
+  trailing `x` and fell back to 0. `do_wimpy` now uses the shared `rom_atoi`
+  helper (same `is_number`/`atoi` class as DROP-001).
 - **DROP-001 — `drop -5 coins` now matches ROM.** The coin-drop branch gated on
   `str.isdigit()` where ROM gates on `is_number` (`src/act_obj.c:511`,
   `src/interp.c:696`), which accepts a leading sign. A signed amount now enters

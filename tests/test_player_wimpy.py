@@ -92,3 +92,16 @@ class TestWimpyEdgeCases:
         do_wimpy(player, "invalid")
 
         assert player.wimpy == 0
+
+    def test_wimpy_numeric_prefix_parses_leading_digits_like_rom_atoi(self):
+        # WIMPY-002 — ROM `atoi("12x")` parses the leading numeric prefix and
+        # returns 12 (src/act_info.c:2811), stopping at the first non-digit.
+        # Python's int("12x") raised ValueError and fell back to 0, so
+        # `wimpy 12x` set 12 in ROM but 0 in Python. Now routes through rom_atoi.
+        player = create_test_character("Test", 3001)
+        player.max_hit = 100
+
+        output = do_wimpy(player, "12x")
+
+        assert output == "Wimpy set to 12 hit points."
+        assert player.wimpy == 12
