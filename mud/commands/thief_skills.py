@@ -10,6 +10,7 @@ from __future__ import annotations
 from mud.math.c_compat import c_div
 from mud.models.character import Character, _object_carry_number, _object_carry_weight
 from mud.models.constants import MAX_LEVEL, AffectFlag, ExtraFlag, PlayerFlag, Position
+from mud.skills.registry import check_improve
 from mud.utils.act import act_format
 from mud.utils.rng_mm import number_percent, number_range
 from mud.world.char_find import get_char_room
@@ -244,6 +245,9 @@ def _steal_failure(char: Character, victim: Character) -> str:
         if bool(getattr(victim, "is_npc", False)):  # noqa: SIM108
             from mud.combat.engine import multi_hit
 
+            # ROM src/act_obj.c:2249 — check_improve(ch, gsn_steal, FALSE, 2)
+            # before the NPC victim retaliates.
+            check_improve(char, "steal", False, 2)
             multi_hit(victim, char, None)
         else:
             current_act = int(getattr(char, "act", 0) or 0)
@@ -277,6 +281,9 @@ def _steal_coins(char: Character, victim: Character) -> str:
     char.silver = int(getattr(char, "silver", 0) or 0) + silver
     victim.gold = victim_gold - gold
     victim.silver = victim_silver - silver
+
+    # ROM src/act_obj.c:2295 — check_improve(ch, gsn_steal, TRUE, 2) on coin success.
+    check_improve(char, "steal", True, 2)
 
     # ROM L2286-2294
     if silver <= 0:
@@ -324,6 +331,8 @@ def _steal_item(char: Character, victim: Character, item_name: str) -> str:
     obj.carried_by = char
 
     char_msg = act_format("You pocket $p.\n", recipient=char, actor=char, arg1=obj)
+    # ROM src/act_obj.c:2328 — check_improve(ch, gsn_steal, TRUE, 2) on item success.
+    check_improve(char, "steal", True, 2)
     return char_msg + "Got it!\n"
 
 

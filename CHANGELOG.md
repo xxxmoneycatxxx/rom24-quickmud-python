@@ -45,6 +45,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   wired `format_obj_to_char` into those displays. Rewrote the helper to be ROM's
   `IS_AFFECTED(ch, AFF_DETECT_*)` bitfield test (`src/act_info.c`) — the
   ROM-faithful contract — instead of a non-ROM affect-list walk.
+- **STEAL-001 — the `steal` skill now improves through use.** ROM calls
+  `check_improve(ch, gsn_steal, …)` on the caught (`FALSE,2`), coin-steal
+  (`TRUE,2`), and item-steal (`TRUE,2`) paths (`src/act_obj.c:2249,2295,2328`);
+  the port omitted all three, so the skill never advanced.
 - **WIMPY-002 — `wimpy 12x` now sets 12, matching ROM `atoi`.** ROM parses a
   leading numeric prefix (`src/act_info.c:2811`); Python's `int()` raised on the
   trailing `x` and fell back to 0. `do_wimpy` now uses the shared `rom_atoi`

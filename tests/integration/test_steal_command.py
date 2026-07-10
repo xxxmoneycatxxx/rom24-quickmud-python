@@ -377,3 +377,41 @@ def test_steal_level_diff_forces_failure_pc_to_pc(movable_char_factory, room, mo
     out = do_steal(thief, "gold alice")
     assert "Oops." in out
     assert thief.gold == 0
+
+
+# ---------------------------------------------------------------------------
+# STEAL-001: check_improve is called on the caught, coin-steal, and item-steal
+# paths (ROM src/act_obj.c:2249, 2295, 2328). The port omitted every call, so
+# the steal skill never improved through use.
+# ---------------------------------------------------------------------------
+def test_steal_calls_check_improve_on_all_rom_paths(movable_char_factory, object_factory, room, monkeypatch):
+    import mud.commands.thief_skills as ts
+
+    calls: list[tuple[str, bool, int]] = []
+    monkeypatch.setattr(ts, "check_improve", lambda ch, name, success, mult: calls.append((name, success, mult)))
+
+    # --- Item-steal success: ROM check_improve(ch, gsn_steal, TRUE, 2) (2328) ---
+    thief = _make_thief(movable_char_factory, level=30)
+    merchant = _make_victim(movable_char_factory, name="Merchant", level=20)
+    gem = object_factory({"vnum": 9994, "name": "ruby gem", "short_descr": "a ruby", "weight": 1, "level": 5})
+    merchant.add_object(gem)
+    monkeypatch.setattr(ts, "number_percent", lambda: 1)  # force skill success
+    out = do_steal(thief, "ruby merchant")
+    assert "Got it!" in out
+    assert ("steal", True, 2) in calls, "item-steal must call check_improve(..., TRUE, 2)"
+
+    # --- Coin-steal success: ROM check_improve(ch, gsn_steal, TRUE, 2) (2295) ---
+    calls.clear()
+    thief2 = _make_thief(movable_char_factory, level=30)
+    _make_victim(movable_char_factory, name="Banker", gold=1000, silver=1000)
+    monkeypatch.setattr(ts, "number_range", lambda lo, hi: hi)
+    do_steal(thief2, "coins banker")
+    assert ("steal", True, 2) in calls, "coin-steal must call check_improve(..., TRUE, 2)"
+
+    # --- Caught by NPC victim: ROM check_improve(ch, gsn_steal, FALSE, 2) (2249) ---
+    calls.clear()
+    thief3 = _make_thief(movable_char_factory, level=30, skill=1)
+    _make_victim(movable_char_factory, name="Guard", level=20)
+    monkeypatch.setattr(ts, "number_percent", lambda: 100)  # force skill failure
+    do_steal(thief3, "gold guard")
+    assert ("steal", False, 2) in calls, "caught-by-NPC must call check_improve(..., FALSE, 2)"
