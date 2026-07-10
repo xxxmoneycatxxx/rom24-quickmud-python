@@ -52,9 +52,12 @@ def do_give(char: Character, args: str) -> str:
 
     obj = get_obj_carry(char, obj_name)
     if obj is None:
-        obj = _find_equipped_obj(char, obj_name)
-        if obj is not None:
-            return "You must remove it first."
+        # GIVE-006: ROM get_obj_carry (src/handler.c) matches only
+        # wear_loc == WEAR_NONE, so a WORN item returns NULL → "You do not have
+        # that item." (src/act_obj.c:783). ROM's follow-on "You must remove it
+        # first." branch (:785-788) is DEAD CODE (obj is WEAR_NONE when non-NULL).
+        # The prior _find_equipped_obj fallback surfaced that dead-code message —
+        # a UX nicety, but this port replicates ROM output exactly.
         return "You do not have that item."
 
     victim = get_char_room(char, target_name)
@@ -183,20 +186,6 @@ def _give_money(char: Character, room, amount: int, parts: list[str]) -> str:
         _handle_changer_exchange(victim, char, amount, is_silver)
 
     return char_message
-
-
-def _find_equipped_obj(char: Character, name: str):
-    """Best-effort ROM-style equipped item lookup for GIVE's remove-first message."""
-    name_lower = (name or "").lower()
-    equipment = getattr(char, "equipment", {}) or {}
-    for obj in equipment.values():
-        if obj is None:
-            continue
-        obj_name = (getattr(obj, "name", "") or "").lower()
-        obj_short = (getattr(obj, "short_descr", "") or "").lower()
-        if name_lower in obj_name or name_lower in obj_short:
-            return obj
-    return None
 
 
 def _has_shop(victim: Character) -> bool:

@@ -45,6 +45,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   wired `format_obj_to_char` into those displays. Rewrote the helper to be ROM's
   `IS_AFFECTED(ch, AFF_DETECT_*)` bitfield test (`src/act_info.c`) — the
   ROM-faithful contract — instead of a non-ROM affect-list walk.
+- **GIVE-006 — giving a worn item now reports ROM's "You do not have that item."**
+  (was the more-helpful-but-non-ROM "You must remove it first."). ROM
+  `get_obj_carry` excludes worn items, so `do_give` returns NULL for them
+  (`src/act_obj.c:783`); the "remove it first" branch is ROM dead code. Resolved to
+  strict parity per the ROM-FAITHFUL rule; revertible if a UX exception is wanted.
 - **LOCK-003 — door lock/unlock key guard now uses ROM's `key < 0`.** A door with
   key vnum 0 is not "It can't be [un]locked." — ROM falls through to `has_key`, so
   a keyless actor gets "You lack the key." (`src/act_move.c:669,805`). Latent in

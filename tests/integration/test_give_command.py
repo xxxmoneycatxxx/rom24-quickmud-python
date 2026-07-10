@@ -132,8 +132,17 @@ def test_give_item_to_shopkeeper_sets_reply_target(movable_char_factory, object_
     )
 
 
-def test_give_equipped_item_requires_removing_it_first(movable_char_factory, object_factory, test_room_3001):
-    """ROM act_obj.c:794-799: equipped items must be removed before they can be given."""
+def test_give_equipped_item_reports_not_carried_like_rom(movable_char_factory, object_factory, test_room_3001):
+    """GIVE-006: giving a WORN item reports ROM's "You do not have that item."
+
+    ROM `get_obj_carry` (src/handler.c) matches only `wear_loc == WEAR_NONE`, so a
+    worn item returns NULL at `do_give` (src/act_obj.c:783) → "You do not have that
+    item." ROM's subsequent `if (obj->wear_loc != WEAR_NONE) "You must remove it
+    first."` (:785-788) is DEAD CODE — obj is non-NULL only when unworn. The port's
+    `_find_equipped_obj` fallback surfaced that dead-code message; strict parity
+    drops it. (A helpful "remove it first" is a UX improvement, but this project
+    replicates ROM output exactly — see AGENTS.md ROM-FAITHFUL rule.)
+    """
     giver = movable_char_factory("Giver", 3001)
     victim = movable_char_factory("Receiver", 3001)
 
@@ -143,7 +152,7 @@ def test_give_equipped_item_requires_removing_it_first(movable_char_factory, obj
 
     result = process_command(giver, "give armor receiver")
 
-    assert result == "You must remove it first."
+    assert result == "You do not have that item."
     assert armor not in giver.inventory
     assert giver.equipment.get(int(WearLocation.BODY)) is armor
     assert armor not in victim.inventory
