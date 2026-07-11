@@ -192,6 +192,13 @@ def test_trip_knocks_target_wait_daze_and_improve(monkeypatch: pytest.MonkeyPatc
     # do_trip returns the TO_CHAR line and pushes TO_VICT / broadcasts TO_NOTVICT.
     import mud.commands.combat as combat
     from mud.skills.registry import SkillRegistry
+    from mud.utils import rng_mm
+
+    # Seed the shared Mitchell-Moore stream so the (unpatched) combat draws inside
+    # damage()/check_defenses are deterministic regardless of test ordering. Unit
+    # tests here do NOT get tests/integration/conftest.py's autouse seed_mm(12345),
+    # so a serial full run left this reading the ambient stream (2026-07-10 flake).
+    rng_mm.seed_mm(12345)
 
     monkeypatch.setattr(combat, "get_pulse_violence", lambda: 4)
     monkeypatch.setattr(combat.rng_mm, "number_percent", lambda: 1)

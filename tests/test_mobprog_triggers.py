@@ -172,6 +172,15 @@ def test_trigger_helpers_cover_act_percent_exit_greet_hpcnt(monkeypatch) -> None
 def test_event_hooks_fire_rom_triggers(monkeypatch) -> None:
     character_registry.clear()
 
+    # Seed the shared Mitchell-Moore stream so the (unpatched) combat draws in
+    # multi_hit / violence_tick are deterministic regardless of test ordering.
+    # This unit-test module does not get tests/integration/conftest.py's autouse
+    # seed_mm(12345), so a serial full run left it reading the ambient stream
+    # (2026-07-10 flake, tripped by GL-049's extra advance_level draws).
+    from mud.utils import rng_mm
+
+    rng_mm.seed_mm(12345)
+
     events: list[str] = []
 
     def record(event: str) -> None:
