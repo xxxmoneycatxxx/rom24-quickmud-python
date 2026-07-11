@@ -51,6 +51,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **LOOK-018 — room occupant list now renders the furniture branch of the
+  position suffix (`src/act_info.c:304-401`).** A character sitting/resting/
+  sleeping/standing on a furniture object now lists as "Bob is sitting on a wooden
+  chair." (verb + at/on/in preposition from the furniture's `value[2]` bits +
+  short_descr) instead of the generic "Bob is sitting here." The runtime already
+  tracked `char.on`; only `show_char_to_char_0`'s display omitted the branch.
 - **GL-049 — `advance_level` mana/move gains now use ROM's stat-scaled
   `number_range` rolls (`src/update.c:81-95`), not a static `LEVEL_BONUS` dict.**
   ROM rolls `add_mana = number_range(2, (2*INT + WIS)/5)` (halved for non-mana

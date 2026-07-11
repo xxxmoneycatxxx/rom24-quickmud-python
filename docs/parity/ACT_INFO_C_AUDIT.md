@@ -636,6 +636,23 @@ act_info.c is **100% complete** when:
      Surfaced 2026-07-10 by the same hunter sweep as LOOK-016, verified against
      ROM C. Test: `tests/integration/test_look017_standing_pc_title.py` (3: title
      shown; brief-observer suppresses; observer-on-furniture suppresses).
+   - **LOOK-018** ✅ FIXED (2.14.312): room occupant list omitted the **furniture
+     branch** of the position suffix. ROM `show_char_to_char_0`
+     (`src/act_info.c:304-401`) renders, when `victim->on != NULL`, "is `<verb>`
+     `<at|on|in>` `<furniture short_descr>`." for SLEEPING/RESTING/SITTING/STANDING
+     — the preposition chosen from the furniture's `value[2]` bits (`X_AT` → "at",
+     else `X_ON` → "on", else "in"). Python `mud/world/look.py:_room_occupant_line`
+     ported only the `on == NULL` path (generic "is sitting here."), so a PC/mob on
+     a chair listed as "Bob is sitting here." instead of "Bob is sitting on a
+     wooden chair." The runtime already tracks `char.on` (do_sit/rest/sleep set it),
+     so only the display was missing. **Fix:** added `_furniture_position_suffix`
+     (mirrors `position.py::_furn_flags`) + `_FURNITURE_POSITION` verb/bit map;
+     the else-branch prefers it when `victim.on` is set. DEAD/MORTAL/INCAP/STUNNED
+     have no furniture branch (fall back to `_POSITION_SUFFIX`). Surfaced 2026-07-10
+     by a self-admitted-divergence-marker sweep (the "furniture-object branch is not
+     yet ported" code comment), verified against ROM C. Test:
+     `tests/integration/test_look_char_tags_show_char_to_char_0.py` (11: all four
+     positions × at/on/in + the on==NULL guard).
 
 **IMPORTANT Gaps** (P1 - SHOULD FIX):
 

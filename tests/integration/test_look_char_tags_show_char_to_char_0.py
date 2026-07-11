@@ -9,8 +9,10 @@ order: ``[AFK]`` ``(Invis)`` ``(Wizi)`` ``(Hide)`` ``(Charmed)`` ``(Translucent)
 
 from __future__ import annotations
 
+import pytest
+
 from mud.models.character import Character
-from mud.models.constants import AffectFlag, CommFlag, PlayerFlag, Position
+from mud.models.constants import AffectFlag, CommFlag, FurnitureFlag, PlayerFlag, Position
 from mud.models.room import Room
 from mud.world.look import _room_occupant_line
 
@@ -110,3 +112,70 @@ def test_fighting_target_uses_bare_pers_not_aura_tags():
     line = _room_occupant_line(observer, victim)
     assert "is here, fighting Target." in line, line
     assert "(White Aura)" not in line, f"scan/PERS aura leak into fight line: {line!r}"
+
+
+def _furniture(short_descr: str, furn_flags: int):
+    """Build a furniture Object with value[2] = furn_flags and a short_descr."""
+    from mud.models.constants import ItemType
+    from mud.models.object import Object, ObjIndex
+
+    proto = ObjIndex(vnum=6000, short_descr=short_descr, item_type=int(ItemType.FURNITURE))
+    obj = Object(instance_id=None, prototype=proto)
+    obj.short_descr = short_descr
+    obj.value = [8, 0, furn_flags, 0, 0]  # value[0]=capacity, value[2]=position bits
+    return obj
+
+
+@pytest.mark.parametrize(
+    "position, furn_flag, expected",
+    [
+        # ROM show_char_to_char_0 (src/act_info.c:304-401) — AT/ON/IN preposition
+        # comes from the furniture's value[2] bits; absent AT and ON → "in".
+        (Position.SITTING, FurnitureFlag.SIT_ON, "is sitting on a wooden chair."),
+        (Position.SITTING, FurnitureFlag.SIT_AT, "is sitting at a wooden chair."),
+        (Position.SITTING, FurnitureFlag.SIT_IN, "is sitting in a wooden chair."),
+        (Position.RESTING, FurnitureFlag.REST_ON, "is resting on a wooden chair."),
+        (Position.RESTING, FurnitureFlag.REST_AT, "is resting at a wooden chair."),
+        (Position.SLEEPING, FurnitureFlag.SLEEP_ON, "is sleeping on a wooden chair."),
+        (Position.SLEEPING, FurnitureFlag.SLEEP_AT, "is sleeping at a wooden chair."),
+        (Position.STANDING, FurnitureFlag.STAND_ON, "is standing on a wooden chair."),
+        (Position.STANDING, FurnitureFlag.STAND_AT, "is standing at a wooden chair."),
+        (Position.STANDING, FurnitureFlag.STAND_IN, "is standing in a wooden chair."),
+    ],
+)
+def test_room_occupant_line_renders_furniture_position(position, furn_flag, expected):
+    """LOOK-018: show_char_to_char_0 renders the furniture branch when victim->on.
+
+    ROM src/act_info.c:304-401 — when victim->on != NULL, each of
+    SLEEPING/RESTING/SITTING/STANDING renders "is <verb> <at|on|in> <furniture>."
+    using the furniture short_descr and the AT/ON/IN bits in obj->value[2].
+    Python previously only ported the on==NULL path (generic "is sitting here.").
+    """
+    room = Room(vnum=3001, name="Test Room", description="A test room.")
+    observer = _pc("Observer")
+    observer.act = int(PlayerFlag.HOLYLIGHT)
+
+    chair = _furniture("a wooden chair", int(furn_flag))
+    victim = _pc("Victim", position=position)
+    victim.on = chair
+
+    room.add_character(observer)
+    room.add_character(victim)
+
+    line = _room_occupant_line(observer, victim)
+    assert expected in line, f"expected {expected!r} in {line!r}"
+
+
+def test_room_occupant_line_no_furniture_keeps_here_suffix():
+    """LOOK-018 guard: with victim->on == NULL the on-NULL suffix is unchanged."""
+    room = Room(vnum=3001, name="Test Room", description="A test room.")
+    observer = _pc("Observer")
+    observer.act = int(PlayerFlag.HOLYLIGHT)
+    victim = _pc("Victim", position=Position.SITTING)
+    victim.on = None
+
+    room.add_character(observer)
+    room.add_character(victim)
+
+    line = _room_occupant_line(observer, victim)
+    assert "is sitting here." in line, line

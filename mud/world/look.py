@@ -2,12 +2,13 @@ from __future__ import annotations
 
 from mud.math.c_compat import c_div
 from mud.models.character import Character
-from mud.models.constants import LEVEL_HERO, AffectFlag, CommFlag, Direction, PlayerFlag, Position
+from mud.models.constants import LEVEL_HERO, AffectFlag, CommFlag, Direction, FurnitureFlag, PlayerFlag, Position
 from mud.world.vision import can_see_character, pers
 
 # mirroring ROM src/act_info.c show_char_to_char_0 — buf[0] = UPPER(buf[0]) and
 # position suffixes appended when a mob is not at its start/default position.
-# victim->on == NULL path only; the furniture-object branch is not yet ported.
+# This is the victim->on == NULL path; the furniture branch is _FURNITURE_POSITION
+# below (LOOK-018).
 _POSITION_SUFFIX: dict[Position, str] = {
     Position.DEAD: " is DEAD!!",
     Position.MORTAL: " is mortally wounded.",
@@ -19,6 +20,47 @@ _POSITION_SUFFIX: dict[Position, str] = {
     Position.STANDING: " is here.",
     # FIGHTING: handled separately (target-aware)
 }
+
+# LOOK-018: ROM show_char_to_char_0 furniture branch (src/act_info.c:304-401).
+# When victim->on != NULL these positions render "is <verb> <at|on|in>
+# <furniture>." — the preposition comes from the furniture's value[2] bits
+# (X_AT → "at", else X_ON → "on", else "in"). DEAD/MORTAL/INCAP/STUNNED have no
+# furniture branch and fall back to _POSITION_SUFFIX.
+_FURNITURE_POSITION: dict[Position, tuple[str, FurnitureFlag, FurnitureFlag]] = {
+    Position.SLEEPING: ("sleeping", FurnitureFlag.SLEEP_AT, FurnitureFlag.SLEEP_ON),
+    Position.RESTING: ("resting", FurnitureFlag.REST_AT, FurnitureFlag.REST_ON),
+    Position.SITTING: ("sitting", FurnitureFlag.SIT_AT, FurnitureFlag.SIT_ON),
+    Position.STANDING: ("standing", FurnitureFlag.STAND_AT, FurnitureFlag.STAND_ON),
+}
+
+
+def _furniture_position_suffix(position, on) -> str | None:
+    """Return ROM's " is <verb> <at|on|in> <furniture>." suffix, or None.
+
+    ``None`` when the position has no furniture branch (DEAD/MORTAL/INCAP/STUNNED)
+    so the caller falls back to the on==NULL suffix table.
+    mirroring ROM src/act_info.c:304-401 show_char_to_char_0.
+    """
+    entry = _FURNITURE_POSITION.get(position)
+    if entry is None:
+        return None
+    verb, at_bit, on_bit = entry
+    # obj->value[2] furniture position bitfield (cf. position.py::_furn_flags).
+    values = getattr(on, "value", None) or getattr(getattr(on, "prototype", None), "value", None)
+    flags = 0
+    if values and len(values) >= 3:
+        try:
+            flags = int(values[2])
+        except (TypeError, ValueError):
+            flags = 0
+    if flags & int(at_bit):
+        prep = "at"
+    elif flags & int(on_bit):
+        prep = "on"
+    else:
+        prep = "in"
+    short_descr = getattr(on, "short_descr", None) or getattr(getattr(on, "prototype", None), "short_descr", "") or ""
+    return f" is {verb} {prep} {short_descr}."
 
 
 def _char_tags(observer: Character, victim) -> str:
@@ -124,8 +166,15 @@ def _room_occupant_line(observer: Character, victim) -> str:
             fight_str = "someone who left??"
         line = base + " is here, fighting " + fight_str
     else:
-        suffix = _POSITION_SUFFIX.get(position, "") if position is not None else ""
-        line = base + suffix
+        # LOOK-018: victim->on furniture branch takes precedence over the generic
+        # on==NULL suffix. mirroring ROM src/act_info.c:304-401 show_char_to_char_0.
+        on = getattr(victim, "on", None)
+        furn_suffix = _furniture_position_suffix(position, on) if on is not None else None
+        if furn_suffix is not None:
+            line = base + furn_suffix
+        else:
+            suffix = _POSITION_SUFFIX.get(position, "") if position is not None else ""
+            line = base + suffix
     # mirroring ROM src/act_info.c:421 buf[0] = UPPER(buf[0])
     return line[0].upper() + line[1:] if line else line
 
