@@ -35,10 +35,24 @@
 | Metric | Value |
 |--------|-------|
 | Version | 2.14.314 |
-| Tests | Per-area green (advancement 47, char_advancement 21, env_effects 38, gl032/gl027 9, look+furniture 30, differential 64). Full **serial** run confirmed **0 failures** (parallel runs flaked on an xdist scheduler INTERNALERROR — environmental, not a test failure). |
+| Tests | **6200 passed, 4 skipped** in the full serial run (`-n0`), plus **2 serial-only RNG-order flakes** (`test_mobprog_triggers::test_event_hooks_fire_rom_triggers`, `test_skills_combat::test_trip_knocks_target_wait_daze_and_improve`) that PASS in the default parallel CI mode and in isolation (`-n0` on each) — see Outstanding. Parallel full runs flaked on a machine-local xdist scheduler INTERNALERROR (environmental). |
 | ROM C files audited | 43 / 43 |
 | Push status | **All local on `master`, UNPUSHED** (23 commits incl. prior backlog) — awaiting user review |
 | Active focus | Cross-file invariants / divergence-class probe (documented backlog drained) |
+
+## Outstanding — filed this session
+
+- **2 serial-only RNG-order-fragile tests** (surfaced by the full `-n0` run):
+  `tests/test_mobprog_triggers.py::test_event_hooks_fire_rom_triggers` and
+  `tests/test_skills_combat.py::test_trip_knocks_target_wait_daze_and_improve`.
+  Both **pass in the default parallel CI mode and run in isolation** — they only
+  fail in a full serial run because they read the ambient global Mitchell-Moore
+  stream without seeding it locally, so any upstream change to draw counts (e.g.
+  GL-049's +2 draws per level-up) shifts their outcome in single-process serial
+  order. Not a shipped regression (CI runs parallel). **Fix direction:** add a
+  local `rng_mm.seed_mm(<seed>)` in each test after fixture setup so the assertion
+  is deterministic regardless of stream position (the AGENTS.md test-determinism
+  rule). Low priority — file, don't block.
 
 ## Outstanding — deferred by design
 

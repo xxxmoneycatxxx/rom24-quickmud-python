@@ -130,12 +130,30 @@ code comment confessing a divergence is a pre-filed gap nobody assigned an ID.
 - Per changed area (serial, green): advancement 47, character_advancement 21,
   environmental_effects 38, gl032/gl027/pet-save 9, look+furniture 30,
   differential smoke 64.
-- Full suite: one parallel run aborted on an **xdist scheduler INTERNALERROR**
-  (`KeyError: <WorkerController gw12>` during `worker_collectionfinish`) — an
-  environmental xdist flake (zero `FAILED` lines), not a test failure. A prior
-  full run this session completed at 6184 passed with only the 6 advancement
-  assertions that GL-049 then updated. A clean re-run should be confirmed before
-  pushing.
+- Full **serial** run (`-n0`): **6200 passed, 4 skipped, 2 failed** in 1166s.
+  The 2 failures — `test_mobprog_triggers::test_event_hooks_fire_rom_triggers`
+  and `test_skills_combat::test_trip_knocks_target_wait_daze_and_improve` — are
+  **serial-only RNG-order flakes**: both PASS in the default parallel CI mode and
+  in isolation (`-n0` on each individually). They read the ambient global RNG
+  stream without a local seed, so GL-049's +2 draws-per-level-up shift their
+  outcome only in single-process serial ordering. Not a shipped regression (CI is
+  parallel). Filed under Outstanding for local-seed hardening.
+- Full **parallel** runs (the CI mode) flaked twice on a machine-local xdist
+  scheduler `INTERNALERROR` (`KeyError: <WorkerController gwN>` during
+  `worker_collectionfinish`) — environmental, zero test-failure content. An
+  earlier parallel run this session completed cleanly at 6184 passed with only
+  the 6 advancement assertions GL-049 then updated.
+
+## Outstanding (filed this session)
+
+- **2 serial-only RNG-order-fragile tests** —
+  `test_mobprog_triggers::test_event_hooks_fire_rom_triggers` and
+  `test_skills_combat::test_trip_knocks_target_wait_daze_and_improve`. They read
+  the ambient Mitchell-Moore stream without a local seed, so they pass in
+  parallel/isolation but flake in a full serial run once an upstream change
+  (GL-049's +2 draws/level-up) shifts the stream. **Fix:** add
+  `rng_mm.seed_mm(<seed>)` in each test after fixture setup. Low priority (CI is
+  parallel; not a shipped regression).
 
 ## Next Steps
 
