@@ -513,7 +513,7 @@ equivalent Python implementation identified or documented.
 **QuickMUD Modules**: `mud/loaders/`, `mud/spawning/`, `mud/utils/math_utils.py`, `mud/utils/rng_mm.py`, `mud/utils/text.py`, `mud/registry.py`
 
 **Audit Outcome** (Apr 29, 2026 reconciliation):
-- ✅ **db.c** — 44/44 functional functions implemented (24 N/A — Python built-ins / GC / logging). 1 P2-deferred (`check_pet_affected`, part of pet persistence in save.c). See `DB_C_AUDIT.md`.
+- ✅ **db.c** — 44/44 functional functions implemented (24 N/A — Python built-ins / GC / logging). `check_pet_affected` closed as DB-002 (2.14.308 — pet-affect load dedup now matches ROM `where == TO_AFFECTS` + prototype bitvector). See `DB_C_AUDIT.md`.
 - ✅ **db2.c** — 4 CRITICAL/IMPORTANT gaps closed (DB2-001 ACT_IS_NPC merge, DB2-002 race-table flag merge, DB2-003 first-char uppercase, DB2-006 AC ×10). 2 MINOR deferred (DB2-004 kill_table — not user-reachable; DB2-005 single-line vs multi-line `fread_string` — theoretical only). See `DB2_C_AUDIT.md`.
 
 **Integration Tests**: ✅ Complete (`tests/integration/test_db2_loader_parity.py` — 8/8 passing; reset/spawning verified across `test_mob_spawning.py`, `test_architectural_parity.py`).

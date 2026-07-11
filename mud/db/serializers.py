@@ -575,6 +575,12 @@ def _deserialize_pet(snapshot: PetSave | dict, owner: Any) -> Any:
         if pet is None:
             return None
 
+    # ROM check_pet_affected (src/db.c:3938) tests the pet PROTOTYPE's inherent
+    # affected_by bitfield — get_mob_index(vnum)->affected_by. The freshly spawned
+    # pet carries exactly those bits (from_prototype letter-decodes them) until the
+    # saved runtime value overwrites pet.affected_by below, so capture them now.
+    prototype_affected_by = int(getattr(pet, "affected_by", 0) or 0)
+
     # Restore basic fields
     pet.name = snapshot.name
     # MobInstance doesn't have short_descr/long_descr/description as instance attrs
@@ -656,19 +662,16 @@ def _deserialize_pet(snapshot: PetSave | dict, owner: Any) -> Any:
         if skill_num < 0:
             continue
 
-        # Check for duplicate affects (ROM C check_pet_affected pattern)
-        # This prevents affect stacking bugs when loading pets
-        duplicate = False
-        prototype = getattr(pet, "prototype", None)
-        if prototype:
-            for existing in getattr(prototype, "affected", []) or []:
-                if (
-                    existing.type == skill_num
-                    and existing.location == affect_save.location
-                    and existing.modifier == affect_save.modifier
-                ):
-                    duplicate = True
-                    break
+        # ROM check_pet_affected (src/db.c:3938, called from fread_pet
+        # src/save.c:1567): drop the affect ONLY when it targets the affected_by
+        # bitfield (where == TO_AFFECTS, 0) AND at least one of its bits is already
+        # inherent on the prototype — IS_AFFECTED(petIndex, paf->bitvector), a
+        # non-zero AND test. This is the JR-2002 fix against re-adding (then, on
+        # wear-off, stripping) a prototype-inherent flag. Any other `where`, or a
+        # bit the prototype lacks, is NOT a duplicate.
+        duplicate = int(getattr(affect_save, "where", 0)) == 0 and bool(
+            prototype_affected_by & int(getattr(affect_save, "bitvector", 0) or 0)
+        )
 
         if not duplicate:
             pet_affects.append(

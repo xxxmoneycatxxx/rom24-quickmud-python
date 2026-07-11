@@ -37,6 +37,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **DB-002 — pet-affect load dedup now matches ROM `check_pet_affected`.** ROM
+  `check_pet_affected` (`src/db.c:3938`, from `fread_pet` `src/save.c:1567`)
+  drops a loaded pet affect iff `where == TO_AFFECTS` **and** one of its
+  `bitvector` bits is already inherent on the pet **prototype**'s `affected_by`
+  (the JR-2002 fix — otherwise re-adding then wearing off a prototype-inherent
+  bit strips the inherent flag). The Python port deduped on a `(type, location,
+  modifier)` match against the prototype's affect *list*, ignoring `where`/
+  `bitvector`, so the real dedup never fired. `_deserialize_pet` now captures the
+  prototype's inherent `affected_by` after spawn and applies ROM's exact
+  criterion. Test: `tests/integration/test_db002_check_pet_affected.py`.
 - **AURA-001 — `inventory`/`equipment` no longer crash with "Sorry, there was an
   error processing that command."** The object aura tags (`(Red Aura)`/`(Blue
   Aura)`/`(Magical)`) went through a helper (`_char_affected`) that imported a

@@ -261,10 +261,23 @@ ROM's `db.c` is the **database/world loading subsystem** - one of the largest an
 
 | ROM C Function | Lines | QuickMUD Equivalent | Status | Notes |
 |----------------|-------|---------------------|--------|-------|
-| `check_pet_affected()` | 3938-end | ❌ Not implemented | ⚠️ Missing | Pet affect checking (used by pet save/load) |
+| `check_pet_affected()` | 3938-end | `_deserialize_pet` dedup (`mud/db/serializers.py`) | ✅ FIXED (DB-002) | Pet affect load dedup now matches ROM: `where == TO_AFFECTS` AND `prototype_affected_by & bitvector`. |
 
-**Coverage**: 0/1 implemented (0%)  
-**Missing**: `check_pet_affected()` - Needed for pet persistence (P2 priority from save.c audit)
+**Coverage**: 1/1 implemented (100%)
+
+**DB-002 — `check_pet_affected` used a non-ROM dedup criterion.** ROM
+`check_pet_affected` (`src/db.c:3938`, called from `fread_pet`
+`src/save.c:1567`) drops a loaded pet affect iff `paf->where == TO_AFFECTS`
+**and** `IS_AFFECTED(get_mob_index(vnum), paf->bitvector)` — a non-zero AND test
+against the **prototype's inherent** `affected_by` bitfield (the JR-2002 fix:
+without it, re-adding a prototype-inherent bit and later wearing it off strips
+the inherent flag). The Python port instead deduped on a `(type, location,
+modifier)` match against the prototype's `affected` *list*, ignoring `where` and
+`bitvector` — a different field and criterion, so the ROM dedup never fired.
+✅ FIXED 2026-07-10 (2.14.308): `_deserialize_pet` captures the prototype's
+inherent `affected_by` right after `spawn_mob` (before the saved value overwrites
+it) and applies ROM's exact criterion. Test:
+`tests/integration/test_db002_check_pet_affected.py`.
 
 ---
 
@@ -315,7 +328,7 @@ ROM's `db.c` is the **database/world loading subsystem** - one of the largest an
 
 | Function | Status | Impact | Notes |
 |----------|--------|--------|-------|
-| `check_pet_affected()` | ⚠️ P2-Deferred | LOW - P2 feature | Part of pet persistence work (from save.c audit) |
+| `check_pet_affected()` | ✅ FIXED (DB-002) | — | Pet-affect load dedup matches ROM `where == TO_AFFECTS` + prototype bitvector test (2.14.308). |
 
 ---
 
