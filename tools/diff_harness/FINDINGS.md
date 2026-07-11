@@ -1806,17 +1806,22 @@ this is the only divergence in the movement_get_drop scenario.
    inherit `long_descr` from their prototype. Until it's understood, do not
    conclude this is purely a data problem.
 
-**Next triage steps (separate session):**
-1. Pin the `mob_registry` long_descr count nondeterminism (run the same probe
-   repeatedly; identify what state differs).
-2. Reconcile inputs: parse the *repaired* midgaard with the Python loader and
-   check whether Hassan's `long_descr` populates. If yes → the cause is the
-   malformed `area/midgaard.are`; repair it (matching stock ROM) so both engines
-   read the same data, then re-run the harness.
-3. If `long_descr` is still `None` from a well-formed file → real Python
-   loader/instance bug; fix it (ROM is source of truth) and file the gap.
-4. When the diff goes clean, remove the `movement_get_drop` entry from
-   `KNOWN_DIVERGENCES`.
+**Next triage steps (separate session):** ✅ **ALL RESOLVED — re-verified 2026-07-10.**
+1. ~~Pin the `mob_registry` long_descr count nondeterminism.~~ **PINNED — gone.**
+   The count is now deterministic across fresh-process runs (986 protos / exactly
+   1 empty `long_descr`, stable). The earlier flicker was transient area-overlay
+   state, not a live loader defect.
+2. ~~Reconcile inputs / check whether Hassan's `long_descr` populates.~~ **DONE.**
+   Hassan proto (vnum 3011) loads
+   `long_descr = "Hassan is here, waiting to dispense some justice.\n"`. The
+   `movement_get_drop` scenario now **converges byte-for-byte** and its
+   `KNOWN_DIVERGENCES` entry has been removed (the dict is empty).
+3. ~~If `long_descr` still `None` → real loader bug.~~ **N/A — not a loader bug.**
+   The lone empty-`long_descr` proto is vnum 2006 (`It`, `catacomb.are`), whose
+   source record has a genuinely empty long_descr (`~` on its own line). Python
+   loads it faithfully as `""`; ROM `str_dup` yields the same empty string.
+4. ~~Remove the `movement_get_drop` entry from `KNOWN_DIVERGENCES`.~~ **DONE**
+   (dict empty; all 64 differential scenarios pass).
 
 **Meta:** This is the harness working as intended — it found a real
 discrepancy (and a data-integrity question about `midgaard.are`) on its first
