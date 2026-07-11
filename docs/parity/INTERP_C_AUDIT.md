@@ -54,7 +54,7 @@ exported, so the dispatcher hard-codes `LEVEL_IMMORTAL`/`LEVEL_HERO`/
 | `cmd_table[]` (static dispatch table) | 63–381 | `COMMANDS` in `dispatcher.py:211-636` | ⚠️ Partial — many trust/position/dispatch divergences (see Phase 3) |
 | `interpret(ch, argument)` | 390–559 | `process_command(char, input_str)` in `dispatcher.py:755-882` | ⚠️ Partial — missing snoop, wiznet log, empty-input semantics |
 | `do_function(ch, do_fun, argument)` | 562–574 | N/A — Python passes the string directly; no string ownership concern | N/A |
-| `check_social(ch, command, argument)` | 576–689 | `perform_social(char, name, arg)` in `socials.py:7-34` | ❌ Missing — stub lacks COMM_NOEMOTE, position gates, snore exception, NPC slap auto-react |
+| `check_social(ch, command, argument)` | 576–689 | `perform_social(char, name, arg)` in `socials.py:38-118` | ✅ Faithful — COMM_NOEMOTE (INTERP-020), position gates (INTERP-018), snore exception (INTERP-019/035), and NPC slap/echo auto-react via `rng_mm.number_bits(4)` all ported. |
 | `is_number(arg)` | 696–712 | `mud.utils.argparse.is_number` (separate audit; not exercised by dispatcher) | N/A — utility |
 | `number_argument(argument, arg)` | 719–738 | `mud.utils.argparse.number_argument` | N/A — utility |
 | `mult_argument(argument, arg)` | 743–762 | `mud.utils.argparse.mult_argument` | N/A — utility |
@@ -81,7 +81,7 @@ P0/P1 functions for Phase 2: `interpret`, `check_social`, `one_argument`-equival
 | `LOG_NEVER → strcpy(logline, "")` (460–461) | `if command.log_level is LogLevel.NEVER and not log_all_enabled: log_allowed = False` (829–830) | ✅ Effectively equivalent. |
 | Wiznet broadcast `WIZ_SECURE` for logged commands (468–489) | Only `log_admin_command(...)` is called (838–847); no `WIZ_SECURE` broadcast | ❌ INTERP-003. |
 | Snoop forward to `ch->desc->snoop_by` (491–496) | No equivalent | ❌ INTERP-002. |
-| Not-found → `check_social` → IMC → "Huh?" (498–510) | `perform_social` → `try_imc_command` → "Huh?" (848–857) | ✅ Order matches; behavior differs because `perform_social` is a stub (see INTERP-018/019/020). |
+| Not-found → `check_social` → IMC → "Huh?" (498–510) | `perform_social` → `try_imc_command` → "Huh?" (848–857) | ✅ Order and behavior match (INTERP-018/019/020/021/035 all FIXED). |
 | Position gate with full ROM messages (515–550) | Identical messages in `dispatcher.py:861-878` | ✅ Match. |
 | Dispatch via `(*cmd_table[cmd].do_fun)(ch, argument)` (555) | `command.func(char, command_args)` (882) | ✅ Match. |
 | `tail_chain()` at end (557) | None | ➖ INTERP-016, MINOR — no-op in stock ROM. |
@@ -90,15 +90,15 @@ P0/P1 functions for Phase 2: `interpret`, `check_social`, `one_argument`-equival
 
 | ROM step (interp.c:line) | Python (socials.py:line) | Verdict |
 |--------------------------|---------------------------|---------|
-| Find by `str_prefix(command, social_table[cmd].name)` (584–592) | `social_registry.get(name.lower())` (8) | ⚠️ Python uses exact lookup; ROM allows prefix match. INTERP-021. |
-| `COMM_NOEMOTE` → "You are anti-social!" (597–601) | None | ❌ INTERP-020. |
-| Position checks: DEAD/INCAP/MORTAL/STUNNED → cannot social (605–616) | None | ❌ INTERP-018. |
-| `POS_SLEEPING` blocks all socials except `snore` (618–627) | None | ❌ INTERP-019. |
+| Find by `str_prefix(command, social_table[cmd].name)` (584–592) | `find_social(name)` load-order prefix match (41) | ✅ INTERP-021 FIXED — prefix match honored. |
+| `COMM_NOEMOTE` → "You are anti-social!" (597–601) | `perform_social` NOEMOTE early-return, NPC bypass (46–49) | ✅ INTERP-020 FIXED. |
+| Position checks: DEAD/INCAP/MORTAL/STUNNED → cannot social (605–616) | `perform_social` position gates (52–58) | ✅ INTERP-018 FIXED. |
+| `POS_SLEEPING` blocks all socials except `snore` (618–627) | SLEEPING gate w/ resolved-name snore exception (64–65) | ✅ INTERP-019/035 FIXED. |
 | No-arg → others_no_arg + char_no_arg (632–636) | Same broadcast (32–33) | ✅ Match. |
-| `get_char_room` returns NULL → "They aren't here.\n\r" (637–640) | `social.not_found` placeholder (28–30) | ⚠️ ROM has no `not_found` field — message is literal "They aren't here." See INTERP-022. |
+| `get_char_room` returns NULL → "They aren't here.\n\r" (637–640) | literal `"They aren't here."` (109–113) | ✅ INTERP-022 FIXED. |
 | `victim == ch` → others_auto + char_auto (641–645) | Lines 24–26 | ✅ Match. |
 | Else → others_found + char_found + vict_found (646–650) | Lines 20–23 | ✅ Match. |
-| NPC slap auto-react: `number_bits(4)` 0–8 echo, 9–12 slap (652–685) | None | ❌ INTERP-023 (CRITICAL — must use `rng_mm.number_bits(4)`). |
+| NPC slap auto-react: `number_bits(4)` 0–8 echo, 9–12 slap (652–685) | `rng_mm.number_bits(4)` auto-react (86–104) | ✅ INTERP-023 FIXED. |
 
 ---
 
@@ -222,15 +222,15 @@ In ROM, those require L1, L4, L7, etc. **This is a security-relevant gap**.
 **Recommended order** (close highest-risk first; each via `/rom-gap-closer`):
 
 1. **INTERP-001** — split into one closure per row in the table above (~40 commits). Each is mechanical: change `min_trust=` value to ROM's tier. Test: a character at trust = ROM_LEVEL - 1 cannot use the command; a character at trust = ROM_LEVEL can.
-2. **INTERP-018** + **INTERP-019** + **INTERP-020** + **INTERP-023** — rewrite `perform_social` to add COMM_NOEMOTE, position gates, snore exception, and the NPC slap auto-react (using `rng_mm.number_bits(4)`).
+2. ~~**INTERP-018** + **INTERP-019** + **INTERP-020** + **INTERP-023**~~ — **DONE (2026-04-27, snore refinement INTERP-035 2.14.282).** `perform_social` (`socials.py:38-118`) is a faithful port of `check_social`: COMM_NOEMOTE, position gates, snore exception, and NPC slap/echo auto-react via `rng_mm.number_bits(4)`.
 3. **INTERP-002** + **INTERP-003** — wire snoop forwarding and `WIZ_SECURE` log mirror into `process_command`.
 4. **INTERP-008** — register `"."`, `","`, `"/"` aliases in `COMMAND_INDEX` (single edit covers all three).
 5. **INTERP-009** through **INTERP-014** — repoint each alias to ROM's canonical handler and delete the redundant Python stubs (`do_hit`, `do_take`, `do_junk`, `do_tap`, `do_go`, `do_colon`, possibly `do_wield`/`do_hold` if their bodies don't add ROM-required logic).
 6. **INTERP-004** + **INTERP-005** + **INTERP-006** — set the missing `min_trust` and fix `music`'s `min_position`.
 7. **INTERP-007** — change empty-input return path to silent (drop the `"What?"` literal).
 8. **INTERP-017** — write a parametric test that enumerates every 1- and 2-letter prefix and asserts `resolve_command(prefix, trust=60)` matches the ROM table-order winner. Reorder `COMMANDS` (or add an explicit priority field) until it passes.
-9. **INTERP-021** — rewrite `social_registry` lookup to fall back to `str_prefix` semantics.
-10. **INTERP-022** — replace `social.not_found` with the literal `"They aren't here."`.
+9. ~~**INTERP-021**~~ — **DONE (2026-04-27).** `find_social()` does load-order `str_prefix` match.
+10. ~~**INTERP-022**~~ — **DONE (2026-04-27).** `perform_social` emits the literal `"They aren't here."`.
 11. **INTERP-024** — verify `do_commands`/`do_wizhelp` formatting in `info.py`.
 12. **INTERP-015** — replace `shlex.split` with a ROM-faithful `one_argument` port (or limit shlex use to non-backslash inputs).
 13. **INTERP-016** — defer; document as "no-op in stock ROM."
