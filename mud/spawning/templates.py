@@ -603,13 +603,22 @@ class MobInstance:
         """Mirror Character.is_awake (DUPL-010 consolidation)."""
         return self.position > Position.SLEEPING
 
-    def add_affect(self, flag, **kwargs) -> None:
-        """Apply an affect flag (simplified version for MobInstance)."""
+    def add_affect(self, flag, *, hitroll: int = 0, damroll: int = 0, saving_throw: int = 0) -> None:
+        """Apply an affect flag and modify core stats.
+
+        Symmetric with ``Character.add_affect`` (GL-032): ROM ``affect_modify``
+        (src/handler.c:1018-1164) is uniform for PCs and NPCs, so a mob buffed
+        via this convenience path must get the same hitroll/damroll/saving_throw
+        deltas a PC would. The prior ``**kwargs`` stub silently dropped them.
+        """
         try:
             bit = int(flag)
-        except Exception:
+        except (TypeError, ValueError):
             return
         self.affected_by |= bit
+        self.hitroll += hitroll
+        self.damroll += damroll
+        self.saving_throw += saving_throw
 
     def _apply_stat_modifier(self, stat: int, delta: int) -> None:
         """Apply a delta to the mob's temporary ``mod_stat`` list (GL-032).

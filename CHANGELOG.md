@@ -51,6 +51,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **`MobInstance.add_affect` now applies hitroll/damroll/saving_throw modifiers
+  (GL-032 follow-up).** ROM `affect_modify` (`src/handler.c:1018-1164`) is uniform
+  for PCs and NPCs, and `Character.add_affect` applies these kwargs — but
+  `MobInstance.add_affect` was a `**kwargs` stub that silently dropped them, so a
+  mob buffed via the convenience path diverged from the PC path. Made the two
+  signatures symmetric, closing the last asymmetry GL-032 left in the
+  Character/MobInstance affect surface. (Latent — no shipped caller passed
+  modifiers to a mob, but the silent-drop was a footgun.)
 - **EFFECTS-006 — acid/fire dumping a nested container now spills contents to the
   parent container (`src/effects.c:172,418`).** When a container that is itself
   inside another container is destroyed by acid_effect/fire_effect, ROM moves its

@@ -117,3 +117,23 @@ def test_mob_affect_bonuses_round_trip_counted_once():
     assert restored.get_curr_stat(Stat.STR) == saved_str
     assert restored.saving_throw == saved_save
     assert int(restored.sex) == saved_sex
+
+
+def test_mob_add_affect_applies_stat_modifiers_like_character():
+    """GL-032 sibling: ``MobInstance.add_affect`` must apply hitroll/damroll/
+    saving_throw modifiers exactly like ``Character.add_affect``, not silently
+    drop them. ROM ``affect_modify`` (src/handler.c:1018-1164) is uniform for
+    PCs and NPCs, and Character.add_affect applies these kwargs — MobInstance's
+    ``**kwargs`` stub ignored them, so a mob buffed via this convenience path
+    (a poisoned/hasted mob) diverged from the PC path."""
+    from mud.models.constants import AffectFlag
+
+    pet, _owner = _make_pet_and_owner()
+    base_hr, base_dr, base_st = pet.hitroll, pet.damroll, pet.saving_throw
+
+    pet.add_affect(AffectFlag.HASTE, hitroll=4, damroll=2, saving_throw=-1)
+
+    assert pet.has_affect(AffectFlag.HASTE)
+    assert pet.hitroll == base_hr + 4
+    assert pet.damroll == base_dr + 2
+    assert pet.saving_throw == base_st - 1
