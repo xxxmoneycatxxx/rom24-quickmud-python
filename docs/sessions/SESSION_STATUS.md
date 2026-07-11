@@ -1,59 +1,61 @@
-# Session Status — 2026-07-10 — Autonomous 10-iteration loop: DB-002 + stale-doc sweep (LOCAL/UNPUSHED)
+# Session Status — 2026-07-10 — Divergence-marker sweep: 4 fixes + faithful-probe loop (LOCAL/UNPUSHED)
 
 ## Current State
 
-- **Active focus**: **cross-file invariants / divergence-class probe** mode. The
-  per-file audit tracker is at 100% and the documented minor-gap backlog is
-  drained; this run confirmed (across 7 substantive probes in 4 divergence
-  classes) that the documented and reachable-probe surface is genuinely
-  exhausted — only one probe surfaced a real code gap.
-- **This run (v2.14.307 → v2.14.309, all committed LOCALLY on `master`, NOT
-  pushed):** 1 `fix(parity)` (DB-002), 1 `test:` (isolation fix), 3
-  `docs(parity)` stale-marker reconciliations.
-  - **DB-002** (real fix) — `_deserialize_pet` pet-affect load dedup now matches
-    ROM `check_pet_affected` (`where == TO_AFFECTS` AND prototype-inherent
-    `affected_by & bitvector`), replacing a non-ROM `(type, location, modifier)`
-    list scan. The JR-2002 pet-affect-duplication class is now closed.
-  - **Test isolation** — `test_new_character_persists_true_sex` now calls
-    `initialize_world()` so it passes run-alone (was a latent cross-file
-    dependency; pre-existing, not caused by this session).
-  - **Stale-doc corrections** — `interp.c:check_social` (faithful port, not a
-    stub), `interp.c` summary + Phase-4 (all INTERP-NNN ✅), `db2.c` inventory
-    rows (DB2-001/002/003/006 ✅).
-  - **Faithful-verified probes** (no change): `compute_thac0`, `xp_compute`,
-    `obj_update` decay, combat victim-AC rescale.
+- **Active focus**: **cross-file invariants / divergence-class probe** mode
+  (per-file audit tracker at 100%, documented backlog drained). This run added a
+  high-yield technique: **grep `mud/` for self-admitted divergence markers**
+  ("not yet ported", "simplified version", "approximation") — a code comment
+  confessing a divergence is an un-IDed pre-filed gap. Three of four fixes came
+  from that sweep.
+- **This run (v2.14.310 → v2.14.314, committed LOCALLY on `master`, NOT pushed):**
+  4 `feat/fix(parity)` + 1 `docs(diff)`.
+  - **GL-049** — `advance_level` mana/move now use ROM's stat-scaled
+    `number_range` rolls (`src/update.c:81-95`), fixing both wrong per-level values
+    and a 2-draw RNG desync per level-up.
+  - **LOOK-018** — `show_char_to_char_0` now renders the furniture branch of the
+    position suffix ("is sitting on a wooden chair.", `src/act_info.c:304-401`).
+  - **EFFECTS-006** — acid/fire dumping a nested container now spills contents to
+    the parent container instead of destroying them (`src/effects.c:172,418`).
+  - **MobInstance.add_affect** — now applies hitroll/damroll/saving_throw
+    modifiers, symmetric with `Character.add_affect` (GL-032 follow-up; latent).
+  - **Docs** — closed the stale `FINDING-001` `movement_get_drop` triage block in
+    `tools/diff_harness/FINDINGS.md` (all four steps re-verified resolved).
+  - **Test hardening** — scoped `test_kill_mob_grants_xp_integration`'s
+    `number_bits=19` pin to `width==5`, defusing a pre-existing `spec_cast_mage`
+    infinite-loop landmine.
+- **Faithful-verified probes (no change):** `die_follower`/`stop_follower`/
+  `add_follower`, `gain_condition`, `weather_update`, `do_flee`, `make_corpse`
+  coin split.
 - **Pointer to latest summary**:
-  [SESSION_SUMMARY_2026-07-10_AUTONOMOUS_LOOP_DB002_AND_STALE_DOC_SWEEP.md](SESSION_SUMMARY_2026-07-10_AUTONOMOUS_LOOP_DB002_AND_STALE_DOC_SWEEP.md)
+  [SESSION_SUMMARY_2026-07-10_DIVERGENCE_MARKER_SWEEP.md](SESSION_SUMMARY_2026-07-10_DIVERGENCE_MARKER_SWEEP.md)
 
 ## Project Status (snapshot)
 
 | Metric | Value |
 |--------|-------|
-| Version | 2.14.310 |
-| Tests | **6187 passed, 4 skipped** (full parallel run, 365s, zero failures) |
+| Version | 2.14.314 |
+| Tests | Per-area green (advancement 47, char_advancement 21, env_effects 38, gl032/gl027 9, look+furniture 30, differential 64). Full **serial** run confirmed **0 failures** (parallel runs flaked on an xdist scheduler INTERNALERROR — environmental, not a test failure). |
 | ROM C files audited | 43 / 43 |
-| Push status | **All local on `master`, UNPUSHED** — awaiting user review |
+| Push status | **All local on `master`, UNPUSHED** (23 commits incl. prior backlog) — awaiting user review |
 | Active focus | Cross-file invariants / divergence-class probe (documented backlog drained) |
 
 ## Outstanding — deferred by design
 
-- **DESC-001** (latent) — unchanged from prior session; ROM's plain-replace
-  description path has no length guard while `MAX_INPUT_LENGTH == 256` makes it
-  unreachable. Left as-is by design.
+- **DESC-001** (latent) — unchanged; unreachable plain-replace description path.
+- **OLC spell-name lookup** (`build.py:2617/2637`) — Tier-C deferred.
+- **IS_BUILDER** (`look.py:261`) — TODO, area-builder subsystem not yet added.
 
 ## Next Intended Task
 
-1. **Review + push** the `v2.14.298 → v2.14.309` commits (all local on `master`).
-   This remains the gating next action.
-2. Real-divergence discovery now needs **new probes**, not backlog consumption:
-   author `tools/diff_harness/` scenarios for un-covered surfaces (mob-script
-   trigger ordering, group/follower disband edges, corpse/decay lifecycle) or
-   deep-read a specific un-diffed ROM function.
-3. ~~**Systematic hygiene opportunity**: audit-doc stale-marker reconciliation.~~
-   **DONE (2026-07-10, 2.14.310).** One-pass sweep across 14
-   `docs/parity/*_C_AUDIT.md` (6 read-only agents; every flip verified against the
-   doc's own ✅ FIXED detail row + code/tests for code-backed claims) corrected ~50
-   summary/inventory/phase rows that showed `❌`/`⚠️`/`stub` for already-FIXED gaps.
-   Genuinely-open markers (SPLIT-001, do_mpat, medit_show sub-gaps, help_lookup, OLC
-   Tier-C) deliberately left. See CHANGELOG. Future audits should keep summary rows
-   in sync with detail rows at closure time to avoid re-accumulating this drift.
+1. **Review + push** the local `master` commits (v2.14.298 → v2.14.314; 23
+   commits unpushed incl. the prior session's backlog). Push remains the gating
+   user decision. Confirm one clean full-suite run first (the serial run this
+   session showed 0 failures; parallel runs were flaking on a machine-local xdist
+   scheduler bug — re-run parallel once the machine settles, or push on the serial
+   green).
+2. Continue the **self-admitted-divergence-marker sweep** (remaining markers are
+   Tier-C/deferred), then resume divergence-class probes (`/rom-divergence-sweep`)
+   or author new `tools/diff_harness/` scenarios for un-covered surfaces
+   (mob-script trigger ordering, group/follower disband edges, corpse/decay
+   lifecycle).
