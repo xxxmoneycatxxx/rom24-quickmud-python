@@ -9,7 +9,7 @@
 
 | ROM symbol | ROM lines | Python counterpart | Status |
 |------------|-----------|--------------------|--------|
-| `do_flag` | 44-251 | `mud/commands/remaining_rom.py:do_flag` (line 316) | ⚠️ STUB — see FLAG-001 |
+| `do_flag` | 44-251 | `mud/commands/remaining_rom.py:do_flag` (line 316) | ✅ AUDITED (FLAG-001 FIXED — full operator parsing + bit mutation) |
 
 ## Phase 2 — Verification
 

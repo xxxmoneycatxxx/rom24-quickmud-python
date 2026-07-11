@@ -35,6 +35,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Flipped to `✅ FIXED` / `N/A` after verifying each against the actual code and
   ROM source (same stale-summary-header pattern fixed earlier for CONST/BAN/BIT).
 
+### Changed
+
+- **Audit-doc stale-marker reconciliation (14 `docs/parity/*_C_AUDIT.md`).** One-pass
+  sweep (6 read-only analysis agents; every flip verified against the doc's own ✅
+  FIXED detail row and, for code-backed claims, the source/tests) correcting summary/
+  inventory/flow/phase rows that still showed `❌`/`⚠️ Partial`/`stub` for gaps their
+  own detail rows record as FIXED. Reconciled: HANDLER (affects 100%, weight-calc
+  RESOLVED banner), ACT_OBJ (GET-014), SAVE (pet save/load), ACT_INFO (do_look/
+  do_score/do_where 100%), JSON_LOADER, FLAGS, MOB_PROG, BIT (+ Phase 4/5 block),
+  ACT_MOVE (MOVE/TRAIN/PICK + prime-stat-cost prose), LOOKUP (8 rows), TABLES,
+  OLC_ACT (5 rows), MOB_CMDS (10 rows + totals), ACT_COMM (do_order/do_gtell/do_yell).
+  Genuinely-open/deferred/N-A markers (do_split/SPLIT-001, do_mpat, medit_show
+  sub-gaps, help_lookup, OLC Tier-C) were deliberately left. Docs only; no engine change.
+
 ### Fixed
 
 - **Test isolation — `test_new_character_persists_true_sex` is now self-contained.**

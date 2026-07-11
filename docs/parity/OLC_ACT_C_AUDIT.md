@@ -40,7 +40,7 @@
 | `show_spec_cmds` | 204–235 | — | C | 🔄 NEEDS DEEP AUDIT |
 | `show_help` | 236–328 | — | C | 🔄 NEEDS DEEP AUDIT |
 | `check_range` | 566–584 | `_get_area_for_vnum` (build.py:1119) — different semantics | C | ⚠️ PARTIAL |
-| `get_vnum_area` | 588–599 | `_get_area_for_vnum` (build.py:1119) — covers basic lookup | C | ⚠️ PARTIAL |
+| `get_vnum_area` | 588–599 | `_get_area_for_vnum` (build.py:1352) | C | ✅ FIXED (OLC_ACT-013) |
 | `wear_loc` | 1967–1978 | — | C | 🔄 NEEDS DEEP AUDIT |
 | `wear_bit` | 1987–1998 | — | C | 🔄 NEEDS DEEP AUDIT |
 | `show_obj_values` | 2210–2732 | partial in `_oedit_show` (build.py) | C | 🔄 NEEDS DEEP AUDIT |
@@ -51,8 +51,8 @@
 
 | ROM Symbol | ROM Lines | Python Counterpart | Tier | Status |
 |---|---|---|---|---|
-| `aedit_show` | 606–649 | `_aedit_show` (build.py:~1297) | A | ⚠️ PARTIAL — flags display uses `flag_string`; Python version missing flags row |
-| `aedit_reset` | 653–663 | — | B | ❌ MISSING |
+| `aedit_show` | 606–649 | `_aedit_show` (build.py:1548) | A | ✅ FIXED (OLC_ACT-007 — Flags row added) |
+| `aedit_reset` | 653–663 | `_interpret_aedit` `reset` subcommand (build.py) | B | ✅ FIXED (OLC_ACT-012 — "Area reset.") |
 | `aedit_create` | 667–679 | `cmd_aedit` + `_aedit_create` (build.py) | A | ✅ FIXED (OLC_ACT-001) |
 | `aedit_name` | 683–700 | inline in `_interpret_aedit` (build.py:1299) | C | ⚠️ PARTIAL |
 | `aedit_credits` | 702–719 | inline in `_interpret_aedit` (build.py:1307) | C | ⚠️ PARTIAL |
@@ -74,7 +74,7 @@
 | `redit_olist` | 431–488 | — | C | 🔄 NEEDS DEEP AUDIT |
 | `redit_mshow` | 489–524 | — | C | 🔄 NEEDS DEEP AUDIT |
 | `redit_oshow` | 525–565 | — | C | 🔄 NEEDS DEEP AUDIT |
-| `redit_show` | 1068–1241 | `_redit_show` (build.py:~961) partial | A | ⚠️ PARTIAL — many fields missing |
+| `redit_show` | 1068–1241 | `_room_summary` (build.py:227) | A | ✅ FIXED (OLC_ACT-008 — full field coverage, 4 parity tests) |
 | `change_exit` | 1242–1518 | `_handle_exit_command` or similar (build.py) | C | 🔄 NEEDS DEEP AUDIT |
 | `redit_north` | 1519–1525 | inline in `_interpret_redit` | C | 🔄 NEEDS DEEP AUDIT |
 | `redit_south` | 1529–1535 | inline in `_interpret_redit` | C | 🔄 NEEDS DEEP AUDIT |
@@ -102,7 +102,7 @@
 
 | ROM Symbol | ROM Lines | Python Counterpart | Tier | Status |
 |---|---|---|---|---|
-| `oedit_show` | 2733–2817 | `_oedit_show` (build.py:~1514) partial | A | ⚠️ PARTIAL — missing many fields |
+| `oedit_show` | 2733–2817 | `_oedit_show` (build.py:1846) | A | ✅ FIXED (OLC_ACT-009 — full ROM byte layout, 8 parity tests) |
 | `oedit_addaffect` | 2818–2858 | — | C | 🔄 NEEDS DEEP AUDIT |
 | `oedit_addapply` | 2859–2925 | — | C | 🔄 NEEDS DEEP AUDIT |
 | `oedit_delaffect` | 2926–2989 | — | C | 🔄 NEEDS DEEP AUDIT |

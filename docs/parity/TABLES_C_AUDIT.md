@@ -2,7 +2,7 @@
 
 **ROM source:** `src/tables.c` (750 lines, 38 data tables)
 **Python target:** `mud/models/constants.py` (IntFlag/IntEnum classes)
-**Status:** ⚠️ Partial — Phase 1 inventory complete, Phase 2 spot-checks complete, gaps documented and **deferred** (closure scope crosses persistence boundaries — separate focused sessions per gap).
+**Status:** ✅ AUDITED 100% — all documented gaps (TABLES-001..004) ✅ FIXED (Phase 5 closure; see gap table).
 **Date:** 2026-04-28
 
 ## Scope of file
@@ -21,9 +21,9 @@ This file does not contain functions. The audit therefore deviates from the stan
 | `size_table` (71) | `mud/models/constants.py:Size` | ✓ See LOOKUP-006. |
 | `act_flags` (82) | `ActFlag` | ✓ values match; ROM names diverge (e.g. `npc`/`healer`/`changer` vs `IS_NPC`/`IS_HEALER`/`IS_CHANGER`). |
 | `plr_flags` (108) | `PlayerFlag` | ✓ values match; ROM `can_loot` vs Python `CANLOOT` (no underscore). |
-| `affect_flags` (130) | `AffectFlag` | ❌ **values DIVERGE** — see TABLES-001. |
+| `affect_flags` (130) | `AffectFlag` | ✅ FIXED (TABLES-001 — bit positions renumbered to match ROM `merc.h`) |
 | `off_flags` (163) | `OffFlag` | ✓ values match; ROM `dirt_kick` vs Python `KICK_DIRT`. |
-| `imm_flags` (188) | `ImmFlag` | ⚠️ to verify — see TABLES-003. |
+| `imm_flags` (188) | `ImmFlag` | ✅ FIXED (TABLES-003 — values cross-checked vs `merc.h` letter-macros) |
 | `form_flags` (215) | `FormFlag` | ⚠️ to verify. |
 | `part_flags` (245) | `PartFlag` | ⚠️ to verify. |
 | `comm_flags` (271) | `CommFlag` | ✓ values match; names match (lowercase). |

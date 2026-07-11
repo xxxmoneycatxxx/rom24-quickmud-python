@@ -449,7 +449,7 @@ act_obj.c contains all ROM 2.4b6 object manipulation commands. This is a **P1 PR
 | Container closed | `"The $d is closed."` | N/A | ❌ **MISSING** |
 | Cannot loot corpse | `"You can't do that.\n\r"` | `"You cannot loot that corpse."` | ⚠️ **DIFFERENT** |
 | Can't carry items | `"$d: you can't carry that many items."` | `act_format("$d: …")` → first keyword + cap | ✅ **FIXED (GET-014, 2.14.55)** |
-| Can't carry weight | `"$d: you can't carry that much weight."` | `"{obj}: you can't carry that much weight."` | ⚠️ **SIMILAR** |
+| Can't carry weight | `"$d: you can't carry that much weight."` | `act_format("$d: …")` → first keyword + cap | ✅ **FIXED (GET-014, 2.14.55)** |
 | Can't take object | `"You can't take that.\n\r"` | N/A | ❌ **MISSING** |
 | Object in use (furniture) | `"$N appears to be using $p."` | N/A | ❌ **MISSING** |
 | Pit level too low | `"You are not powerful enough to use it.\n\r"` | N/A | ❌ **MISSING** |

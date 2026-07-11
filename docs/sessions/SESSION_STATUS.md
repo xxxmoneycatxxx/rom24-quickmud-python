@@ -29,7 +29,7 @@
 
 | Metric | Value |
 |--------|-------|
-| Version | 2.14.309 |
+| Version | 2.14.310 |
 | Tests | **6187 passed, 4 skipped** (full parallel run, 365s, zero failures) |
 | ROM C files audited | 43 / 43 |
 | Push status | **All local on `master`, UNPUSHED** — awaiting user review |
@@ -49,8 +49,11 @@
    author `tools/diff_harness/` scenarios for un-covered surfaces (mob-script
    trigger ordering, group/follower disband edges, corpse/decay lifecycle) or
    deep-read a specific un-diffed ROM function.
-3. **Systematic hygiene opportunity**: several `docs/parity/*_C_AUDIT.md` docs
-   carry stale `❌`/"stub" status markers for gaps their own detail rows record
-   as FIXED (3 corrected this session: interp.c ×2, db2.c). A one-pass
-   reconciliation across all audit docs would stop future agents re-discovering
-   already-closed gaps as if open.
+3. ~~**Systematic hygiene opportunity**: audit-doc stale-marker reconciliation.~~
+   **DONE (2026-07-10, 2.14.310).** One-pass sweep across 14
+   `docs/parity/*_C_AUDIT.md` (6 read-only agents; every flip verified against the
+   doc's own ✅ FIXED detail row + code/tests for code-backed claims) corrected ~50
+   summary/inventory/phase rows that showed `❌`/`⚠️`/`stub` for already-FIXED gaps.
+   Genuinely-open markers (SPLIT-001, do_mpat, medit_show sub-gaps, help_lookup, OLC
+   Tier-C) deliberately left. See CHANGELOG. Future audits should keep summary rows
+   in sync with detail rows at closure time to avoid re-accumulating this drift.

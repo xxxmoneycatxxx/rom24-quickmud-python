@@ -36,12 +36,12 @@ The JSON schema was produced by `mud/scripts/convert_are_to_json.py` (not audite
 | `new_load_area` | `src/db.c:518-581` | `load_area_from_json` (Format 2 branch) | `mud/loaders/json_loader.py:181-196` | ⚠️ PARTIAL |
 | `load_helps` | `src/db.c:603-676` | `_load_helps_from_json` | `mud/loaders/json_loader.py:505-522` | ✅ COMPLETE |
 | `load_mobiles` | `src/db2.c:190-374` | `_load_mobs_from_json` | `mud/loaders/json_loader.py:413-474` | ⚠️ PARTIAL |
-| `load_objects` | `src/db2.c:379-598` | `_load_objects_from_json` | `mud/loaders/json_loader.py:477-502` | ⚠️ PARTIAL |
+| `load_objects` | `src/db2.c:379-598` | `_load_objects_from_json` | `mud/loaders/json_loader.py:477-502` | ✅ COMPLETE (JSONLD-001/002/003/005/006/015/016 all FIXED) |
 | `load_resets` | `src/db.c:1009-1108` | inline in `load_area_from_json` | `mud/loaders/json_loader.py:256-289` | ⚠️ PARTIAL |
 | `load_rooms` | `src/db.c:1113-1282` | `_load_rooms_from_json` | `mud/loaders/json_loader.py:300-361` | ⚠️ PARTIAL |
 | `load_shops` | `src/db.c:1287-1339` | `_load_shops_from_json` | `mud/loaders/json_loader.py:525-553` | ✅ COMPLETE |
 | `load_specials` | `src/db.c:1344-1376` | `apply_specials_from_json` (delegated) | `mud/loaders/specials_loader.py` | ✅ COMPLETE |
-| `fix_exits` | `src/db.c:1384-1518` | `_link_exits_for_area` | `mud/loaders/json_loader.py:364-411` | ⚠️ PARTIAL |
+| `fix_exits` | `src/db.c:1384-1518` | `_link_exits_for_area` | `mud/loaders/json_loader.py:364-411` | ✅ COMPLETE (JSONLD-018 FIXED) |
 | `load_mobprogs` | `src/db.c:1519-1571` | `_load_mob_programs_from_json` | `mud/loaders/json_loader.py:556-590` | ✅ COMPLETE |
 | `convert_mobile` | `src/db2.c:869-970` | not applicable to JSON path | — | N/A — old-format (`new_format==FALSE`) only; see Phase-3 note below |
 | `convert_objects` | `src/db2.c:612-751` | not applicable to JSON path | — | N/A — old-format (`new_format==FALSE`) only; see Phase-3 note below |

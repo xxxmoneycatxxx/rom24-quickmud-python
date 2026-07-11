@@ -9,14 +9,14 @@
 
 | ROM symbol | ROM lines | Python counterpart | Status |
 |------------|-----------|--------------------|--------|
-| `flag_lookup` | 39-51 | `mud/commands/remaining_rom.py:_lookup_flag_bit` | ⚠️ PARTIAL — exact-match instead of `str_prefix`. See LOOKUP-002. |
-| `clan_lookup` | 53-65 | `mud/models/clans.py:lookup_clan_id` (or similar) | ⚠️ PARTIAL — exact-match. See LOOKUP-003 (deferred). |
-| `position_lookup` | 67-79 | none found | ❌ MISSING — no Python equivalent. See LOOKUP-004 (deferred). |
-| `sex_lookup` | 81-93 | none found | ❌ MISSING. See LOOKUP-005 (deferred). |
-| `size_lookup` | 95-107 | none found | ❌ MISSING. See LOOKUP-006 (deferred). |
-| `race_lookup` | 110-122 | `mud/models/races.py:get_race` (closest, but exact-match). `mud/persistence.py:614` imports a non-existent `race_lookup`. | ❌ BROKEN — see LOOKUP-001 (this session). |
-| `item_lookup` | 124-136 | none found (item-type names parsed inline in loaders) | ❌ MISSING. See LOOKUP-007 (deferred). |
-| `liq_lookup` | 138-150 | `mud/loaders/obj_loader.py:_liq_lookup` (private) | ⚠️ PARTIAL — see LOOKUP-008 (deferred). |
+| `flag_lookup` | 39-51 | `mud/commands/remaining_rom.py:_lookup_flag_bit` | ✅ FIXED (LOOKUP-002 — prefix-match) |
+| `clan_lookup` | 53-65 | `mud/models/clans.py:lookup_clan_id` | ✅ FIXED (LOOKUP-003 — prefix-match) |
+| `position_lookup` | 67-79 | `mud/utils/prefix_lookup.py:position_lookup` | ✅ FIXED (LOOKUP-004) |
+| `sex_lookup` | 81-93 | `mud/utils/prefix_lookup.py:sex_lookup` | ✅ FIXED (LOOKUP-005) |
+| `size_lookup` | 95-107 | `mud/utils/prefix_lookup.py:size_lookup` | ✅ FIXED (LOOKUP-006) |
+| `race_lookup` | 110-122 | `mud/models/races.py:race_lookup` (called by `mud/persistence.py:614`) | ✅ FIXED (LOOKUP-001) |
+| `item_lookup` | 124-136 | `mud/utils/prefix_lookup.py:item_lookup` | ✅ FIXED (LOOKUP-007) |
+| `liq_lookup` | 138-150 | `mud/utils/prefix_lookup.py:liq_lookup` (loader keeps private `_liq_lookup`) | ✅ FIXED (LOOKUP-008) |
 | `help_lookup` | 152-172 | `mud/help.py` (lookup likely exists) | ❓ UNVERIFIED — out of scope for this session. |
 | `had_lookup` | 174-184 | help-area lookup, see help system | ❓ UNVERIFIED — out of scope for this session. |
 

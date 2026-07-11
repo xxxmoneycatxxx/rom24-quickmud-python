@@ -50,9 +50,9 @@ act_move.c contains all ROM 2.4b6 movement, door, position, and skill-related co
 **Audit Progress**:
 - ✅ Phase 1: Function Inventory Complete (26/26 functions)
 - ✅ Phase 2: QuickMUD Mapping Complete (100% coverage)
-- ⏳ Phase 3: ROM C Verification (6/26 functions verified - 23%)
-- ⏳ Phase 4: Gap Fixes (pending - 3 critical gaps identified)
-- ⏳ Phase 5: Integration Tests (pending)
+- ✅ Phase 3: ROM C Verification COMPLETE (26/26 functions verified - 100%)
+- ✅ Phase 4: Gap Fixes COMPLETE (MOVE-001/002/003/004/007, TRAIN-001/002/003, PICK-001/002/003 all FIXED)
+- ✅ Phase 5: Integration Tests COMPLETE (see gap table)
 
 **Critical Gaps Fixed** (Tasks 1-5 COMPLETE ✅):
 1. ✅ **Door Commands - Portal Support**: FIXED in do_close, do_lock, do_unlock, do_pick (all 35 gaps resolved)
@@ -146,7 +146,7 @@ act_move.c contains all ROM 2.4b6 movement, door, position, and skill-related co
 | **25. Sneak/invis_level check** | 196-197 | Lines 410: `AFF_SNEAK` or `invis_level >= LEVEL_HERO` | ✅ PARITY |
 | **26. Leave message** | 197 | Line 413: "{name} leaves {dir}." | ✅ PARITY |
 | **27. Room transfer (char_from_room/char_to_room)** | 199-200 | Lines 414-415: `remove_character()` + `add_character()` | ✅ PARITY |
-| **28. Arrival message** | 201-202 | Line 417: "{name} arrives." | ⚠️ MINOR GAP |
+| **28. Arrival message** | 201-202 | `"{name} has arrived."` | ✅ PARITY (MOVE-001 FIXED) |
 | **29. Auto-look** | 204 | Line 419: `_auto_look(char)` | ✅ PARITY |
 | **30. Circular movement check** | 206-207 | Line 421: `if current_room is target_room` | ✅ PARITY |
 | **31. Follower iteration** | 209-211 | Lines 424-430: `_move_followers()` helper | ✅ PARITY |
@@ -154,7 +154,7 @@ act_move.c contains all ROM 2.4b6 movement, door, position, and skill-related co
 | **33. Position check (POS_STANDING)** | 217-218 | Lines 90-91 | ✅ PARITY |
 | **34. Follower can_see_room check** | 218 | Lines 92-93 | ✅ PARITY |
 | **35. LAW room + aggressive mob blocking** | 221-229 | Lines 94-103: exact ROM C logic | ✅ PARITY |
-| **36. LAW room messages** | 224-227 | Lines 100-102: exact ROM C strings | ⚠️ MINOR GAP |
+| **36. LAW room messages** | 224-227 | Lines 100-102: exact ROM C strings | ✅ PARITY (MOVE-002 FIXED) |
 | **37. Follower "You follow" message** | 231 | Lines 104-105 | ✅ PARITY |
 | **38. Recursive move_char() call** | 232 | Line 106: `mover(follower)` (callback) | ✅ PARITY |
 | **39. Entry trigger (mobs only)** | 240-241 | `mp_percent_trigger(TRIG_ENTRY)` gated by `mprog_flags & Trigger.ENTRY` | ✅ PARITY (MOVE-007, 2.13.41) |
@@ -574,9 +574,9 @@ Based on ROM C source and QuickMUD implementation, thief skills appear well-impl
 | ROM C Feature | Lines | QuickMUD Implementation | Status |
 |---------------|-------|-------------------------|--------|
 | **NPC check** | 1640-1641 | Lines 254-255: `if char.is_npc: return "Mobs don't train."` | ✅ PARITY |
-| **Trainer check** | 1643-1656 | Lines 256-260: **TEMPORARILY DISABLED** (see note below) | ⚠️ WORKAROUND |
+| **Trainer check** | 1643-1656 | `_find_trainer` gate re-enabled | ✅ PARITY (TRAIN-003 FIXED) |
 | **Training sessions display** | 1658-1663 | Lines 262-264: "You have %d training sessions." | ✅ PARITY |
-| **Prime stat cost calculation** | 1669-1705 | Lines 275-285: Prime stat costs 1, others cost 2 | ✅ PARITY |
+| **Prime stat cost calculation** | 1669-1705 | Training any stat/hp/mana costs exactly 1 (ROM has NO prime/non-prime split) | ✅ PARITY (TRAIN-002 FIXED) |
 | **Stat argument parsing** | 1667-1705 | Lines 268-285: str/int/wis/dex/con/hp/mana | ✅ PARITY |
 | **Training options list** | 1713-1745 | Lines 287-323: Complete options display | ✅ PARITY |
 | **Jordan's easter egg** | 1733-1742 | Lines 305-315: Gender-specific messages | ✅ PARITY |

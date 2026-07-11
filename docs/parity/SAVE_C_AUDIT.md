@@ -80,7 +80,7 @@ Create tests for save/load edge cases - **Completed January 5, 2026**
 **Key Behaviors**:
 - ✅ `save_char_obj()`: Creates temp file, writes char/obj, renames atomically (lines 619, 624)
 - ✅ `fwrite_char()`: Writes ALL character fields via PlayerSave dataclass (lines 556-617)
-- ⚠️ **GAP**: Pet save/load not implemented (see below)
+- ✅ Pet save/load implemented — `fwrite_pet()`/`fread_pet()` via `_serialize_pet`/`_deserialize_pet` (see the ✅ IMPLEMENTED detail rows below; Pet Save/Load 100%).
 
 ---
 

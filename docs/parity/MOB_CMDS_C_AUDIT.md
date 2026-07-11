@@ -1,6 +1,6 @@
 # mob_cmds.c ROM C Audit
 
-**Status**: 🔄 **IN PROGRESS** — Phase 1 + Phase 3 complete, Phase 4 (gap closure) pending
+**Status**: ✅ **COMPLETE** — all 18 gaps (MOBCMD-001..022) closed (do_mpat remains a documented ⚠️ partial, no gap)
 **File**: `src/mob_cmds.c` (1,369 lines)
 **Priority**: P1 (MOBprogram script command primitives)
 **Started**: April 27, 2026
@@ -10,8 +10,8 @@
 - ✅ Phase 1: Function Inventory Complete (31/31 ROM `do_mp_*` functions cataloged)
 - ✅ Phase 2: QuickMUD Mapping Complete (29/31 mapped; 2 admin/debug commands `do_mpstat`/`do_mpdump` already in `mud/commands/mobprog_tools.py`)
 - ✅ Phase 3: Gap Identification Complete (18 gaps: 6 CRITICAL, 9 IMPORTANT, 3 MINOR)
-- 🔄 Phase 4: Gap Fixes — pending (use `/rom-gap-closer MOBCMD-XXX` per gap)
-- ⏸ Phase 5: Closure — pending
+- ✅ Phase 4: Gap Fixes — complete (all MOBCMD gaps ✅ FIXED)
+- ✅ Phase 5: Closure — complete (2026-04-27)
 
 **QuickMUD Files**:
 - `mud/mob_cmds.py` (1,227 lines) — main `do_mp_*` script command implementations
@@ -46,34 +46,34 @@ semantics.
 | `do_mpgecho` | 254-275 | `do_mpgecho` | `mud/mob_cmds.py:359` | ✅ AUDITED |
 | `do_mpzecho` | 282-308 | `do_mpzecho` | `mud/mob_cmds.py:369` | ✅ AUDITED |
 | `do_mpasound` | 315-341 | `do_mpasound` | `mud/mob_cmds.py:343` | ✅ AUDITED |
-| `do_mpkill` | 348-373 | `do_mpkill` | `mud/mob_cmds.py:930` | ⚠️ DIVERGENT |
-| `do_mpassist` | 380-398 | `do_mpassist` | `mud/mob_cmds.py:943` | ⚠️ DIVERGENT |
-| `do_mpjunk` | 409-446 | `do_mpjunk` | `mud/mob_cmds.py:959` | ⚠️ DIVERGENT |
+| `do_mpkill` | 348-373 | `do_mpkill` | `mud/mob_cmds.py:930` | ✅ AUDITED (MOBCMD-001/003 FIXED) |
+| `do_mpassist` | 380-398 | `do_mpassist` | `mud/mob_cmds.py:943` | ✅ AUDITED (MOBCMD-002 FIXED) |
+| `do_mpjunk` | 409-446 | `do_mpjunk` | `mud/mob_cmds.py:959` | ✅ AUDITED (MOBCMD-004 FIXED) |
 | `do_mpechoaround` | 454-468 | `do_mpechoaround` | `mud/mob_cmds.py:389` | ✅ AUDITED |
 | `do_mpechoat` | 475-489 | `do_mpechoat` | `mud/mob_cmds.py:403` | ✅ AUDITED |
 | `do_mpecho` | 496-501 | `do_mpecho` | `mud/mob_cmds.py:334` | ✅ AUDITED |
 | `do_mpmload` | 508-531 | `do_mpmload` | `mud/mob_cmds.py:515` | ✅ AUDITED |
-| `do_mpoload` | 538-614 | `do_mpoload` | `mud/mob_cmds.py:544` | ⚠️ DIVERGENT |
-| `do_mppurge` | 623-677 | `do_mppurge` | `mud/mob_cmds.py:720` | ⚠️ DIVERGENT |
+| `do_mpoload` | 538-614 | `do_mpoload` | `mud/mob_cmds.py:544` | ✅ AUDITED (MOBCMD-005/006 FIXED) |
+| `do_mppurge` | 623-677 | `do_mppurge` | `mud/mob_cmds.py:720` | ✅ AUDITED (MOBCMD-007 FIXED) |
 | `do_mpgoto` | 685-712 | `do_mpgoto` | `mud/mob_cmds.py:671` | ✅ AUDITED |
 | `do_mpat` | 719-765 | `do_mpat` | `mud/mob_cmds.py:293` | 🔄 PARTIAL |
-| `do_mptransfer` | 773-841 | `do_mptransfer` | `mud/mob_cmds.py:819` | ⚠️ DIVERGENT |
+| `do_mptransfer` | 773-841 | `do_mptransfer` | `mud/mob_cmds.py:819` | ✅ AUDITED (MOBCMD-017 FIXED) |
 | `do_mpgtransfer` | 848-878 | `do_mpgtransfer` | `mud/mob_cmds.py:845` | ✅ AUDITED |
 | `do_mpforce` | 886-929 | `do_mpforce` | `mud/mob_cmds.py:867` | ✅ AUDITED |
 | `do_mpgforce` | 936-966 | `do_mpgforce` | `mud/mob_cmds.py:885` | ✅ AUDITED |
 | `do_mpvforce` | 973-1005 | `do_mpvforce` | `mud/mob_cmds.py:904` | ✅ AUDITED |
-| `do_mpcast` | 1017-1070 | `do_mpcast` | `mud/mob_cmds.py:462` | ⚠️ DIVERGENT |
-| `do_mpdamage` | 1078-1147 | `do_mpdamage` | `mud/mob_cmds.py:1088` | ⚠️ DIVERGENT |
+| `do_mpcast` | 1017-1070 | `do_mpcast` | `mud/mob_cmds.py:462` | ✅ AUDITED (MOBCMD-011/012 FIXED) |
+| `do_mpdamage` | 1078-1147 | `do_mpdamage` | `mud/mob_cmds.py:1088` | ✅ AUDITED (MOBCMD-013/014 FIXED) |
 | `do_mpremember` | 1155-1164 | `do_mpremember` | `mud/mob_cmds.py:1120` | ✅ AUDITED |
 | `do_mpforget` | 1171-1174 | `do_mpforget` | `mud/mob_cmds.py:1130` | ✅ AUDITED |
 | `do_mpdelay` | 1183-1195 | `do_mpdelay` | `mud/mob_cmds.py:430` | ✅ AUDITED |
 | `do_mpcancel` | 1202-1205 | `do_mpcancel` | `mud/mob_cmds.py:441` | ✅ AUDITED |
-| `do_mpcall` | 1217-1252 | `do_mpcall` | `mud/mob_cmds.py:413` | ⚠️ DIVERGENT |
-| `do_mpflee` | 1260-1287 | `do_mpflee` | `mud/mob_cmds.py:1159` | ⚠️ DIVERGENT |
+| `do_mpcall` | 1217-1252 | `do_mpcall` | `mud/mob_cmds.py:413` | ✅ AUDITED (MOBCMD-015/016 FIXED) |
+| `do_mpflee` | 1260-1287 | `do_mpflee` | `mud/mob_cmds.py:1159` | ✅ AUDITED (MOBCMD-008/009/010/018 FIXED) |
 | `do_mpotransfer` | 1295-1327 | `do_mpotransfer` | `mud/mob_cmds.py:644` | ✅ AUDITED |
 | `do_mpremove` | 1335-1369 | `do_mpremove` | `mud/mob_cmds.py:1134` | ✅ AUDITED |
 
-**Inventory totals**: 31 ROM functions — 21 ✅ AUDITED, 9 ⚠️ DIVERGENT, 1 🔄 PARTIAL, 0 ❌ MISSING.
+**Inventory totals**: 31 ROM functions — 30 ✅ AUDITED, 1 🔄 PARTIAL (`do_mpat`, no gap), 0 ⚠️ DIVERGENT, 0 ❌ MISSING.
 
 ---
 

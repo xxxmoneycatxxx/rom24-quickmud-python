@@ -1,6 +1,6 @@
 # mob_prog.c — ROM 2.4b6 Parity Audit
 
-**Status**: 🔄 IN PROGRESS — Phase 3 (gap identification complete)
+**Status**: ✅ AUDITED — all 8 gaps (MOBPROG-001..008) ✅ FIXED (reconciled 2026-07-10)
 **Started**: 2026-04-27
 **ROM source**: `src/mob_prog.c` (1362 lines)
 **Python target**: `mud/mobprog.py` (1685 lines)
@@ -22,15 +22,15 @@
 | `has_item`                    | 309–318    | `mobprog.has_item` (1611)                 | ✅ AUDITED  |
 | `get_mob_vnum_room`           | 323–330    | `mobprog.get_mob_vnum_room` (1638)        | ✅ AUDITED  |
 | `get_obj_vnum_room`           | 335–342    | `mobprog.get_obj_vnum_room` (1665)        | ✅ AUDITED  |
-| `cmd_eval`                    | 356–702    | `mobprog._cmd_eval` (679)                 | ⚠️ PARTIAL  |
-| `expand_arg`                  | 711–921    | `mobprog._expand_arg` (488)               | ⚠️ PARTIAL  |
-| `program_flow`                | 939–1170   | `mobprog._program_flow` (1136)            | ⚠️ PARTIAL  |
+| `cmd_eval`                    | 356–702    | `mobprog._cmd_eval` (679)                 | ✅ AUDITED (MOBPROG-001/003/004 FIXED) |
+| `expand_arg`                  | 711–921    | `mobprog._expand_arg` (488)               | ✅ AUDITED (MOBPROG-006 FIXED) |
+| `program_flow`                | 939–1170   | `mobprog._program_flow` (1136)            | ✅ AUDITED (MOBPROG-005/007 FIXED) |
 | `mp_act_trigger`              | 1183–1201  | `mobprog.mp_act_trigger` (1301)           | ✅ AUDITED  |
 | `mp_percent_trigger`          | 1207–1222  | `mobprog.mp_percent_trigger` (1321)       | ✅ AUDITED  |
 | `mp_bribe_trigger`            | 1224–1242  | `mobprog.mp_bribe_trigger` (1358)         | ✅ AUDITED  |
 | `mp_exit_trigger`             | 1244–1281  | `mobprog.mp_exit_trigger` (1425)          | ✅ AUDITED  |
 | `mp_give_trigger`             | 1283–1323  | `mobprog.mp_give_trigger` (1388)          | ✅ AUDITED  |
-| `mp_greet_trigger`            | 1325–1349  | `mobprog.mp_greet_trigger` (1469)         | ⚠️ PARTIAL  |
+| `mp_greet_trigger`            | 1325–1349  | `mobprog.mp_greet_trigger` (1469)         | ✅ AUDITED (MOBPROG-002 FIXED) |
 | `mp_hprct_trigger`            | 1351–1362  | `mobprog.mp_hprct_trigger` (1488)         | ✅ AUDITED  |
 
 Trigger bit values verified against `src/merc.h:1971-1986` (A=1<<0 ACT, B=1<<1 BRIBE, …, P=1<<15 SURR) — Python `Trigger` enum agrees.

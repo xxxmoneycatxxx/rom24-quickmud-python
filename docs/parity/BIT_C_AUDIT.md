@@ -11,10 +11,10 @@
 
 | ROM symbol | ROM lines | Visibility | Python counterpart | Status |
 |------------|-----------|------------|--------------------|--------|
-| `flag_stat_table[]` | 50-83 | file-static registry | — (not ported) | ⚠️ MISSING (BIT-003) |
-| `is_stat` | 93-104 | file-local helper | — (not ported) | ⚠️ MISSING (BIT-003) |
+| `flag_stat_table[]` | 50-83 | file-static registry | `is_stat` table | ✅ FIXED (BIT-003) |
+| `is_stat` | 93-104 | file-local helper | `is_stat(table)` | ✅ FIXED (BIT-003 — `tests/integration/test_bit_is_stat.py`, 5 cases) |
 | `flag_value` | 111-142 | public (called by `olc.c`, `olc_act.c`) | `mud/utils/bit.py:flag_value` (standalone helper) + inlined accumulator in `mud/commands/remaining_rom.py:do_flag` | ✅ FIXED — BIT-001 closed (standalone `flag_value` ported) |
-| `flag_string` | 151-177 | public (called by `act_olc.c`, `olc.c`, `olc_save.c`) | — (not ported) | ⚠️ MISSING (BIT-002) |
+| `flag_string` | 151-177 | public (called by `act_olc.c`, `olc.c`, `olc_save.c`) | `flag_string(table, bits)` | ✅ FIXED (BIT-002 — `tests/integration/test_bit_flag_string.py`, 8 cases) |
 
 Adjacent helper that ROM keeps in `lookup.c` (called by `flag_value`):
 
@@ -77,16 +77,22 @@ No CRITICAL or IMPORTANT gaps. All current Python call sites that consume bit.c-
 
 ## Phase 4 — Closures
 
-None this session. Three MINOR deferrals are not closed because:
+> **Reconciled 2026-07-10.** The block below originally deferred all three
+> helpers to the OLC audit. They were **subsequently closed** — the gap table
+> above records BIT-001/002/003 as ✅ FIXED, each with a named integration test
+> (`test_bit_flag_value.py`, `test_bit_flag_string.py`, `test_bit_is_stat.py`;
+> 13 cases, verified passing 2026-07-10). This section is kept for provenance.
 
-1. **No observable behavior gap exists today.** `do_flag` works correctly; no other Python module calls into ROM `flag_value` / `flag_string` / `is_stat`-shaped functionality.
-2. **Premature porting risks API drift.** ROM `flag_value`/`flag_string` take a `struct flag_type *` table pointer; the Python equivalent should take an `IntFlag` class (already proven idiomatic by `prefix_lookup_intflag`). Designing the public surface in isolation, before the first OLC consumer is ported, would likely need rework.
-3. **Per `AGENTS.md` "no deferring" rule** — that rule applies to *behavioral* parity gaps. These three gaps are *infrastructure* helpers with zero current call sites; deferring them until the OLC audit produces a concrete consumer is the standard project pattern (see `MUSIC-005`/`MUSIC-006`, `FLAG-002`).
-
-When the OLC audit begins (`olc.c`, `olc_act.c`, `olc_save.c`, `act_olc.c`), close BIT-001/002/003 in that audit's first commit, before touching OLC-specific code.
+**BIT-001/002/003 — ✅ CLOSED.** `flag_value`, `flag_string`, and `is_stat` were
+ported (taking an `IntFlag` class, as anticipated) rather than left deferred. The
+original deferral rationale (no consumer yet, API-drift risk) no longer applies.
 
 ## Phase 5 — Completion summary
 
-`bit.c` is ✅ AUDITED at 90%. ROM's three helpers (`is_stat`, `flag_value`, `flag_string`) are catalogued with stable gap IDs and deferred to the OLC audit, where their first consumers will appear. The adjacent `flag_lookup` helper (which ROM keeps in `lookup.c` and bit.c calls) is already correctly ported as `prefix_lookup_intflag` (TABLES-002), and the only current Python consumer of bit.c-shaped accumulation logic — `do_flag` — faithfully mirrors ROM `do_flag` (not ROM `flag_value`), with no observable behavior divergence.
+`bit.c` is ✅ AUDITED — all three helpers (`is_stat`, `flag_value`, `flag_string`)
+are ported and ✅ FIXED (BIT-001/002/003) with passing integration tests. The
+adjacent `flag_lookup` helper (which ROM keeps in `lookup.c`) is ported as
+`prefix_lookup_intflag` (TABLES-002), and `do_flag` faithfully mirrors ROM
+`do_flag` (FLAG-001).
 
-Tracker flip: `bit.c` ⚠️ Partial 90% → ✅ Audited 90% (0/3 closed, 3 MINOR deferred to OLC audit).
+Tracker: `bit.c` ✅ Audited — 3/3 MINOR gaps closed (BIT-001/002/003).

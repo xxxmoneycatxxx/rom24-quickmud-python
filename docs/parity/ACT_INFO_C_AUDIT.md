@@ -148,12 +148,12 @@ See:
 
 | ROM C Function | ROM Lines | QuickMUD Location | Status | Priority | Notes |
 |----------------|-----------|-------------------|--------|----------|-------|
-| `do_look()` | 1037-1313 | ✅ `mud/commands/inspection.py:117` + `mud/world/look.py` | 🔄 **AUDITING** | **P0** | **PRIMARY COMMAND** - 277 ROM C lines vs 282 Python lines |
+| `do_look()` | 1037-1313 | ✅ `mud/commands/inspection.py:117` + `mud/world/look.py` | ✅ **100% COMPLETE** (LOOK-001..017) | **P0** | **PRIMARY COMMAND** - 277 ROM C lines vs 282 Python lines |
 | `do_read()` | 1315-1318 | ✅ `mud/commands/info_extended.py:99` | ✅ **AUDITED — 100%** | P1 | 4-line ROM wrapper: `do_function(ch, &do_look, argument)`. Python `do_read` returns `do_look(char, args)`. Dispatcher registers `Command("read", do_read, min_position=Position.RESTING)` matching `src/interp.c:124`. Zero gaps. |
 | `do_examine()` | 1320-1391 | ✅ `mud/commands/info_extended.py:13` | ✅ **100% COMPLETE!** | **P1** | **2 CRITICAL GAPS FIXED!** Examine objects (11/11 tests passing) 🎉 |
 | `do_exits()` | 1393-1451 | ✅ `mud/commands/inspection.py:133` | ✅ **100% COMPLETE!** | **P1** | **100% ROM PARITY!** Show exits (12/12 tests passing) 🎉 |
 | `do_worth()` | 1453-1475 | ✅ `mud/commands/info_extended.py:228` | ✅ **100% COMPLETE!** | **P1** | **100% ROM PARITY!** Show gold/exp (10/10 tests passing) 🎉 |
-| `do_score()` | 1477-1712 | ✅ `mud/commands/session.py:62` | ❌ **NOT AUDITED** | **P0** | **CRITICAL** - Full character sheet (235 ROM C lines) |
+| `do_score()` | 1477-1712 | ✅ `mud/commands/session.py:62` | ✅ **100% COMPLETE** (all 13 gaps, incl. SCORE-001/002) | **P0** | **CRITICAL** - Full character sheet (235 ROM C lines) |
 | `do_affects()` | 1714-1769 | ✅ `mud/commands/affects.py:92` | ✅ **AUDITED (+AFFECTS-001)** | **P1** | Show active spell affects. **AFFECTS-001 ✅ FIXED (2.14.260):** the continuation line for a duplicate-type affect at level 20+ rendered a **double colon** (`: :`). ROM (`src/act_info.c:1726`) emits exactly 22 spaces (no colon) for a duplicate affect, then appends `": modifies %s by %d "` (`:1736`) — a single colon at column 22 (aligned with `"Spell: %-15s"`). The port built the indent as `" " * 22 + ": "` (`affects.py:151`) AND appended `": modifies …"`, so a level-25 bless (two same-type affects: APPLY_HITROLL + APPLY_SAVING_SPELL) showed `"                      : : modifies save vs spell by -3 …"`. Dropped the extra `": "`. A stale-✅: the "100% COMPLETE (8/8 tests)" row never exercised the level-20+ duplicate-continuation branch. Surfaced 2026-07-04 by an act_info probe in the autonomous loop. Test: `tests/integration/test_do_affects.py::test_affects_level_20_plus_duplicate_continuation_single_colon`. |
 | `do_inventory()` | 2254-2261 | ✅ `mud/commands/inventory.py` | ✅ COMPLETE | **P1** | Show inventory - See DO_INVENTORY_AUDIT.md. **INVEN-001 ✅ FIXED (2.14.284):** `_show_inventory_list` built each display string from bare `obj.short_descr`, dropping ROM's object status tags AND keying the combine/dedup on the wrong string. ROM `show_list_to_char` (`src/act_info.c:166`) formats each item via `format_obj_to_char(obj, ch, fShort)` — prepending `(Invis)/(Red Aura)/(Blue Aura)/(Magical)/(Glowing)/(Humming)` — and that prefixed string is ALSO the combine key (`strcmp` at :180), so a glowing item and a plain identical item render as two separate lines instead of collapsing to `( 2)`. Now routes both the combine and no-combine paths through `format_obj_to_char`. Same root cause as EQUIP-002 (sibling command); found by the same source-read sweep. Tests: `tests/integration/test_do_inventory.py::test_inventory_shows_object_status_prefix` + `..._combine_keys_on_status_prefix`. |
 | `do_equipment()` | 2263-2295 | ✅ `mud/commands/inventory.py:292` | ✅ COMPLETE | **P1** | Show worn equipment - See DO_EQUIPMENT_AUDIT.md. **EQUIP-002 ✅ FIXED (2.14.283):** the visible-item branch built the name from bare `obj.short_descr`, dropping ROM's object status tags. ROM (`src/act_info.c:2279`) renders worn items via `format_obj_to_char(obj, ch, TRUE)`, which prepends `(Invis)/(Red Aura)/(Blue Aura)/(Magical)/(Glowing)/(Humming)` — so a glowing weapon shows `<wielded>           (Glowing) a sword`. A faithful `format_obj_to_char` already existed (`mud/utils/act.py:295`) but was never wired into `do_equipment`. Now routes through it. Found by a source-read sweep of the equipment/inventory display helpers. Test: `tests/integration/test_do_equipment.py::test_equipment_visible_item_shows_status_prefix`. |
@@ -180,7 +180,7 @@ See:
 | `do_who()` | 2016-2226 | ✅ `mud/commands/info.py:77` | ✅ **100% COMPLETE!** | **P0** | **CRITICAL** - All 11 gaps fixed! (20/20 tests passing) |
 | `do_whois()` | 1916-2014 | ✅ `mud/commands/info_extended.py:124` | ✅ **100% COMPLETE!** | P2 | Show player info (0 gaps) |
 | `do_count()` | 2228-2252 | ✅ `mud/commands/info_extended.py` | ✅ **100% COMPLETE!** | P2 | Count online players (0 gaps) |
-| `do_where()` | 2407-2467 | ✅ `mud/commands/info.py` | ⚠️ **~50% PARITY** (7 gaps) | P1 | Show nearby characters - See DO_WHERE_AUDIT.md |
+| `do_where()` | 2407-2467 | ✅ `mud/commands/info.py` | ✅ **100% COMPLETE** (all gaps; see DO_WHERE_AUDIT.md) | P1 | Show nearby characters - See DO_WHERE_AUDIT.md |
 
 ### Combat/Character Commands (7 functions)
 
@@ -358,7 +358,7 @@ act_info.c is **100% complete** when:
 
 ## Detailed Function Analysis
 
-### 1. do_look() - Primary Room Display (ROM C lines 1037-1313) 🔄 IN PROGRESS
+### 1. do_look() - Primary Room Display (ROM C lines 1037-1313) ✅ 100% COMPLETE
 
 **ROM C Implementation**: 277 lines (`src/act_info.c:1037-1313`)  
 **QuickMUD Implementation**: 282 Python lines (`mud/world/look.py`)
@@ -774,7 +774,7 @@ act_info.c is **100% complete** when:
 
 ---
 
-### 2. do_score() - Character Statistics Display (ROM C lines 1477-1712) 🔄 IN PROGRESS
+### 2. do_score() - Character Statistics Display (ROM C lines 1477-1712) ✅ 100% COMPLETE
 
 **ROM C Implementation**: 235 lines (`src/act_info.c:1477-1712`)  
 **QuickMUD Implementation**: 96 Python lines (`mud/commands/session.py:62-158`)
@@ -1221,7 +1221,7 @@ later by the differential harness (a worked example of the AGENTS.md "re-verify
 
 ---
 
-**Document Status**: 🔄 **IN PROGRESS - 4 P0 + 1 P1 commands COMPLETE! (January 6, 2026)**  
+**Document Status**: ✅ **do_look / do_score / do_where 100% COMPLETE** (headers + inventory rows reconciled 2026-07-10; per-command detail below). Other act_info.c commands tracked in their inventory rows above.  
 **Last Updated**: January 7, 2026 00:12 CST  
 **Auditor**: AI Agent (Sisyphus)  
 **Next Milestone**: Complete remaining P1 commands (do_examine, do_affects, do_worth)

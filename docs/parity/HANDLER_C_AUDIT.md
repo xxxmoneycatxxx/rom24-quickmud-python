@@ -490,7 +490,7 @@ stable IDs.
 | Utility & Lookup | 18 | 13 | 1 | 4 | **100%** (14/14 handler.c functions) |
 | Character Attributes | 8 | 8 | 0 | 0 | **100%** |
 | Encumbrance | 2 | 2 | 0 | 0 | **100%** |
-| Affects | 11 | 10 | 1 | 0 | **91%** (10/11) |
+| Affects | 11 | 11 | 0 | 0 | **100%** (affect_join implemented 2026-06-08) |
 | Room | 2 | 2 | 0 | 0 | **100%** |
 | Equipment | 7 | 7 | 0 | 0 | **100%** |
 | Object Room | 4 | 3 | 1 | 0 | **100%** (obj_from_room partial but functional) |
@@ -503,7 +503,7 @@ stable IDs.
 | Money | 2 | 2 | 0 | 0 | **100%** |
 | Vision & Perception | 7 | 7 | 0 | 0 | **100%** |
 | Flag Names | 5 | 4 | 0 | 1 | **100%** (4/4 handler.c functions) |
-| **TOTAL** | **79** | **74** | **3** | **5** | **🎉 100% (All handler.c functions implemented!)** |
+| **TOTAL** | **79** | **75** | **2** | **5** | **🎉 100% (All handler.c functions implemented; 2 documented partials: is_exact_name, obj_from_room)** |
 
 **Overall Status**: 🎉 **100% ROM C handler.c PARITY ACHIEVED!**
 
@@ -532,6 +532,14 @@ stable IDs.
 
 ## Critical Gaps Identified (UPDATED JANUARY 2, 2026 - Phase 3)
 
+> **⚠️ HISTORICAL SECTION — superseded (re-verified 2026-07-10).** Everything
+> below is the Phase-3 gap-discovery snapshot from January 2026. Every function
+> it lists as "❌ Missing" / "BROKEN" is now ✅ implemented per the inventory
+> tables at the top of this doc (all 79 handler.c functions, 100%). The `## Audit
+> Status Summary` table above is canonical; the `❌`/"Missing"/"Priority" bullets
+> here are preserved only as the record of what was originally found. Do not read
+> them as current status.
+
 ### ✅ RESOLVED - Container Nesting EXISTS!
 
 **Previous Assessment (INCORRECT)**:
@@ -547,9 +555,15 @@ stable IDs.
 
 ---
 
-### 🚨 CRITICAL BUG - Weight Calculation Missing (DISCOVERED PHASE 3)
+### Weight Calculation (DISCOVERED PHASE 3 — since RESOLVED)
 
-**Status**: ❌ **BROKEN - Encumbrance system does NOT work for containers!**
+**Status**: ✅ **RESOLVED (Jan 2, 2026)** — carrier weight/number recalculation and the
+WEIGHT_MULT container multiplier are implemented in `obj_to_obj`/`obj_from_obj`/
+`get_obj_weight` (see the ✅ inventory rows above). Verified 2026-07-10:
+`tests/integration/test_put_weight_mult.py`, `test_get_weight_mult.py`, and
+`tests/test_encumbrance.py` (23 tests) pass. The "Bug #1/#2/#3 … MISSING" notes
+below are the **historical pre-fix analysis** that motivated the fix; they no
+longer reflect current behavior.
 
 #### Bug #1: `obj_to_obj()` Missing Weight Recalculation
 
