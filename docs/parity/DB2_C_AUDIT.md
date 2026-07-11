@@ -37,17 +37,17 @@ ROM behavior, with parity status:
 | Read vnum, area assignment, `new_format=TRUE` | 213–228 | mob_loader.py:59, 145–146 | ✅ |
 | `player_name`, `short_descr`, `long_descr`, `description` | 230–233 | mob_loader.py:60–63 | ⚠️ uses `next_line().rstrip("~")` for player_name/short_descr — not multi-line `fread_string` (DB2-005, MINOR) |
 | Race lookup | 234 | mob_loader.py:64 (stored as raw string) | ⚠️ no race table merge (see DB2-002) |
-| `long_descr[0] = UPPER(...)`, `description[0] = UPPER(...)` | 236–237 | not present | ❌ DB2-003 |
-| `act = fread_flag \| ACT_IS_NPC \| race_table[].act` | 239–240 | mob_loader.py:118 stores raw string only | ❌ DB2-001 (IS_NPC) + DB2-002 (race merge) |
-| `affected_by = fread_flag \| race.aff` | 241–242 | mob_loader.py:119 raw string only | ❌ DB2-002 |
+| `long_descr[0] = UPPER(...)`, `description[0] = UPPER(...)` | 236–237 | present | ✅ FIXED (DB2-003) |
+| `act = fread_flag \| ACT_IS_NPC \| race_table[].act` | 239–240 | `merge_race_flags` ORs `ACT_IS_NPC` + race act | ✅ FIXED (DB2-001 IS_NPC + DB2-002 race merge) |
+| `affected_by = fread_flag \| race.aff` | 241–242 | `merge_race_flags` ORs race aff | ✅ FIXED (DB2-002) |
 | `alignment`, `group` | 244–245 | mob_loader.py:120–121 | ✅ |
 | `level`, `hitroll` | 247–248 | mob_loader.py:122–123 (named `thac0`) | ✅ |
 | Hit dice / mana dice / damage dice | 251–269 | mob_loader.py:142–158 | ✅ FIXED (DB2-007) — was field-shifted by a phantom scalar `ac` token at index [2]; ROM has no scalar AC on this line (AC is read at 273–276), so HP dice was dropped and hit/mana/damage all read one field late |
 | `dam_type = attack_lookup(...)` | 270 | mob_loader.py:128 raw string, parsed by spawn | ✅ |
-| `ac[*] = fread_number * 10` | 273–276 | mob_loader.py:84–88 — **does not multiply by 10** | ❌ DB2-006 (CRITICAL) |
-| `off_flags \| race.off`, `imm_flags \| race.imm`, `res_flags \| race.res`, `vuln_flags \| race.vuln` | 279–286 | mob_loader.py:92–95 raw strings only | ❌ DB2-002 |
+| `ac[*] = fread_number * 10` | 273–276 | mob_loader.py:84–88 — multiplies by 10 | ✅ FIXED (DB2-006) |
+| `off_flags \| race.off`, `imm_flags \| race.imm`, `res_flags \| race.res`, `vuln_flags \| race.vuln` | 279–286 | `merge_race_flags` ORs race off/imm/res/vuln; `from_prototype` letter-decodes to int | ✅ FIXED (DB2-002) |
 | `start_pos`, `default_pos`, `sex`, `wealth` | 289–293 | mob_loader.py:99–102 | ✅ |
-| `form \| race.form`, `parts \| race.parts` | 295–297 | mob_loader.py:106–107 raw strings only | ❌ DB2-002 |
+| `form \| race.form`, `parts \| race.parts` | 295–297 | `merge_race_flags` ORs race form/parts; loader letter-decodes to int | ✅ FIXED (DB2-002) |
 | `size`, `material` | 299–301 | mob_loader.py:108–109 | ✅ |
 | `F` flag-removal letter loop | 303–336 | mob_loader.py:177–184 via `_apply_flag_removal` | ✅ |
 | `M` mobprog letter loop | 337–356 | mob_loader.py:154–176 | ✅ |
