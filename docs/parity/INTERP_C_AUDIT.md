@@ -51,8 +51,8 @@ exported, so the dispatcher hard-codes `LEVEL_IMMORTAL`/`LEVEL_HERO`/
 
 | ROM function | ROM lines | Python counterpart | Status |
 |--------------|-----------|--------------------|--------|
-| `cmd_table[]` (static dispatch table) | 63–381 | `COMMANDS` in `dispatcher.py:211-636` | ⚠️ Partial — many trust/position/dispatch divergences (see Phase 3) |
-| `interpret(ch, argument)` | 390–559 | `process_command(char, input_str)` in `dispatcher.py:755-882` | ⚠️ Partial — missing snoop, wiznet log, empty-input semantics |
+| `cmd_table[]` (static dispatch table) | 63–381 | `COMMANDS` in `dispatcher.py:211-636` | ✅ Trust tiers (INTERP-001, 43 rows) and min-position cluster (INTERP-030/031) all corrected + guarded. |
+| `interpret(ch, argument)` | 390–559 | `process_command(char, input_str)` in `dispatcher.py:1189+` | ✅ Empty-input silent (INTERP-007), snoop forward (INTERP-002), wiznet `WIZ_SECURE` log mirror (INTERP-003), freeze all ported. |
 | `do_function(ch, do_fun, argument)` | 562–574 | N/A — Python passes the string directly; no string ownership concern | N/A |
 | `check_social(ch, command, argument)` | 576–689 | `perform_social(char, name, arg)` in `socials.py:38-118` | ✅ Faithful — COMM_NOEMOTE (INTERP-020), position gates (INTERP-018), snore exception (INTERP-019/035), and NPC slap/echo auto-react via `rng_mm.number_bits(4)` all ported. |
 | `is_number(arg)` | 696–712 | `mud.utils.argparse.is_number` (separate audit; not exercised by dispatcher) | N/A — utility |
@@ -217,23 +217,31 @@ In ROM, those require L1, L4, L7, etc. **This is a security-relevant gap**.
 
 ---
 
-## Phase 4 — Gap closure (planning)
+## Phase 4 — Gap closure (COMPLETE)
 
-**Recommended order** (close highest-risk first; each via `/rom-gap-closer`):
+**All INTERP-NNN gaps are closed** (re-verified 2026-07-10). Every row in the
+Phase-3 gap table above is ✅ FIXED, with the sole non-code residue being
+INTERP-016 (`tail_chain` — a no-op in stock ROM 2.4b6, ✅ CLOSED-DEFERRED). The
+original recommended-close order is preserved below for provenance; nothing here
+remains actionable:
 
-1. **INTERP-001** — split into one closure per row in the table above (~40 commits). Each is mechanical: change `min_trust=` value to ROM's tier. Test: a character at trust = ROM_LEVEL - 1 cannot use the command; a character at trust = ROM_LEVEL can.
-2. ~~**INTERP-018** + **INTERP-019** + **INTERP-020** + **INTERP-023**~~ — **DONE (2026-04-27, snore refinement INTERP-035 2.14.282).** `perform_social` (`socials.py:38-118`) is a faithful port of `check_social`: COMM_NOEMOTE, position gates, snore exception, and NPC slap/echo auto-react via `rng_mm.number_bits(4)`.
-3. **INTERP-002** + **INTERP-003** — wire snoop forwarding and `WIZ_SECURE` log mirror into `process_command`.
-4. **INTERP-008** — register `"."`, `","`, `"/"` aliases in `COMMAND_INDEX` (single edit covers all three).
-5. **INTERP-009** through **INTERP-014** — repoint each alias to ROM's canonical handler and delete the redundant Python stubs (`do_hit`, `do_take`, `do_junk`, `do_tap`, `do_go`, `do_colon`, possibly `do_wield`/`do_hold` if their bodies don't add ROM-required logic).
-6. **INTERP-004** + **INTERP-005** + **INTERP-006** — set the missing `min_trust` and fix `music`'s `min_position`.
-7. **INTERP-007** — change empty-input return path to silent (drop the `"What?"` literal).
-8. **INTERP-017** — write a parametric test that enumerates every 1- and 2-letter prefix and asserts `resolve_command(prefix, trust=60)` matches the ROM table-order winner. Reorder `COMMANDS` (or add an explicit priority field) until it passes.
-9. ~~**INTERP-021**~~ — **DONE (2026-04-27).** `find_social()` does load-order `str_prefix` match.
-10. ~~**INTERP-022**~~ — **DONE (2026-04-27).** `perform_social` emits the literal `"They aren't here."`.
-11. **INTERP-024** — verify `do_commands`/`do_wizhelp` formatting in `info.py`.
-12. **INTERP-015** — replace `shlex.split` with a ROM-faithful `one_argument` port (or limit shlex use to non-backslash inputs).
-13. **INTERP-016** — defer; document as "no-op in stock ROM."
+- **INTERP-001** — trust-level table (43 drift rows) corrected; guard
+  `test_interp_trust.py::test_interp_001_command_trust_matches_rom` (50 params).
+- **INTERP-018/019/020/023/035** — `perform_social` (`socials.py:38-118`) is a
+  faithful port of `check_social` (COMM_NOEMOTE, position gates, snore exception,
+  NPC slap/echo auto-react via `rng_mm.number_bits(4)`).
+- **INTERP-002/003** — snoop forwarding + `WIZ_SECURE` log mirror in
+  `process_command`.
+- **INTERP-004/005/006/030/031** — command min-position / min-trust cluster
+  corrected; guard `test_interp_dispatcher.py::test_interp_030_command_min_position_matches_rom`.
+- **INTERP-007** — empty input returns silently (`dispatcher.py:1196-1199`).
+- **INTERP-008/009–014** — punctuation aliases + canonical-handler repoints done.
+- **INTERP-017** — 1/2-letter prefix resolution order guard.
+- **INTERP-021** — `find_social()` load-order `str_prefix` match.
+- **INTERP-022** — literal `"They aren't here."`.
+- **INTERP-024** — `do_commands`/`do_wizhelp` formatting verified.
+- **INTERP-015** — `one_argument` head parsing (shlex-backslash caveat documented).
+- **INTERP-016** — `tail_chain` no-op; deferred.
 
 ### Per-rule reminders for closures (from `AGENTS.md`)
 
