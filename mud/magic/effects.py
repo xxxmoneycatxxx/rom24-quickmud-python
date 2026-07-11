@@ -72,6 +72,13 @@ def _get_obj_to_room():
     return _obj_to_room
 
 
+def _get_obj_to_obj():
+    """Lazy import obj_to_obj from game_loop."""
+    from mud.game_loop import _obj_to_obj
+
+    return _obj_to_obj
+
+
 def _get_obj_to_char():
     """Lazy import obj_to_char from game_loop."""
     from mud.game_loop import _obj_to_char
@@ -161,6 +168,7 @@ def _dump_container_contents(obj: Object, level: int, damage: int, effect_func: 
     """
     obj_from_obj = _get_obj_from_obj()
     obj_to_room = _get_obj_to_room()
+    obj_to_obj = _get_obj_to_obj()
     extract_obj = _get_extract_obj()
 
     # Get container contents
@@ -176,8 +184,11 @@ def _dump_container_contents(obj: Object, level: int, damage: int, effect_func: 
         room = getattr(obj, "in_room", None)
 
         if container is not None:
-            # Put in parent container (not implemented yet - just extract)
-            extract_obj(item)
+            # EFFECTS-006: ROM src/effects.c:172/418 — `if (obj->in_obj)
+            # obj_to_obj(t_obj, obj->in_obj)`. Spill the destroyed container's
+            # contents into its PARENT container (head-inserted, INV-039), NOT
+            # extract them.
+            obj_to_obj(item, container)
         elif carrier is not None:
             # Put in carrier's room
             carrier_room = getattr(carrier, "in_room", None)

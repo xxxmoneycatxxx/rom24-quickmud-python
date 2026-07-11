@@ -4,7 +4,7 @@
 **Created**: January 3, 2026  
 **Completed**: January 5, 2026  
 **Priority**: ✅ **P0 - COMPLETE** (100% ROM C parity achieved)  
-**Status**: ✅ **100% COMPLETE** (EFFECTS-001/002/003/004/005 all closed)
+**Status**: ✅ **100% COMPLETE** (EFFECTS-001/002/003/004/005/006 all closed)
 
 ---
 
@@ -80,7 +80,8 @@ void acid_effect (void *vo, int level, int dam, int target)
     - Increases AC by +1 (worse protection - higher AC = less armor)
     - Updates carrier's armor values if equipped
   - ✅ Container dumping (L169-187):
-    - Dumps all contained objects to room or carrier's room
+    - Dumps all contained objects to parent container (`obj->in_obj`, EFFECTS-006),
+      carrier's room, or the room (ROM's nested if-else)
     - Applies recursive `acid_effect()` with half level/damage
     - Destroys container after dumping
 
@@ -282,6 +283,7 @@ def _calculate_chance(level: int, damage: int, obj: Object, item_type_modifier: 
 | EFFECTS-003 | `cold_effect()` | 224-230 | chill touch affect_join (-1 STR, dur=6) missing — stale ✅ in prior audit | ✅ FIXED v2.13.68 |
 | EFFECTS-004 | `fire_effect()` | 329-336 | fire breath affect_to_char (AFF_BLIND, -4 hitroll, dur=0..level/10) missing — stale ✅ | ✅ FIXED v2.13.69 |
 | EFFECTS-005 | `poison_effect()` | 471-477 | poison affect_join (AFF_POISON, -1 STR, dur=level/2) missing — stale ✅ in prior audit | ✅ FIXED v2.13.70 |
+| EFFECTS-006 | `acid_effect()`/`fire_effect()` | 172, 418 | Container-dump `obj->in_obj` branch stubbed to `extract_obj` — a container destroyed while inside ANOTHER container (`_dump_container_contents`, `mud/magic/effects.py`) dropped its contents to the void instead of ROM's `obj_to_obj(t_obj, obj->in_obj)` (spill to parent container). Contents of a bag-in-a-chest hit by acid/fire were destroyed rather than falling into the chest. Stale ✅ (audit marked container-dumping COMPLETE). **Fix (2.14.313):** added `_get_obj_to_obj` lazy import; the `in_obj` branch now calls `_obj_to_obj(item, container)` (head-insert, INV-039). Test: `tests/integration/test_environmental_effects.py::TestContainerDumpToParent`. | ✅ FIXED v2.14.313 |
 
 ---
 

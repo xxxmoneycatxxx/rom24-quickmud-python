@@ -51,6 +51,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **EFFECTS-006 — acid/fire dumping a nested container now spills contents to the
+  parent container (`src/effects.c:172,418`).** When a container that is itself
+  inside another container is destroyed by acid_effect/fire_effect, ROM moves its
+  contents to the parent container (`obj_to_obj(t_obj, obj->in_obj)`). Python had
+  stubbed that branch to `extract_obj`, destroying the contents instead — a bag
+  inside a chest hit by a fireball lost its contents to the void rather than
+  spilling them into the chest. Now routes through `_obj_to_obj` (head-insert,
+  INV-039).
 - **LOOK-018 — room occupant list now renders the furniture branch of the
   position suffix (`src/act_info.c:304-401`).** A character sitting/resting/
   sleeping/standing on a furniture object now lists as "Bob is sitting on a wooden

@@ -664,3 +664,38 @@ class TestPoisonEffectCharAffect:
         effect = victim.spell_effects.get("poison")
         assert effect is not None
         assert effect.duration == 15  # 30/2
+
+
+class TestContainerDumpToParent:
+    """EFFECTS-006: acid/fire dumping a container that is itself inside another
+    container spills the contents to the PARENT container, not extract them.
+
+    ROM acid_effect (src/effects.c:169-187) / fire_effect (415-434):
+        obj_from_obj(t_obj);
+        if (obj->in_obj) obj_to_obj(t_obj, obj->in_obj);
+        ...
+    Python previously stubbed the ``obj->in_obj`` branch to ``extract_obj``.
+    """
+
+    def test_dump_spills_to_parent_container(self):
+        from mud.magic.effects import _dump_container_contents
+
+        chest = create_test_object(ItemType.CONTAINER)
+        bag = create_test_object(ItemType.CONTAINER)
+        sword = create_test_object(ItemType.WEAPON)
+
+        # chest contains bag; bag contains sword
+        chest.contained_items = [bag]
+        bag.in_obj = chest
+        bag.contained_items = [sword]
+        sword.in_obj = bag
+
+        # no-op effect_func isolates the transfer from the recursive damage pass
+        _dump_container_contents(bag, level=40, damage=100, effect_func=lambda *a: None)
+
+        # ROM obj_to_obj(t_obj, obj->in_obj) — sword spills into the parent
+        # (chest), head-inserted (INV-039), NOT destroyed.
+        assert sword in chest.contained_items, "sword should spill to parent container, not be extracted"
+        assert chest.contained_items[0] is sword, "obj_to_obj head-inserts (INV-039)"
+        assert sword.in_obj is chest
+        assert sword not in bag.contained_items
