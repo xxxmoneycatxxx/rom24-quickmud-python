@@ -288,13 +288,16 @@ def test_advance_level_updates_permanent_stats(monkeypatch):
 
     expected_hp = 5  # mage hp_min=6, CON-13 hitp=0, (0+6)*9/10 == 5
 
+    # GL-049: mana/move now ROM number_range rolls (pinned to lo). mage/all-13:
+    # mana = UMAX(2, number_range(2,7)=2 * 9//10) = UMAX(2, 1) = 2 (fMana, no halve).
+    # move = UMAX(6, number_range(1,4)=1 * 9//10) = UMAX(6, 0) = 6.
     assert pcdata.last_level == (3600 + 1200) // 3600
     assert pcdata.perm_hit == 5 + expected_hp
-    assert pcdata.perm_mana == 7 + 6
-    assert pcdata.perm_move == 9 + 4
+    assert pcdata.perm_mana == 7 + 2
+    assert pcdata.perm_move == 9 + 6
     assert char.max_hit == 30 + expected_hp
-    assert char.max_mana == 46
-    assert char.max_move == 54
+    assert char.max_mana == 42
+    assert char.max_move == 56
     # Post-CONST-006: practice gain = wis_app[WIS].practice. WIS-13 → 1.
     assert char.practice == 2
     assert char.train == 1
@@ -325,8 +328,83 @@ def test_advance_level_reports_gains(monkeypatch):
 
     advance_level(char)
 
-    expected = f"You gain 6 hit points, 8 mana, 4 move, and 1 practice.{ROM_NEWLINE}"
+    # GL-049: cleric/all-13, number_range pinned to lo — mana = UMAX(2, 2*9//10) = 2,
+    # move = UMAX(6, 1*9//10) = 6 (cleric fMana → no halve).
+    expected = f"You gain 6 hit points, 2 mana, 6 move, and 1 practice.{ROM_NEWLINE}"
     assert expected in char.messages
+
+
+def test_advance_level_rolls_mana_and_move_like_rom(monkeypatch):
+    """GL-049: mana/move per-level gains are ROM number_range rolls, not static.
+
+    ROM src/update.c:81-95 advance_level:
+        add_mana = number_range(2, (2*get_curr_stat(INT) + get_curr_stat(WIS)) / 5);
+        if (!class_table[class].fMana) add_mana /= 2;
+        add_move = number_range(1, (get_curr_stat(CON) + get_curr_stat(DEX)) / 6);
+        add_mana = add_mana * 9 / 10;  add_move = add_move * 9 / 10;
+        add_mana = UMAX(2, add_mana);  add_move = UMAX(6, add_move);
+
+    Two properties are locked:
+    1. RNG draw ORDER and COUNT — ROM draws number_range exactly three times per
+       level-up, in the order (hp, mana, move). The old static-LEVEL_BONUS code
+       drew only once (hp), desyncing the shared Mitchell-Moore stream for every
+       downstream consumer whenever a PC leveled mid-combat tick.
+    2. The rolled mana/move values (stat-scaled), replacing the static dict.
+    """
+
+    from mud.utils import rng_mm
+
+    calls: list[tuple[int, int]] = []
+
+    def _recording_number_range(lo, hi):
+        calls.append((lo, hi))
+        return lo  # pin to the low end for deterministic assertions
+
+    monkeypatch.setattr("mud.advancement.time.time", lambda: 5000)
+    monkeypatch.setattr(rng_mm, "number_range", _recording_number_range)
+
+    pcdata = PCData(perm_hit=0, perm_mana=0, perm_move=0)
+    char = Character(ch_class=0, is_npc=False, pcdata=pcdata, max_hit=30, max_mana=40, max_move=50)
+    char.perm_stat = [13, 13, 13, 13, 13]  # STR/INT/WIS/DEX/CON all 13
+    char.mod_stat = [0, 0, 0, 0, 0]
+
+    advance_level(char)
+
+    # mirrors ROM src/update.c:79/81/85 — number_range draw order: hp, mana, move.
+    # mage: hp_min=6/hp_max=8; mana cap (2*13+13)//5=7; move cap (13+13)//6=4.
+    assert calls == [(6, 8), (2, 7), (1, 4)]
+
+    # add_mana = number_range(2,7)=2 (mage fMana → no halve); 2*9//10=1; UMAX(2,1)=2.
+    # add_move = number_range(1,4)=1; 1*9//10=0; UMAX(6,0)=6.
+    assert char.max_mana == 40 + 2
+    assert char.max_move == 50 + 6
+    assert pcdata.perm_mana == 0 + 2
+    assert pcdata.perm_move == 0 + 6
+
+
+def test_advance_level_non_fmana_class_halves_mana(monkeypatch):
+    """GL-049: ROM src/update.c:83-84 — !fMana classes (warrior/thief) halve add_mana.
+
+    Pin number_range high enough that the halving is observable before the
+    *9/10 and UMAX(2) clamps collapse it.
+    """
+
+    from mud.utils import rng_mm
+
+    monkeypatch.setattr("mud.advancement.time.time", lambda: 5000)
+    # Return the high end so add_mana is large enough to see the /2.
+    monkeypatch.setattr(rng_mm, "number_range", lambda lo, hi: hi)
+
+    # Warrior (ch_class=3, gains_mana=False). INT/WIS 25 → mana cap (2*25+25)//5=15.
+    pcdata = PCData(perm_mana=0)
+    char = Character(ch_class=3, is_npc=False, pcdata=pcdata, max_mana=0)
+    char.perm_stat = [13, 25, 25, 13, 13]  # STR, INT=25, WIS=25, DEX, CON
+    char.mod_stat = [0, 0, 0, 0, 0]
+
+    advance_level(char)
+
+    # add_mana = number_range(2,15)=15; warrior !fMana → 15//2=7; 7*9//10=6; UMAX(2,6)=6.
+    assert char.max_mana == 6
 
 
 def test_advance_level_resets_title_to_rom_default(monkeypatch):

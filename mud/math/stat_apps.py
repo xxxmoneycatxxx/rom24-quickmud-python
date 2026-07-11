@@ -282,3 +282,25 @@ def wis_practice_bonus(ch) -> int:
     """
 
     return WIS_APP[_curr_wis(ch)].practice
+
+
+def mana_gain_stat_cap(ch) -> int:
+    """Return ROM ``(2 * get_curr_stat(INT) + get_curr_stat(WIS)) / 5``.
+
+    The ``number_range(2, <cap>)`` upper bound for the per-level mana roll in
+    src/update.c:81-82 advance_level. INT/WIS are non-negative (clamped [0,25]),
+    so ``//`` is bit-identical to C integer division.
+    """
+
+    return (2 * _curr_stat(ch, Stat.INT) + _curr_stat(ch, Stat.WIS)) // 5
+
+
+def move_gain_stat_cap(ch) -> int:
+    """Return ROM ``(get_curr_stat(CON) + get_curr_stat(DEX)) / 6``.
+
+    The ``number_range(1, <cap>)`` upper bound for the per-level move roll in
+    src/update.c:85-86 advance_level. CON/DEX are non-negative (clamped [0,25]),
+    so ``//`` is bit-identical to C integer division.
+    """
+
+    return (_curr_stat(ch, Stat.CON) + _curr_stat(ch, Stat.DEX)) // 6

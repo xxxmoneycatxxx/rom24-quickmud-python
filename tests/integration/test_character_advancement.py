@@ -96,7 +96,19 @@ def test_kill_mob_grants_xp_integration(test_character, test_mob, monkeypatch):
     # pin it is brittle to the combat RNG stream position (the unconditional
     # 2nd/3rd-attack draws resequenced it), letting the fixed 60-tick budget lapse
     # while room 3001's aggressive Hassan joins and removes the player.
-    monkeypatch.setattr("mud.utils.rng_mm.number_bits", lambda *_: 19)
+    #
+    # SCOPE THE PIN TO width==5 ONLY. A blanket number_bits pin also poisons the
+    # Midgaard mayor's spec_cast_mage → _select_spell `while True: number_bits(4)`
+    # loop: 19 is out of range for 4 bits, so the loop never terminates (a
+    # pre-existing landmine that stayed latent only by RNG luck — GL-049's extra
+    # advance_level draws shifted the stream and tripped it). Delegating every
+    # other width to the real generator keeps _select_spell terminating
+    # regardless of the combat RNG stream position.
+    _real_number_bits = rng_mm.number_bits
+    monkeypatch.setattr(
+        "mud.utils.rng_mm.number_bits",
+        lambda width: 19 if width == 5 else _real_number_bits(width),
+    )
 
     char = test_character
     mob = test_mob
@@ -226,13 +238,14 @@ def test_multiple_levels_at_once(test_character):
 def test_level_up_grants_hp_mana_move(test_character, monkeypatch):
     """Given warrior character leveling up
     When advance_level called
-    Then HP follows ROM formula and mana/move use legacy bonuses (until
-    their own gaps close).
+    Then HP/mana/move all follow ROM's stat-scaled number_range rolls.
 
-    ROM Parity: src/update.c:74-79 — HP = UMAX(2, (con_app[CON].hitp +
-    number_range(class.hp_min, class.hp_max)) * 9 / 10).
-    Warrior hp_min=11, hp_max=15. With CON-13 (hitp=0) and pinned hp_min:
-    (0 + 11) * 9 / 10 == 9 HP per level.
+    ROM Parity: src/update.c:81-95. HP = UMAX(2, (con_app[CON].hitp +
+    number_range(class.hp_min, class.hp_max)) * 9 / 10); warrior hp_min=11,
+    CON-13 hitp=0, pinned lo → (0+11)*9/10 == 9 HP.
+    GL-049: mana = UMAX(2, number_range(2, (2*INT+WIS)/5) [halved !fMana] * 9/10),
+    move = UMAX(6, number_range(1, (CON+DEX)/6) * 9/10). Warrior all-13, pinned lo:
+    mana = UMAX(2, (2//2)*9//10) = UMAX(2, 0) = 2; move = UMAX(6, 1*9//10) = 6.
     """
     char = test_character
     char.ch_class = 3
@@ -250,8 +263,8 @@ def test_level_up_grants_hp_mana_move(test_character, monkeypatch):
 
     expected_hp_gain = _rom_hp_gain(ch_class=3, con=13, roll="min")
     assert char.max_hit == initial_hp + expected_hp_gain
-    assert char.max_mana == initial_mana + 4, "Warrior should gain +4 mana"
-    assert char.max_move == initial_move + 6, "Warrior should gain +6 move"
+    assert char.max_mana == initial_mana + 2, "Warrior all-13 pinned-lo → +2 mana (GL-049)"
+    assert char.max_move == initial_move + 6, "Warrior all-13 pinned-lo → +6 move (GL-049)"
 
 
 def test_level_up_grants_practices_and_trains(test_character):
@@ -489,9 +502,10 @@ def test_group_xp_split_among_members(test_character):
 def test_mage_level_up_grants_class_bonuses(monkeypatch):
     """Given mage character at neutral CON-13 with pinned hp_min roll.
 
-    ROM Parity: src/update.c:74-79 — mage hp_min=6, CON-13 hitp=0,
-    UMAX(2, (0+6)*9/10) == 5 HP. Mana/move stay on legacy LEVEL_BONUS
-    until their gaps close.
+    ROM Parity: src/update.c:81-95 — mage hp_min=6, CON-13 hitp=0,
+    UMAX(2, (0+6)*9/10) == 5 HP. GL-049: mana/move are stat-scaled number_range
+    rolls; mage all-13 pinned-lo → mana = UMAX(2, 2*9//10) = 2 (fMana, no halve),
+    move = UMAX(6, 1*9//10) = 6.
     """
     char = create_test_character("MageTest", room_vnum=3001)
     char.ch_class = 0
@@ -508,12 +522,16 @@ def test_mage_level_up_grants_class_bonuses(monkeypatch):
 
     expected_hp_gain = _rom_hp_gain(ch_class=0, con=13, roll="min")
     assert char.max_hit == 20 + expected_hp_gain
-    assert char.max_mana == 106, "Mage should gain +6 mana"
-    assert char.max_move == 104, "Mage should gain +4 move"
+    assert char.max_mana == 102, "Mage all-13 pinned-lo → +2 mana (GL-049)"
+    assert char.max_move == 106, "Mage all-13 pinned-lo → +6 move (GL-049)"
 
 
 def test_cleric_level_up_grants_class_bonuses(monkeypatch):
-    """Cleric hp_min=7, CON-13 hitp=0, UMAX(2, (0+7)*9/10) == 6 HP."""
+    """Cleric hp_min=7, CON-13 hitp=0, UMAX(2, (0+7)*9/10) == 6 HP.
+
+    GL-049: cleric all-13 pinned-lo → mana = UMAX(2, 2*9//10) = 2 (fMana, no halve),
+    move = UMAX(6, 1*9//10) = 6.
+    """
 
     char = create_test_character("ClericTest", room_vnum=3001)
     char.ch_class = 1
@@ -530,12 +548,16 @@ def test_cleric_level_up_grants_class_bonuses(monkeypatch):
 
     expected_hp_gain = _rom_hp_gain(ch_class=1, con=13, roll="min")
     assert char.max_hit == 20 + expected_hp_gain
-    assert char.max_mana == 108, "Cleric should gain +8 mana"
-    assert char.max_move == 104, "Cleric should gain +4 move"
+    assert char.max_mana == 102, "Cleric all-13 pinned-lo → +2 mana (GL-049)"
+    assert char.max_move == 106, "Cleric all-13 pinned-lo → +6 move (GL-049)"
 
 
 def test_thief_level_up_grants_class_bonuses(monkeypatch):
-    """Thief hp_min=8, CON-13 hitp=0, UMAX(2, (0+8)*9/10) == 7 HP."""
+    """Thief hp_min=8, CON-13 hitp=0, UMAX(2, (0+8)*9/10) == 7 HP.
+
+    GL-049: thief all-13 pinned-lo → mana = UMAX(2, (2//2)*9//10) = 2 (!fMana halve),
+    move = UMAX(6, 1*9//10) = 6.
+    """
 
     char = create_test_character("ThiefTest", room_vnum=3001)
     char.ch_class = 2
@@ -552,8 +574,8 @@ def test_thief_level_up_grants_class_bonuses(monkeypatch):
 
     expected_hp_gain = _rom_hp_gain(ch_class=2, con=13, roll="min")
     assert char.max_hit == 20 + expected_hp_gain
-    assert char.max_mana == 106, "Thief should gain +6 mana"
-    assert char.max_move == 105, "Thief should gain +5 move"
+    assert char.max_mana == 102, "Thief all-13 pinned-lo → +2 mana (GL-049)"
+    assert char.max_move == 106, "Thief all-13 pinned-lo → +6 move (GL-049)"
 
 
 def test_character_advancement_from_level_1_to_10(test_character, monkeypatch):
@@ -588,7 +610,8 @@ def test_character_advancement_from_level_1_to_10(test_character, monkeypatch):
     level_ups = char.level - 1
     per_level_hp = _rom_hp_gain(ch_class=3, con=13, roll="min")
     expected_hp = 20 + (level_ups * per_level_hp)
-    expected_mana = 100 + (level_ups * 4)
+    # GL-049: warrior all-13 pinned-lo gains +2 mana / +6 move per level.
+    expected_mana = 100 + (level_ups * 2)
     expected_move = 100 + (level_ups * 6)
 
     assert char.max_hit == expected_hp, f"Expected {expected_hp} HP at level {char.level}"

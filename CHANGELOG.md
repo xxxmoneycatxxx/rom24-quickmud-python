@@ -51,6 +51,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **GL-049 — `advance_level` mana/move gains now use ROM's stat-scaled
+  `number_range` rolls (`src/update.c:81-95`), not a static `LEVEL_BONUS` dict.**
+  ROM rolls `add_mana = number_range(2, (2*INT + WIS)/5)` (halved for non-mana
+  classes), `add_move = number_range(1, (CON + DEX)/6)`, each `*9/10` with floors
+  `UMAX(2, mana)` / `UMAX(6, move)`. Two divergences fixed: wrong per-level values
+  (a high-INT mage / high-CON warrior was mis-paid mana/move every level), and an
+  RNG desync — ROM draws `number_range` three times per level-up (hp, mana, move)
+  while the port drew only once (hp), shifting the shared Mitchell-Moore stream by
+  two draws for every downstream consumer whenever a PC leveled mid-combat tick
+  (the GL-026/GL-045/GL-046 hazard class, on the advancement path). The HP path was
+  already ROM-faithful (CONST-005). Tests: `test_advance_level_rolls_mana_and_move_like_rom`
+  (locks the 3-draw order + rolled values) and `test_advance_level_non_fmana_class_halves_mana`.
 - **Test isolation — `test_new_character_persists_true_sex` is now self-contained.**
   It sets `char.room`/`was_in_room`, saves, reloads, and asserts `reloaded.room`
   resolves — which requires `room_registry` populated. The test never called

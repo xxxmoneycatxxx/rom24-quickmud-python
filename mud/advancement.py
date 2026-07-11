@@ -4,7 +4,12 @@ import time
 
 from mud.logging import log_game_event
 from mud.math.c_compat import c_div
-from mud.math.stat_apps import con_hitp_bonus, wis_practice_bonus
+from mud.math.stat_apps import (
+    con_hitp_bonus,
+    mana_gain_stat_cap,
+    move_gain_stat_cap,
+    wis_practice_bonus,
+)
 from mud.models.character import Character
 from mud.models.classes import CLASS_TABLE, ClassType
 from mud.models.constants import LEVEL_HERO
@@ -91,26 +96,38 @@ def exp_per_level_for_creation(race: PcRaceType, class_type: ClassType, creation
 def advance_level(char: Character) -> None:
     """Increase hit points, mana, move, practices, and trains.
 
-    HP path mirrors ROM src/update.c:74-79:
-        add_hp = con_app[CON].hitp + number_range(class.hp_min, class.hp_max)
-        add_hp = add_hp * 9 / 10  (C int div)
-        add_hp = UMAX(2, add_hp)
-
-    Mana / move / practices remain on the legacy LEVEL_BONUS path until
-    their respective CONST-* gaps close (CONST-006 covers wis_app practice;
-    mana and move RNG rolls are tracked separately in the audit doc).
+    All gains mirror ROM src/update.c:77-95, drawing number_range in the ROM
+    order hp → mana → move (draw order matters for RNG parity — see GL-049):
+        add_hp   = con_app[CON].hitp + number_range(class.hp_min, class.hp_max)
+        add_mana = number_range(2, (2*get_curr_stat(INT)+get_curr_stat(WIS))/5)
+                   halved when the class does not gain mana (!fMana)
+        add_move = number_range(1, (get_curr_stat(CON)+get_curr_stat(DEX))/6)
+    each then ``* 9 / 10`` (C int div) with floors UMAX(2, hp/mana), UMAX(6, move).
+    Practices use wis_app[WIS].practice (CONST-006).
     """
-    _hp_legacy, mana, move = LEVEL_BONUS.get(char.ch_class, (8, 6, 5))
-
     # ROM HP roll — class hp range plus con_app[CON].hitp, then x9/10, floor 2.
     cls = CLASS_TABLE[char.ch_class] if 0 <= char.ch_class < len(CLASS_TABLE) else None
     if cls is not None:
         hp_roll = rng_mm.number_range(cls.hp_min, cls.hp_max)
     else:  # pragma: no cover - defensive guard
-        hp_roll = _hp_legacy
+        hp_roll = LEVEL_BONUS.get(char.ch_class, (8, 6, 5))[0]
     add_hp = con_hitp_bonus(char) + hp_roll
     add_hp = c_div(add_hp * 9, 10)
     hp = max(2, add_hp)
+
+    # GL-049: mana and move are per-level number_range rolls scaled by current
+    # stats, NOT static class values. The rolls MUST follow the HP roll to
+    # preserve ROM's number_range draw ORDER (hp, mana, move) — otherwise a PC
+    # levelling mid-combat desyncs the shared Mitchell-Moore stream for every
+    # downstream consumer in the tick. mirroring ROM src/update.c:81-95.
+    add_mana = rng_mm.number_range(2, mana_gain_stat_cap(char))
+    # mirroring ROM src/update.c:83-84 — !fMana classes gain half mana
+    if cls is not None and not cls.gains_mana:
+        add_mana = c_div(add_mana, 2)
+    add_move = rng_mm.number_range(1, move_gain_stat_cap(char))
+    # ROM src/update.c:90-95 — x9/10 then UMAX(2, mana) / UMAX(6, move)
+    mana = max(2, c_div(add_mana * 9, 10))
+    move = max(6, c_div(add_move * 9, 10))
 
     # ROM src/update.c:87 — add_prac = wis_app[get_curr_stat(ch, STAT_WIS)].practice
     practice_gain = wis_practice_bonus(char)
