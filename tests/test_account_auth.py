@@ -1119,6 +1119,11 @@ def test_new_character_defaults_to_nosummon():
 
 
 def test_new_character_persists_true_sex():
+    # Reload resolves the saved room vnum (was_in_room → SCHOOL) via room_registry,
+    # so the world must be loaded for `reloaded.room` to be non-None. Without this
+    # the test only passed when a sibling test happened to load the world first
+    # (cross-file isolation dependency; fails under `-n0`/`-k` selection).
+    initialize_world("area/area.lst")
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
     bans.clear_all_bans()

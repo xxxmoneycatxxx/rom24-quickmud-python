@@ -37,6 +37,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Test isolation — `test_new_character_persists_true_sex` is now self-contained.**
+  It sets `char.room`/`was_in_room`, saves, reloads, and asserts `reloaded.room`
+  resolves — which requires `room_registry` populated. The test never called
+  `initialize_world()`, so it passed only when a sibling test loaded the world
+  first (cross-file dependency; failed under `-n0` or `-k` selection). Added the
+  `initialize_world("area/area.lst")` call to its setup per the AGENTS.md
+  parallel-safety rule ("a test must pass when run alone").
 - **DB-002 — pet-affect load dedup now matches ROM `check_pet_affected`.** ROM
   `check_pet_affected` (`src/db.c:3938`, from `fread_pet` `src/save.c:1567`)
   drops a loaded pet affect iff `where == TO_AFFECTS` **and** one of its
