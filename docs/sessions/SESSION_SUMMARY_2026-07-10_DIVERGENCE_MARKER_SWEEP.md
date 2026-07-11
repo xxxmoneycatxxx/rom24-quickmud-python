@@ -119,6 +119,8 @@ code comment confessing a divergence is a pre-filed gap nobody assigned an ID.
   `tests/integration/test_look_char_tags_show_char_to_char_0.py`,
   `tests/integration/test_environmental_effects.py`,
   `tests/integration/test_gl032_mob_affect_application.py` — new + updated tests
+- `tests/test_skills_combat.py`, `tests/test_mobprog_triggers.py` — added local
+  `seed_mm(12345)` to 2 RNG-order-fragile unit tests (serial-flake fix)
 - `docs/parity/UPDATE_C_AUDIT.md` (GL-049), `ACT_INFO_C_AUDIT.md` (LOOK-018),
   `EFFECTS_C_AUDIT.md` (EFFECTS-006) — rows flipped ✅
 - `tools/diff_harness/FINDINGS.md` — FINDING-001 triage closed
@@ -130,36 +132,23 @@ code comment confessing a divergence is a pre-filed gap nobody assigned an ID.
 - Per changed area (serial, green): advancement 47, character_advancement 21,
   environmental_effects 38, gl032/gl027/pet-save 9, look+furniture 30,
   differential smoke 64.
-- Full **serial** run (`-n0`): **6200 passed, 4 skipped, 2 failed** in 1166s.
-  The 2 failures — `test_mobprog_triggers::test_event_hooks_fire_rom_triggers`
-  and `test_skills_combat::test_trip_knocks_target_wait_daze_and_improve` — are
-  **serial-only RNG-order flakes**: both PASS in the default parallel CI mode and
-  in isolation (`-n0` on each individually). They read the ambient global RNG
-  stream without a local seed, so GL-049's +2 draws-per-level-up shift their
-  outcome only in single-process serial ordering. Not a shipped regression (CI is
-  parallel). Filed under Outstanding for local-seed hardening.
-- Full **parallel** runs (the CI mode) flaked twice on a machine-local xdist
-  scheduler `INTERNALERROR` (`KeyError: <WorkerController gwN>` during
-  `worker_collectionfinish`) — environmental, zero test-failure content. An
-  earlier parallel run this session completed cleanly at 6184 passed with only
-  the 6 advancement assertions GL-049 then updated.
-
-## Outstanding (filed this session)
-
-- **2 serial-only RNG-order-fragile tests** —
-  `test_mobprog_triggers::test_event_hooks_fire_rom_triggers` and
-  `test_skills_combat::test_trip_knocks_target_wait_daze_and_improve`. They read
-  the ambient Mitchell-Moore stream without a local seed, so they pass in
-  parallel/isolation but flake in a full serial run once an upstream change
-  (GL-049's +2 draws/level-up) shifts the stream. **Fix:** add
-  `rng_mm.seed_mm(<seed>)` in each test after fixture setup. Low priority (CI is
-  parallel; not a shipped regression).
+- **Clean full parallel run (CI default mode): 6202 passed, 4 skipped, 0 failed
+  in 207s.** Definitive green.
+- A full **serial** (`-n0`) run first surfaced 2 RNG-order flakes
+  (`test_event_hooks_fire_rom_triggers`, `test_trip_knocks_target_wait_daze_and_improve`):
+  these unit tests read the ambient Mitchell-Moore stream through unpatched combat
+  draws and, unlike `tests/integration/`, get no autouse `seed_mm`, so GL-049's +2
+  draws/level-up shifted their outcome in single-process serial order. **Fixed
+  this session** — added `rng_mm.seed_mm(12345)` to each (whole-file serial run now
+  green too). Two intermediate parallel runs had flaked on a self-inflicted xdist
+  `INTERNALERROR` (full suite + `gitnexus analyze` + polling loops contending);
+  the clean quiet run above completed without it.
 
 ## Next Steps
 
-1. **Confirm a clean full-suite run**, then **review + push** the local `master`
-   commits (v2.14.298 → v2.14.314; 23 commits unpushed incl. the prior session's
-   backlog). Push remains the gating user decision.
+1. **Review + push** the local `master` commits (v2.14.298 → v2.14.314; ~26
+   commits unpushed incl. the prior session's backlog). The full parallel suite is
+   confirmed green (6202 passed, 0 failed). Push remains the gating user decision.
 2. Continue the **self-admitted-divergence-marker sweep** — remaining unprobed
    markers: `mud/commands/build.py:2617/2637` (OLC spell-name lookup, Tier-C
    deferred), `mud/world/look.py:261` (IS_BUILDER TODO). Then resume
