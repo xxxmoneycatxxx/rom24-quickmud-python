@@ -73,7 +73,7 @@ my-mud-server/
 ├── log/
 │   └── server.log      # Server logs
 ├── .env                # Configuration
-└── quickmud.db         # SQLite database
+└── mud.db         # SQLite database
 ```
 
 ### Creating First Immortal
@@ -94,7 +94,7 @@ python -c "from mud.models.character import character_registry; \
 **Method 2: Database Direct Edit** (SQLite)
 
 ```bash
-sqlite3 quickmud.db
+sqlite3 mud.db
 UPDATE characters SET level = 60, trust = 60 WHERE name = 'YourName';
 .quit
 ```
@@ -609,7 +609,7 @@ save
 # Backup script (Linux/Mac)
 #!/bin/bash
 DATE=$(date +%Y%m%d_%H%M%S)
-tar -czf backups/mud_backup_$DATE.tar.gz data/ quickmud.db
+tar -czf backups/mud_backup_$DATE.tar.gz data/ mud.db
 find backups/ -mtime +30 -delete  # Remove backups older than 30 days
 ```
 
@@ -656,7 +656,7 @@ TICK_RATE=60                   # Game ticks per minute
 SAVE_INTERVAL=1800             # Auto-save interval (seconds)
 
 # Database
-DATABASE_URL=sqlite:///quickmud.db
+DATABASE_URL=sqlite:///mud.db
 DATABASE_POOL_SIZE=10
 
 # Logging
@@ -770,12 +770,12 @@ mud runserver
 
 ```bash
 # SQLite recovery
-sqlite3 quickmud.db
+sqlite3 mud.db
 .integrity_check
 .quit
 
 # If corrupt, restore from backup
-cp backups/quickmud.db quickmud.db
+cp backups/mud.db mud.db
 ```
 
 ---

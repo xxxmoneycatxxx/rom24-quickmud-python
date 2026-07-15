@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Characters created via the nanny menu vanished after a server restart.**
+  `mud/config.py` and `mud/db/session.py` both defaulted `DATABASE_URL` to the
+  relative SQLite path `sqlite:///mud.db`. A relative SQLite URL resolves
+  against the process's current working directory at engine-construction
+  time, not the repo root — so starting the server from a different
+  directory (a different shell, a process manager, a container recreated
+  without a persistent bind mount) silently opened/created a *different*
+  database file. Nothing was actually deleted; the previous session's
+  character data just wasn't in the file the next run looked at. Both
+  defaults now anchor to the repo root (`Path(__file__).resolve().parent...`)
+  so the resolved path is identical regardless of the launching process's
+  CWD. Also reconciled `docs/USER_GUIDE.md` / `docs/ADMIN_GUIDE.md`, which
+  told operators to set `DATABASE_URL=sqlite:///quickmud.db` — a different
+  filename than the code's actual `mud.db` default — to match the code.
+  Regression test: `tests/test_database_url_config.py` (asserts both
+  defaults are absolute and CWD-independent).
+
 ### Added
 
 - **Differential-harness scenarios `position_transitions`, `look_direction`,

@@ -11,7 +11,14 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Configuration for servers
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///mud.db")
+#
+# Anchor the default SQLite path to the repo root rather than leaving it
+# relative — a relative "sqlite:///mud.db" resolves against the process's
+# CWD at import time, so launching the server from a different directory
+# silently opens/creates a different database file (characters created in
+# one run become invisible on the next if the effective CWD differs).
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{_REPO_ROOT / 'mud.db'}")
 PORT = int(os.getenv("PORT", 5001))
 HOST = os.getenv("HOST", "0.0.0.0")
 
@@ -129,7 +136,7 @@ class QuickmudConfig:
     ip_address: str = "0.0.0.0"
 
 
-_CONFIG_PATH = Path(__file__).resolve().parent.parent / "area" / "qmconfig.rc"
+_CONFIG_PATH = _REPO_ROOT / "area" / "qmconfig.rc"
 _STATE = QuickmudConfig()
 
 

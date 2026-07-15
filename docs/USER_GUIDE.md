@@ -529,7 +529,7 @@ MUD_HOST=0.0.0.0
 MUD_PORT=4000
 
 # Database
-DATABASE_URL=sqlite:///quickmud.db
+DATABASE_URL=sqlite:///mud.db
 
 # Game settings
 MAX_PLAYERS=100
