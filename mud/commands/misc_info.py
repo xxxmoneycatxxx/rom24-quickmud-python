@@ -206,10 +206,13 @@ def do_skills(char: Character, args: str) -> str:
         pct = int(learned.get(name, 0) or 0)
         if pct <= 0:
             continue
+        # i18n: translate skill name for display.
+        from mud.i18n import translate_skill_name
+        display_name = translate_skill_name(name)
         if level < skill_lvl:
-            entry = f"{name:<18} n/a      "
+            entry = f"{display_name:<18} n/a      "
         else:
-            entry = f"{name:<18} {pct:3d}%      "
+            entry = f"{display_name:<18} {pct:3d}%      "
         rows_by_level.setdefault(skill_lvl, []).append(entry)
 
     if not rows_by_level:
@@ -254,12 +257,15 @@ def do_spells(char: Character, args: str) -> str:
         pct = int(learned.get(name, 0) or 0)
         if pct <= 0:
             continue
+        # i18n: translate spell name for display.
+        from mud.i18n import translate_skill_name
+        display_name = translate_skill_name(name)
         if level < spell_lvl:
-            entry = f"{name:<18} n/a      "
+            entry = f"{display_name:<18} n/a      "
         else:
             min_mana = int(getattr(skill, "min_mana", 0) or 0)
             mana = max(min_mana, 100 // (2 + level - spell_lvl))
-            entry = f"{name:<18}  {mana:3d} mana  "
+            entry = f"{display_name:<18}  {mana:3d} mana  "
         rows_by_level.setdefault(spell_lvl, []).append(entry)
 
     if not rows_by_level:

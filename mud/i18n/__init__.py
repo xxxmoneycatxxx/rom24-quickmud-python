@@ -311,6 +311,19 @@ def translate_mob(vnum: int, field: str, default: str) -> str:
     return default
 
 
+def translate_skill_name(name: str) -> str:
+    """Translate a skill/spell name to the active language.
+
+    The ``skills`` section maps English name to translated name.
+    Returns *name* unchanged if no translation is available.
+    """
+    if not is_translated():
+        return name
+    _ensure_loaded()
+    skills = _table.get("skills", {})
+    return skills.get(name, name)
+
+
 # ---------------------------------------------------------------------------
 # Internal helpers
 # ---------------------------------------------------------------------------
