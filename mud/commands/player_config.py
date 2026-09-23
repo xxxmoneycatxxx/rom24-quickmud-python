@@ -188,6 +188,46 @@ def do_delet(char: Character, args: str) -> str:
     return "You must type the full command to delete yourself."
 
 
+def do_language(char: Character, args: str) -> str:
+    """
+    Show or change player's language preference.
+
+    Usage: language [en|zh]
+
+    - No args: show current language
+    - 'en': switch to English
+    - 'zh': switch to Chinese (中文)
+
+    Note: stores preference in pcdata.language for persistence.  The
+    server-wide default language is set via set_language() at startup;
+    per-player routing at the message delivery chokepoints is a future
+    enhancement.
+    """
+    if getattr(char, "is_npc", False):
+        return ""
+
+    pcdata = getattr(char, "pcdata", None)
+    arg = (args or "").strip().lower()
+
+    if not arg:
+        # Show current language preference
+        current = getattr(pcdata, "language", "en") if pcdata else "en"
+        lang_name = "中文 (Chinese)" if current == "zh" else "English"
+        return f"Current language: {lang_name}"
+
+    if arg in ("en", "english"):
+        if pcdata is not None:
+            pcdata.language = "en"
+        return "Language set to English."
+
+    if arg in ("zh", "chinese", "中文"):
+        if pcdata is not None:
+            pcdata.language = "zh"
+        return "语言已设置为中文。"
+
+    return "Usage: language [en|zh]"
+
+
 # Helper functions
 
 

@@ -1,0 +1,1850 @@
+{
+  "_meta": {
+    "language": "zh",
+    "name": "简体中文",
+    "version": "0.1.0",
+    "description": "QuickMUD 中文翻译 — 初始版本"
+  },
+  "pronouns": {
+    "subject": {
+      "male": "他",
+      "female": "她",
+      "none": "它"
+    },
+    "object": {
+      "male": "他",
+      "female": "她",
+      "none": "它"
+    },
+    "possessive": {
+      "male": "他的",
+      "female": "她的",
+      "none": "它的"
+    },
+    "reflexive": {
+      "male": "他自己",
+      "female": "她自己",
+      "none": "它自己"
+    }
+  },
+  "directions": {
+    "north": "北",
+    "south": "南",
+    "east": "东",
+    "west": "西",
+    "up": "上",
+    "down": "下",
+    "north-east": "东北",
+    "north-west": "西北",
+    "south-east": "东南",
+    "south-west": "西南"
+  },
+  "exits": {
+    "north": "北",
+    "south": "南",
+    "east": "东",
+    "west": "西",
+    "up": "上",
+    "down": "下"
+  },
+  "messages": {
+    "Huh?": "啊？",
+    "What?": "什么？",
+    "You are nowhere!": "你身处虚空之中。",
+    "You are in an unknown area.": "你在一个未知的区域。",
+    "You're totally frozen!": "你被完全冻住了！",
+    "Lie still; you are DEAD.": "躺好；你已经死了。",
+    "You are hurt far too bad for that.": "你伤得太重了，做不了那个。",
+    "You are too stunned to do that.": "你被击晕了，做不了那个。",
+    "In your dreams, or what?": "做梦去吧。",
+    "Nah... You feel too relaxed...": "算了……你感觉太放松了……",
+    "Better stand up first.": "最好先站起来。",
+    "No way!  You are still fighting!": "不行！你还在战斗中！",
+    "You can't do that right now.": "你现在不能那样做。",
+    "Kill whom?": "杀谁？",
+    "You aren't fighting anyone.": "你没有在和任何人战斗。",
+    "You hit yourself. Ouch!": "你打到了自己。好痛！",
+    "You flee from combat!": "你从战斗中逃跑了！",
+    "You are DEAD.": "你死了。",
+    "Wear, wield, or hold what?": "穿戴、持握或拿着什么？",
+    "You do not have that item.": "你没有那个物品。",
+    "You are already wearing that.": "你已经穿着那个了。",
+    "Nothing.": "空。",
+    "You are floating in a void...": "你漂浮在虚空之中……",
+    "You do not have permission to use this command.": "你没有权限使用这个命令。",
+    "They aren't here.": "他们不在这里。",
+    "You are anti-social!": "你被禁言了！",
+    "Alas, all good things must come to an end.": "唉，天下没有不散的筵席。",
+    "Players found: ": "找到玩家：",
+    "Players near you:": "附近的玩家：",
+    "None": "无",
+    "Exits:": "出口：",
+    "None.": "无。",
+    "Obvious exits:": "明显的出口：",
+    "You are carrying:": "你正携带：",
+    "You are not carrying anything.": "你什么都没带。",
+    "You are not equipped with anything.": "你什么都没装备。",
+    "You are equipped with:": "你的装备：",
+    "You eat it. Yum!": "你吃了它。真好吃！",
+    "You drink from the container.": "你从容器中喝了一口。",
+    "That's not a valid race, class, or clan.": "那不是有效的种族、职业或氏族。",
+    "Only two level numbers allowed.": "最多只能指定两个等级数字。",
+    "Area Name                             Recommended Levels": "区域名称                              推荐等级",
+    "You don't have that much gold.": "你没有那么多金币。",
+    "You can't carry that much weight.": "你 carry 不了那么重的东西。",
+    "You are zapped by the item and drop it.": "你被物品电击了一下，把它掉在了地上。",
+    "-- movement --": "-- 移动 --",
+    "Nope, can't do it.": "不行，做不到。",
+    "Something prevents you from leaving...": "有什么东西阻止了你离开……",
+    "You can't seem to find a way in.": "你似乎找不到进去的路。",
+    "You don't see that here.": "你在这里没看到那个。",
+    "-- inspection --": "-- 观察 --",
+    "Obvious exits: none.": "明显的出口：无。",
+    "Which way do you want to scan?": "你想扫描哪个方向？",
+    "You can't see a thing!": "你什么也看不见！",
+    "You see nothing.": "你什么也没看到。",
+    "-- session --": "-- 状态/退出 --",
+    "Alas, all good things must come to an end.\n": "唉，天下没有不散的筵席。\n",
+    "Mota has forsaken you.": "Mota 抛弃了你。",
+    "NPCs cannot save.": "NPC 无法存档。",
+    "No way! You are fighting.": "不行！你还在战斗中。",
+    "Only players can recall.": "只有玩家才能传送回城。",
+    "Saving. Remember that ROM has automatic saving now.": "正在存档。请记住 ROM 现在会自动存档。",
+    "You are completely lost.": "你完全迷路了。",
+    "You failed!.": "你失败了！",
+    "You're not DEAD yet.": "你还没死呢。",
+    "-- inventory --": "-- 物品栏 --",
+    "     Nothing.\n": "     空。\n",
+    "Don't be so greedy!": "别那么贪心！",
+    "Drop what?": "放下什么？",
+    "Find it yourself!\n\r": "自己找！\n\r",
+    "Get what?": "捡起什么？",
+    "I see nothing here.": "我在这里什么也没看到。",
+    "Nothing.\n": "空。\n",
+    "OK.": "好的。",
+    "Sorry, you can't do that.": "抱歉，你不能那样做。",
+    "That's not a container.": "那不是容器。",
+    "You can't do that here.": "你不能在这里那样做。",
+    "You can't do that.": "你不能那样做。",
+    "You can't let go of it.": "你无法松开它。",
+    "You don't have that much silver.": "你没有那么多银币。",
+    "You have been equipped by Mota.\n\r": "Mota 已经为你装备好了。\n\r",
+    "You're not anywhere.": "你哪里也不在。",
+    "-- doors --": "-- 门/锁 --",
+    "*Click*": "*咔哒*",
+    "Close what?": "关什么？",
+    "It can't be locked.": "它无法被锁上。",
+    "It can't be picked.": "它无法被撬开。",
+    "It can't be unlocked.": "它无法被解锁。",
+    "It's already closed.": "它已经关着了。",
+    "It's already locked.": "它已经锁着了。",
+    "It's already open.": "它已经开着了。",
+    "It's already unlocked.": "它已经没锁。",
+    "It's locked.": "它锁着。",
+    "It's not closed.": "它没关。",
+    "Lock what?": "锁什么？",
+    "Open what?": "开什么？",
+    "Pick what?": "撬什么？",
+    "Unlock what?": "解什么？",
+    "You don't know how to pick locks.": "你不会撬锁。",
+    "You failed.": "你失败了。",
+    "You lack the key.": "你缺少钥匙。",
+    "-- combat --": "-- 战斗 --",
+    "Backstab whom?": "暗算谁？",
+    "Bashing? What's that?": "猛击？那是什么？",
+    "But you aren't fighting anyone!": "但你没在和任何人战斗！",
+    "But you aren't in combat!": "但你不在战斗中！",
+    "But you're not fighting!\n\r": "但你没在战斗！\n\r",
+    "Cast the spell on whom or what?": "对谁或什么施法？",
+    "Cast the spell on whom?": "对谁施法？",
+    "Cast which what where?": "施什么法在哪里？",
+    "Doesn't need your help!": "不需要你的帮助！",
+    "How can you sneak up on yourself?": "你怎么能暗算自己？",
+    "I don't think Mota would approve.": "我不认为 Mota 会同意。",
+    "Join a clan if you want to kill players.": "如果你想杀玩家，加入一个氏族吧。",
+    "Kill stealing is not permitted.": "不允许抢杀。",
+    "Not in this room.": "不在这个房间里。",
+    "Not on that target.": "不能对那个目标。",
+    "PANIC! You couldn't escape!": "恐慌！你没能逃脱！",
+    "Pick on someone your own size.": "找个和你差不多大的。",
+    "Players are your friends!": "玩家是你的朋友！",
+    "Rescue whom?": "救谁？",
+    "That person is not fighting right now.": "那个人现在没在战斗。",
+    "The shopkeeper wouldn't like that.": "店主不会喜欢的。",
+    "They aren't in a clan, leave them alone.": "他们不在氏族里，别管他们。",
+    "Too late.": "太迟了。",
+    "Tripping?  What's that?": "绊倒？那是什么？",
+    "Very funny.": "真有趣。",
+    "What about fleeing instead?": "不如逃跑怎么样？",
+    "What should the spell be cast upon?": "法术应该施放在什么上？",
+    "You are not carrying that.": "你没带着那个。",
+    "You are nowhere.": "你哪里也不在。",
+    "You are still recovering.": "你还在恢复中。",
+    "You better leave the martial arts to fighters.": "你最好把武术留给战士。",
+    "You can't concentrate enough.": "你无法足够集中注意力。",
+    "You can't do that on your own follower.": "你不能对自己的跟随者那样做。",
+    "You can't get up enough energy.": "你无法聚集足够的能量。",
+    "You do the best you can!": "你尽了最大努力！",
+    "You don't have enough mana.": "你没有足够的法力。",
+    "You don't know any spells of that name.": "你不知道叫那个名字的法术。",
+    "You don't know how to backstab.": "你不会暗算。",
+    "You don't know how to disarm opponents.": "你不会缴械。",
+    "You don't own that monster.": "你不拥有那个怪物。",
+    "You fail the rescue.": "你救援失败了。",
+    "You get a little madder.": "你变得更愤怒了一点。",
+    "You get your feet dirty.": "你弄脏了你的脚。",
+    "You hit yourself.  Ouch!": "你打到了自己。好痛！",
+    "You lost your concentration.": "你失去了专注。",
+    "You must wield a weapon to disarm.": "你必须挥舞武器才能缴械。",
+    "You need to wield a weapon to backstab.": "你需要挥舞武器才能暗算。",
+    "You try to bash your brains out, but fail.": "你试图猛击自己的脑袋，但失败了。",
+    "You turn red in the face, but nothing happens.": "你脸都红了，但什么也没发生。",
+    "You're facing the wrong end.": "你面对的方向不对。",
+    "You're feeling too mellow to berserk.": "你感觉太温和了，无法狂暴。",
+    "Your opponent is not wielding a weapon.": "你的对手没有挥舞武器。",
+    "-- equipment --": "-- 装备 --",
+    "It is too heavy for you to wield.": "它太重了，你挥舞不动。",
+    "You already wear two neck items.": "你已经戴了两件颈部物品。",
+    "You already wear two rings.": "你已经戴了两枚戒指。",
+    "You already wear two wrist items.": "你已经戴了两件手腕物品。",
+    "You can't wear that.": "你无法穿戴那个。",
+    "You have nothing else to wear.": "你没有别的可穿的了。",
+    "You need two hands free for that weapon.": "那个武器需要你腾出双手。",
+    "Your hands are tied up with your weapon!": "你的双手被武器占住了！",
+    "-- consumption --": "-- 吃喝 --",
+    "Drink what?": "喝什么？",
+    "Eat what?": "吃什么？",
+    "It is already empty.": "它已经空了。",
+    "That's not edible.": "那不能吃。",
+    "You are too full to eat more.": "你太饱了，吃不下了。",
+    "You can't drink from that.": "你不能从那个喝。",
+    "You can't find it.": "你找不到它。",
+    "You fail to reach your mouth.  *Hic*": "你没够到嘴。*嗝*",
+    "You're too full to drink more.": "你太饱了，喝不下了。",
+    "-- alignment descriptions --": "-- 阵营描述 --",
+    "angelic.": "天使般的。",
+    "demonic.": "恶魔般的。",
+    "evil.": "邪恶的。",
+    "good.": "善良的。",
+    "kind.": "仁慈的。",
+    "mean.": "卑鄙的。",
+    "neutral.": "中立的。",
+    "saintly.": "神圣的。",
+    "satanic.": "撒旦般的。",
+    "-- shop --": "-- 商店 --",
+    "Buy what?": "买什么？",
+    "Sell what?": "卖什么？",
+    "Value what?": "估价什么？",
+    "You can't afford it.": "你买不起。",
+    "You can't buy anything here.": "你不能在这里买东西。",
+    "You can't carry that many items.": "你 carry 不了那么多物品。",
+    "You don't have that.": "你没有那个。",
+    "Sorry, you can't buy that here.": "抱歉，你不能在这里买那个。",
+    "The shopkeeper doesn't have that many in stock.": "店主没有那么多库存。",
+    "You already own a pet.": "你已经有一只宠物了。",
+    "Sorry, we're out of pets right now.": "抱歉，我们现在没有宠物了。",
+    "You're not powerful enough to master this pet.": "你不够强大，无法驯服这只宠物。",
+    "Pets for sale.\n": "出售宠物。\n",
+    "-- advancement --": "-- 进阶 --",
+    "Train what?": "训练什么？",
+    "You can't practice that.": "你无法练习那个。",
+    "You don't have enough training sessions.": "你没有足够的训练次数。",
+    "You have no practice sessions left.": "你没有剩余的练习次数了。",
+    "Your durability increases!": "你的耐久力提升了！",
+    "Your power increases!": "你的力量提升了！",
+    "-- position --": "-- 姿势 --",
+    "Maybe you should finish fighting first?\r\n": "也许你应该先结束战斗？\r\n",
+    "Maybe you should finish this fight first?\r\n": "也许你应该先结束这场战斗？\r\n",
+    "You are already fighting!\r\n": "你已经在战斗了！\r\n",
+    "You are already resting.\r\n": "你已经在休息了。\r\n",
+    "You are already sitting down.\r\n": "你已经坐下了。\r\n",
+    "You are already sleeping.\r\n": "你已经睡着了了。\r\n",
+    "You are already standing.\r\n": "你已经站着了。\r\n",
+    "You are asleep yourself!\r\n": "你自己还睡着呢！\r\n",
+    "You can't rest on that.\r\n": "你不能在那个上面休息。\r\n",
+    "You can't seem to find a place to stand.\r\n": "你似乎找不到站立的地方。\r\n",
+    "You can't sit on that.\r\n": "你不能坐在那个上面。\r\n",
+    "You can't sleep on that!\r\n": "你不能在那个上面睡觉！\r\n",
+    "You can't wake up!\r\n": "你醒不了！\r\n",
+    "You go to sleep.\r\n": "你睡着了。\r\n",
+    "You rest.\r\n": "你休息。\r\n",
+    "You sit down.\r\n": "你坐下。\r\n",
+    "You stand up.\r\n": "你站起来。\r\n",
+    "You stop resting.\r\n": "你停止休息。\r\n",
+    "You wake and sit up.\r\n": "你醒来坐了起来。\r\n",
+    "You wake up and start resting.\r\n": "你醒来开始休息。\r\n",
+    "-- communication --": "-- 交流 --",
+    "Say what?": "说什么？",
+    "Tell whom what?": "对谁说什麼？",
+    "Yell what?": "喊什么？",
+    "Emote what?": "表情什么？",
+    "Moron!": "笨蛋！",
+    "They aren't listening.": "他们没在听。",
+    "You aren't an immortal.": "你不是不朽者。",
+    "You aren't in a clan.": "你不在氏族中。",
+    "You can't shout.": "你不能大喊。",
+    "You can't yell.": "你不能喊。",
+    "You can't show your emotions.": "你不能表达情感。",
+    "You must turn off quiet mode first.": "你必须先关闭安静模式。",
+    "You tell yourself nothing new.": "你告诉自己没有什么新东西。",
+    "Your message didn't get through.": "你的消息没有送达。",
+    "Reply to whom with what?": "回复谁什么？",
+    "The gods have revoked your channel priviliges.": "神明已经撤销了你的频道权限。",
+    "Gossip channel is now OFF.": "闲聊频道已关闭。",
+    "Gossip channel is now ON.": "闲聊频道已开启。",
+    "Music channel is now OFF.": "音乐频道已关闭。",
+    "Music channel is now ON.": "音乐频道已开启。",
+    "Grats channel is now OFF.": "祝贺频道已关闭。",
+    "Grats channel is now ON.": "祝贺频道已开启。",
+    "Clan channel is now OFF.": "氏族频道已关闭。",
+    "Clan channel is now ON.": "氏族频道已开启。",
+    "Immortal channel is now OFF.": "不朽者频道已关闭。",
+    "Immortal channel is now ON.": "不朽者频道已开启。",
+    "Q/A channel is now OFF.": "问答频道已关闭。",
+    "Q/A channel is now ON.": "问答频道已开启。",
+    "You are banned from gossip.": "你被禁止使用闲聊频道。",
+    "You are banned from tell.": "你被禁止使用私聊。",
+    "You are banned from shout.": "你被禁止大喊。",
+    "You are banned from auction.": "你被禁止使用拍卖频道。",
+    "You are banned from clan.": "你被禁止使用氏族频道。",
+    "You are banned from grats.": "你被禁止使用祝贺频道。",
+    "You are banned from immtalk.": "你被禁止使用不朽者频道。",
+    "You are banned from music.": "你被禁止使用音乐频道。",
+    "You are banned from question.": "你被禁止使用提问频道。",
+    "You are banned from answer.": "你被禁止使用回答频道。",
+    "You are banned from quote.": "你被禁止使用引用频道。",
+    "You can hear shouts again.": "你又可以看到喊话了。",
+    "You will no longer hear shouts.": "你将不再看到喊话。",
+    "{aAuction channel is now OFF.{x": "{a拍卖频道已关闭。{x",
+    "{aAuction channel is now ON.{x": "{a拍卖频道已开启。{x",
+    "{hQuote channel is now OFF.{x": "{h引用频道已关闭。{x",
+    "{hQuote channel is now ON.{x": "{h引用频道已开启。{x",
+    "-- give --": "-- 给予 --",
+    "Give what to whom?": "把什么给谁？",
+    "You haven't got that much.": "你没有那么多。",
+    "-- group --": "-- 组队 --",
+    "???": "？？？",
+    "Aye aye, right away!": "遵命，马上执行！",
+    "But you are following someone else!": "但你在跟随别人！",
+    "Do it yourself!": "你自己做！",
+    "Don't even bother, cheapskate.": "别费心了，小气鬼。",
+    "Follow whom?": "跟随谁？",
+    "Just keep it all.": "全都留着吧。",
+    "Order whom to do what?": "命令谁做什么？",
+    "Split how much?": "分多少？",
+    "Tell your group what?": "对团队说什么？",
+    "That will NOT be done.": "那不会完成的。",
+    "You already follow yourself.": "你已经在跟随自己了。",
+    "You can't remove charmed mobs mobs from your group.": "你无法从团队中移除被魅惑的怪物。",
+    "You don't have that much to split.": "你没那么多可分的。",
+    "You feel like taking, not giving, orders.": "你感觉想发号施令，而不是听令。",
+    "You hand out zero coins, but no one notices.": "你分出零个金币，但没人注意到。",
+    "You have no followers here.": "你这里没有跟随者。",
+    "Your group wouldn't like that.": "你的团队不会喜欢的。",
+    "Your message didn't get through!": "你的消息没有送达！",
+    "-- liquids --": "-- 液体 --",
+    "Empty what?": "倒空什么？",
+    "Fill what?": "装满什么？",
+    "It's already empty.": "它已经空了。",
+    "Pour into what?": "倒入什么？",
+    "Pour what into what?": "把什么倒入什么？",
+    "That's not a drink container.": "那不是饮水容器。",
+    "There is already another liquid in it.": "里面已经有另一种液体了。",
+    "There is no fountain here!": "这里没有喷泉！",
+    "They aren't holding anything.": "他们没拿着任何东西。",
+    "They don't hold the same liquid.": "他们拿的不是同一种液体。",
+    "You can only pour into other drink containers.": "你只能倒入其他饮水容器。",
+    "You can't fill that.": "你无法装满那个。",
+    "You cannot change the laws of physics!": "你无法改变物理定律！",
+    "Your container is full.": "你的容器满了。",
+    "-- magic items --": "-- 魔法物品 --",
+    "This scroll is too complex for you to comprehend.": "这个卷轴太复杂了，你无法理解。",
+    "You can brandish only with a staff.": "你只能挥舞法杖。",
+    "You can recite only scrolls.": "你只能念卷轴。",
+    "You can zap only with a wand.": "你只能用魔杖施放。",
+    "You do not have that scroll.": "你没有那个卷轴。",
+    "-- obj manipulation --": "-- 物品操作 --",
+    "You can't put that in there!": "你无法把那个放进去！",
+    "-- thief skills --": "-- 盗贼技能 --",
+    "You attempt to move silently.": "你试图悄悄移动。",
+    "Steal what from whom?\n": "从谁那里偷什么？\n",
+    "That's pointless.\n": "那毫无意义。\n",
+    "Kill stealing is not permitted.\nYou'd better not -- you might get hit.\n": "不允许抢杀。\n你最好不要——否则你可能会被打。\n",
+    "Oops.\n": "哎呀。\n",
+    "You couldn't get any coins.\n": "你没拿到任何金币。\n",
+    "You can't find it.\n": "你找不到它。\n",
+    "You can't pry it away.\n": "你无法撬开它。\n",
+    "You have your hands full.\n": "你双手都满了。\n",
+    "-- info --": "-- 信息 --",
+    "No skills found.": "没找到技能。",
+    "No socials found.": "没找到社交动作。",
+    "No spells found.": "没找到法术。",
+    "There is no rent here. Just save and quit.": "这里不能租房。直接存档退出吧。",
+    "-- misc player --": "-- 杂项玩家 --",
+    "AFK mode removed. Type 'replay' to see tells.": "离开模式已取消。输入 'replay' 查看私聊。",
+    "NPCs can't read notes.": "NPC 不能看笔记。",
+    "NPCs don't have configurations.": "NPC 没有配置。",
+    "Peek at whom?": "偷看谁？",
+    "Permit whom to follow you?": "允许谁跟随你？",
+    "There are no note boards.": "没有笔记板。",
+    "Unread notes:\n": "未读笔记：\n",
+    "Why peek at yourself? Use 'inventory'.": "为什么偷看自己？用 'inventory'。",
+    "You are now in AFK mode.": "你现在处于离开模式。",
+    "You can't permit yourself.": "你不能允许自己。",
+    "You can't replay.": "你无法回放。",
+    "You don't know how to peek.": "你不会偷看。",
+    "You fail to get a good look.": "你没看清。",
+    "You have no tells to replay.": "你没有可回放的私聊。",
+    "You have no unread notes.": "你没有未读笔记。",
+    "You're not in a room.": "你不在房间里。",
+    "-- alias --": "-- 别名 --",
+    "Alias removed.\n\r": "别名已删除。\n\r",
+    "No alias of that name to remove.\n\r": "没有那个名称的别名可删除。\n\r",
+    "Prefix removed.": "前缀已清除。",
+    "Sorry, that word is reserved.\n\r": "抱歉，那个词是保留的。\n\r",
+    "Sorry, you have reached the alias limit.\n\r": "抱歉，你已达到别名上限。\n\r",
+    "That alias is not defined.\n\r": "那个别名未定义。\n\r",
+    "That shall not be done!\n\r": "那不能做！\n\r",
+    "The word to be aliased should not contain a space, a tick or a double-quote.\n\r": "别名不能包含空格、单引号或双引号。\n\r",
+    "Unalias what?\n\r": "删除什么别名？\n\r",
+    "You cannot abbreviate the prefix command.": "你不能缩写前缀命令。",
+    "You have no aliases defined.\n\r": "你没有定义任何别名。\n\r",
+    "You have no prefix to clear.": "你没有可清除的前缀。",
+    "-- healer --": "-- 治疗师 --",
+    "A warm glow passes through you.": "一股温暖的光芒穿过你。",
+    "-- consider --": "-- 考虑 --",
+    "Consider killing whom?": "考虑杀谁？",
+    "They're not here.": "他们不在这里。",
+    "-- compare --": "-- 比较 --",
+    "Compare what to what?": "拿什么和什么比较？",
+    "You aren't wearing anything comparable.": "你没穿着可比较的东西。",
+    "-- character --": "-- 角色 --",
+    "Change your title to what?": "把头衔改成什么？",
+    "Description cleared.": "描述已清除。",
+    "Description too long.": "描述太长了。",
+    "Error: No character data.": "错误：没有角色数据。",
+    "Error: No password set.": "错误：没有设置密码。",
+    "New password must be at least five characters long.": "新密码必须至少五个字符。",
+    "New password not acceptable, try again.": "新密码不可接受，请重试。",
+    "No lines left to remove.": "没有可删除的行。",
+    "Syntax: password <old> <new>.": "语法：password <旧密码> <新密码>。",
+    "Wrong password.  Wait 10 seconds.": "密码错误。请等待 10 秒。",
+    "Your description is:\n(None).": "你的描述是：\n（无）。",
+    "-- feedback --": "-- 反馈 --",
+    "Please include a description.": "请附上描述。",
+    "Thank you, your feedback has been recorded.": "谢谢，你的反馈已记录。",
+    "-- player config --": "-- 玩家配置 --",
+    "Delete status removed.": "删除状态已取消。",
+    "Just type delete. No argument.": "直接输入 delete。不带参数。",
+    "You are no longer immune to summon.": "你不再免疫召唤了。",
+    "You are now immune to summoning.": "你现在免疫召唤了。",
+    "You must type the full command to delete yourself.": "你必须输入完整命令来删除自己。",
+    "You no longer accept followers.": "你不再接受跟随者。",
+    "You now accept followers.": "你现在接受跟随者。",
+    "Your corpse is now safe from thieves.": "你的尸体现在不会被偷了。",
+    "Your corpse may now be looted.": "你的尸体现在可能被搜刮了。",
+    "-- player info --": "-- 玩家信息 --",
+    "Affects will no longer be shown in score.": "状态效果将不再在状态中显示。",
+    "Affects will now be shown in score.": "状态效果现在将在状态中显示。",
+    "Coming right up.": "马上来。",
+    "Paging disabled.": "分页已禁用。",
+    "Play what?": "播放什么？",
+    "That song isn't available.": "那首歌不可用。",
+    "The jukebox is full up right now.": "点唱机现在满了。",
+    "You do not page long messages.": "你不分页显示长消息。",
+    "You must provide a number.": "你必须提供一个数字。",
+    "You must provide a reasonable number.": "你必须提供一个合理的数字。",
+    "You see nothing to play.": "你没看到可播放的东西。",
+    "-- murder --": "-- 谋杀 --",
+    "Murder whom?": "谋杀谁？",
+    "Suicide is a mortal sin.": "自杀是凡人的罪孽。",
+    "-- remaining --": "-- 其他 --",
+    "Comm can't be set on NPCs.": "NPC 无法设置通讯。",
+    "First argument must be 'mob' or 'char'.": "第一个参数必须是 'mob' 或 'char'。",
+    "Form can't be set on PCs.": "PC 无法设置形态。",
+    "From now on, you will only hear says and emotes.": "从现在起，你只能听到说话和表情。",
+    "From now on, you won't hear tells.": "从现在起，你不会听到私聊了。",
+    "No group of that name exists.\nType 'groups all' for a full listing.": "没有那个名称的组。\n输入 'groups all' 查看完整列表。",
+    "No such clan exists.\n\r": "没有那个氏族。\n\r",
+    "Parts can't be set on PCs.": "PC 无法设置部件。",
+    "QMConfig settings can be viewed with 'qmconfig' command.": "QMConfig 设置可以用 'qmconfig' 命令查看。",
+    "Quiet mode removed.": "安静模式已取消。",
+    "Such cowardice ill becomes you.": "这种怯懦不适合你。",
+    "That flag doesn't exist!": "那个标志不存在！",
+    "That's not an acceptable flag.": "那不是可接受的标志。",
+    "They are now clanless.\n\r": "他们现在没有氏族了。\n\r",
+    "They aren't playing.\n\r": "他们没在玩。\n\r",
+    "Use 'act' for NPCs.": "NPC 请使用 'act'。",
+    "Use 'plr' for PCs.": "PC 请使用 'plr'。",
+    "Which flags do you wish to change?": "你想改哪些标志？",
+    "You can now hear tells again.": "你又可以看到私聊了。",
+    "You can't find them.": "你找不到他们。",
+    "Your courage exceeds your wisdom.": "你的勇气超过了智慧。",
+    "-- typo guards --": "-- 拼写保护 --",
+    "I'm sorry, alias must be entered in full.\n\r": "抱歉，别名必须完整输入。\n\r",
+    "If you want to MURDER, spell it out.": "如果你想 MURDER，请完整拼写。",
+    "If you want to QUIT, you have to spell it out.": "如果你想 QUIT，请完整拼写。",
+    "If you want to REBOOT, spell it out.": "如果你想 REBOOT，请完整拼写。",
+    "If you want to SHUTDOWN, spell it out.": "如果你想 SHUTDOWN，请完整拼写。",
+    "-- skill wear_off --": "-- 技能消退 --",
+    "You feel less armored.": "你感觉护甲消退了。",
+    "You feel less righteous.": "你感觉祝福消退了。",
+    "You can see again.": "你又能看见了。",
+    "You feel less protected.": "你感觉保护消退了。",
+    "You feel less aware of your surroundings.": "你感觉对周围的感知减弱了。",
+    "You are no longer invisible.": "你不再隐身了。",
+    "You feel solid again.": "你感觉身体重新变得实体化。",
+    "You feel weaker.": "你感觉变弱了。",
+    "You feel stronger.": "你感觉变强了。",
+    "You feel more self-confident.": "你感觉更加自信了。",
+    "You slowly float to the ground.": "你缓缓落到地面。",
+    "You feel yourself slow down.": "你感觉自己慢了下来。",
+    "You feel yourself speed up.": "你感觉自己快了起来。",
+    "You feel less cold.": "你感觉不那么冷了。",
+    "You feel less sick.": "你感觉不那么难受了。",
+    "You feel less tired.": "你感觉不那么累了。",
+    "You no longer feel stealthy.": "你感觉潜行状态消失了。",
+    "You no longer see in the dark.": "你无法在黑暗中视物了。",
+    "You no longer see invisible objects.": "你无法再看见隐形物体了。",
+    "The detect magic wears off.": "侦测魔法效果消退了。",
+    "The curse wears off.": "诅咒效果消退了。",
+    "The pink aura around you fades away.": "你周围的粉色光环消散了。",
+    "The white aura around your body fades.": "你身体的白色光环消散了。",
+    "Your force shield shimmers then fades away.": "你的力量护盾闪烁了一下然后消散了。",
+    "The gold in your vision disappears.": "你视觉中的金色消失了。",
+    "The red in your vision disappears.": "你视觉中的红色消失了。",
+    "The smoke leaves your eyes.": "烟雾从你眼中散去。",
+    "You rub the dirt out of your eyes.": "你揉出了眼中的灰尘。",
+    "Your rage ebbs.": "你的怒气消退了。",
+    "You have lost your peace of mind.": "你失去了内心的平静。",
+    "Your body feels familiar again.": "你的身体重新变得熟悉。",
+    "Your skin feels soft again.": "你的皮肤重新变得柔软。",
+    "Your sores vanish.": "你的伤口消失了。",
+    "You feel your pulse slow down.": "你感觉脉搏慢了下来。",
+    "Meditation": "冥想",
+    "-- skill object messages --": "-- 技能物品消息 --",
+    "$p fades into view.": "$p 渐渐显现。",
+    "$p is no longer impure.": "$p 不再不洁了。",
+    "$p's holy aura fades.": "$p 的神圣光环消散了。",
+    "$p's protective aura fades.": "$p 的保护光环消散了。",
+    "The poison on $p dries up.": "$p 上的毒药干了。",
+    "-- connection: login flow --": "-- 连接：登录流程 --",
+    "Do you want ANSI? (Y/n) ": "你是否需要 ANSI 颜色？(Y/n) ",
+    "Please answer Y or N.": "请回答 Y 或 N。",
+    "Name: ": "名字：",
+    "Password: ": "密码：",
+    "Illegal name, try another.": "非法名字，请换一个。",
+    "This character is already playing. Reconnect? (Y/N) ": "该角色正在游戏中。重新连接？(Y/N) ",
+    "Ok, please choose another name.": "好的，请另选一个名字。",
+    "Wrong password.": "密码错误。",
+    "Reconnect failed.": "重新连接失败。",
+    "The game is wizlocked.": "游戏已锁定(wizlocked)。",
+    "The game is newlocked.": "游戏已锁定(newlocked)。",
+    "You are denied access.": "你被拒绝访问。",
+    "Your site has been banned from this mud.": "你的站点已被禁止访问本MUD。",
+    "New players are not allowed from your site.": "你的站点不允许新玩家。",
+    "Login failed.": "登录失败。",
+    "Character creation is unavailable right now.": "当前无法创建角色。",
+    "Ok, what IS it, then?": "那到底是什么？",
+    "New character.": "新角色。",
+    "Password must be at least five characters long.": "密码至少需要五个字符。",
+    "New password not acceptable, try again.": "新密码不可用，请重试。",
+    "Please retype password: ": "请再次输入密码：",
+    "Passwords don't match.": "密码不匹配。",
+    "Retype password: ": "重新输入密码：",
+    "[Hit Return to continue] ": "[按回车继续] ",
+    "\nWelcome to ROM 2.4.  Please don't feed the mobiles!\n": "\n欢迎来到 ROM 2.4。请不要喂食怪物！\n",
+    "You have been equipped by Mota.": "莫塔已为你配备了装备。",
+    "Reconnecting. Type replay to see missed tells.": "重新连接中。输入 replay 查看错过的消息。",
+    "What is your race (help for more information)? ": "你的种族是什么（输入 help 获取更多信息）？",
+    "What is your race? (help for more information) ": "你的种族是什么？（输入 help 获取更多信息）",
+    "Please pick a weapon from the following choices:\n\r": "请从以下武器中选择：\n\r",
+    "That character is already playing. Reconnect? (Y/N) ": "该角色正在游戏中。重新连接？(Y/N) "
+  },
+  "templates": {
+    "$n is already dead.": "$n 已经死了。",
+    "$n hits $N.": "$n 击中了 $N。",
+    "$n misses $N.": "$n 没有击中 $N。",
+    "$n hits $N hard.": "$n 重重地击中了 $N。",
+    "$n hits $N very hard.": "$n 非常重重地击中了 $N。",
+    "$n slaps $N.": "$n 扇了 $N 一巴掌。",
+    "$n slaps you.": "$n 扇了你一巴掌。",
+    "$n tries to use $p, but is too inexperienced.": "$n 试图使用 $p，但经验不足。",
+    "$n stops using $p.": "$n 停止使用 $p。",
+    "$n is zapped by $p and drops it.": "$n 被 $p 电击了一下，把它掉在了地上。",
+    "You wear $p on your feet.": "你把 $p 穿在脚上。",
+    "You wear $p on your legs.": "你把 $p 穿在腿上。",
+    "You wear $p on your body.": "你把 $p 穿在身上。",
+    "You wear $p on your head.": "你把 $p 戴在头上。",
+    "You wear $p on your hands.": "你把 $p 戴在手上。",
+    "You wear $p on your arms.": "你把 $p 戴在手臂上。",
+    "You wear $p around your neck.": "你把 $p 戴在脖子上。",
+    "You wear $p on your finger.": "你把 $p 戴在手指上。",
+    "You wear $p around your waist.": "你把 $p 系在腰上。",
+    "You wear $p on your wrist.": "你把 $p 戴在手腕上。",
+    "You hold $p in your hands.": "你手持 $p。",
+    "You wield $p.": "你挥舞着 $p。",
+    "You stop using $p.": "你停止使用 $p。",
+    "You can't remove $p.": "你无法卸下 $p。",
+    "$n wears $p on $s feet.": "$n 把 $p 穿在脚上。",
+    "$n wears $p on $s legs.": "$n 把 $p 穿在腿上。",
+    "$n wears $p on $s body.": "$n 把 $p 穿在身上。",
+    "$n wears $p on $s head.": "$n 把 $p 戴在头上。",
+    "$n wears $p on $s hands.": "$n 把 $p 戴在手上。",
+    "$n wears $p on $s arms.": "$n 把 $p 戴在手臂上。",
+    "$n wears $p around $s neck.": "$n 把 $p 戴在脖子上。",
+    "$n wears $p on $s finger.": "$n 把 $p 戴在手指上。",
+    "$n wears $p around $s waist.": "$n 把 $p 系在腰上。",
+    "$n wears $p on $s wrist.": "$n 把 $p 戴在手腕上。",
+    "$n holds $p.": "$n 手持 $p。",
+    "$n wields $p.": "$n 挥舞着 $p。",
+    "You get $p.": "你捡起了 $p。",
+    "You drop $p.": "你放下了 $p。",
+    "You give $p to $N.": "你把 $p 给了 $N。",
+    "$n gives you $p.": "$n 给了你 $p。",
+    "$n gets $p.": "$n 捡起了 $p。",
+    "$n drops $p.": "$n 放下了 $p。",
+    "You say '$T'": "你说：'$T'",
+    "$n says '$T'": "$n 说：'$T'",
+    "You tell $N '$T'": "你对 $N 说：'$T'",
+    "$n tells you '$T'": "$n 对你说：'$T'",
+    "$n is here.": "$n 在这里。",
+    "$n has arrived.": "$n 到了。",
+    "$n has left.": "$n 离开了。",
+    "$n leaves north.": "$n 向北走了。",
+    "$n leaves south.": "$n 向南走了。",
+    "$n leaves east.": "$n 向东走了。",
+    "$n leaves west.": "$n 向西走了。",
+    "$n leaves up.": "$n 向上走了。",
+    "$n leaves down.": "$n 向下走了。",
+    "$N is already awake.": "$N 已经醒了。",
+    "$n wakes you.": "$n 叫醒了你。",
+    "You can't wake $M!": "你无法叫醒 $M！",
+    "$E can't hear you.": "$E 听不到你。",
+    "$E is AFK, and not receiving tells.": "$E 离开了，无法接收私聊。",
+    "$E is AFK, but your tell will go through when $E returns.": "$E 离开了，但你的私聊会在 $E 回来时送达。",
+    "$E is not receiving tells.": "$E 不接收私聊。",
+    "$E is writing a note, but your tell will go through when $E returns.": "$E 正在写笔记，但你的私聊会在 $E 回来时送达。",
+    "$N seems to have misplaced $S link...try again later.": "$N 好像断线了……请稍后再试。",
+    "$N can't carry that much weight.": "$N 拿不了那么重的东西。",
+    "$N can't see it.": "$N 看不到它。",
+    "$N has $S hands full.": "$N 双手都满了。",
+    "$N tells you 'Sorry, you'll have to sell that.'": "$N 对你说：'抱歉，你得卖掉那个。'",
+    "$N doesn't seem to want any followers.": "$N 好像不想要任何跟随者。",
+    "$N joins your group.": "$N 加入了你的团队。",
+    "$n removes you from $s group.": "$n 把你从 $s 的团队中移除了。",
+    "But you'd rather follow $N!": "但你更想跟随 $N！",
+    "You join $n's group.": "你加入了 $n 的团队。",
+    "You remove $N from your group.": "你把 $N 从你的团队中移除了。",
+    "$N is your beloved master.": "$N 是你亲爱的主人。",
+    "But $N looks so cute and cuddly...": "但 $N 看起来好可爱……",
+    "-- socials: smile --": "-- 社交：微笑 --",
+    "You smile happily.": "你高兴地微笑。",
+    "$n smiles happily.": "$n 高兴地微笑。",
+    "You smile at $M.": "你对着 $M 微笑。",
+    "$n beams a smile at $N.": "$n 向 $N 露出笑容。",
+    "$n smiles at you.": "$n 对你微笑。",
+    "You smile at yourself.": "你对自己微笑。",
+    "$n smiles at $mself.": "$n 对自己微笑。",
+    "-- socials: laugh --": "-- 社交：笑 --",
+    "You fall down laughing.": "你笑得前仰后合。",
+    "$n falls down laughing.": "$n 笑得前仰后合。",
+    "You laugh at $N mercilessly.": "你无情地嘲笑 $N。",
+    "$n laughs at $N mercilessly.": "$n 无情地嘲笑 $N。",
+    "$n laughs at you mercilessly.  Hmmmmph.": "$n 无情地嘲笑你。哼。",
+    "You laugh at yourself.  I would, too.": "你笑自己。换我也会。",
+    "$n laughs at $mself.  Let's all join in!!!": "$n 笑自己。大家一起笑！！！",
+    "-- socials: giggle --": "-- 社交：咯咯笑 --",
+    "You giggle softly.": "你轻轻地咯咯笑。",
+    "$n giggles softly.": "$n 轻轻地咯咯笑。",
+    "You giggle at $N.": "你对着 $N 咯咯笑。",
+    "$n giggles at $N.": "$n 对着 $N 咯咯笑。",
+    "$n giggles at you.": "$n 对着你咯咯笑。",
+    "You giggle at yourself.  That's funny!": "你对着自己咯咯笑。真有趣！",
+    "$n giggles at $mself.  That's funny!": "$n 对着自己咯咯笑。真有趣！",
+    "-- socials: grin --": "-- 社交：咧嘴笑 --",
+    "You grin evilly.": "你邪恶地咧嘴笑。",
+    "$n grins evilly.": "$n 邪恶地咧嘴笑。",
+    "You grin at $N.": "你对着 $N 咧嘴笑。",
+    "$n grins at $N.": "$n 对着 $N 咧嘴笑。",
+    "$n grins at you.": "$n 对着你咧嘴笑。",
+    "You grin at yourself.  You must be crazy!": "你对着自己咧嘴笑。你肯定疯了！",
+    "$n grins at $mself.  $e must be crazy!": "$n 对着自己咧嘴笑。$e 肯定疯了！",
+    "-- socials: nod --": "-- 社交：点头 --",
+    "You nod.": "你点头。",
+    "$n nods.": "$n 点头。",
+    "You nod at $N.": "你对着 $N 点头。",
+    "$n nods at $N.": "$n 对着 $N 点头。",
+    "$n nods at you.": "$n 对你点头。",
+    "You nod to yourself.": "你对自己点头。",
+    "$n nods to $mself.": "$n 对自己点头。",
+    "-- socials: wave --": "-- 社交：挥手 --",
+    "You wave.": "你挥手。",
+    "$n waves.": "$n 挥手。",
+    "You wave at $N.": "你对着 $N 挥手。",
+    "$n waves at $N.": "$n 对着 $N 挥手。",
+    "$n waves at you.": "$n 对你挥手。",
+    "You wave to yourself.  People are watching!": "你对着自己挥手。有人在看着！",
+    "$n waves to $mself.  People are watching!": "$n 对着自己挥手。有人在看着！",
+    "-- socials: hug --": "-- 社交：拥抱 --",
+    "You hug yourself.": "你拥抱自己。",
+    "$n hugs $mself.": "$n 拥抱自己。",
+    "You give $N a big hug.": "你给 $N 一个大大的拥抱。",
+    "$n hugs $N.": "$n 拥抱 $N。",
+    "$n gives you a big hug.": "$n 给你一个大大的拥抱。",
+    "-- socials: bow --": "-- 社交：鞠躬 --",
+    "You bow deeply.": "你深深地鞠躬。",
+    "$n bows deeply.": "$n 深深地鞠躬。",
+    "You bow before $N.": "你在 $N 面前鞠躬。",
+    "$n bows before $N.": "$n 在 $N 面前鞠躬。",
+    "$n bows before you.": "$n 在你面前鞠躬。",
+    "You bow to yourself.": "你对自己鞠躬。",
+    "$n bows to $mself.": "$n 对自己鞠躬。",
+    "-- socials: sigh --": "-- 社交：叹气 --",
+    "You sigh.": "你叹气。",
+    "$n sighs.": "$n 叹气。",
+    "You sigh at $N.": "你对着 $N 叹气。",
+    "$n sighs at $N.": "$n 对着 $N 叹气。",
+    "$n sighs at you.": "$n 对着你叹气。",
+    "You sigh to yourself.": "你对自己叹气。",
+    "$n sighs to $mself.": "$n 对自己叹气。",
+    "-- socials: wink --": "-- 社交：眨眼 --",
+    "You wink suggestively.": "你暗示性地眨眼。",
+    "$n winks suggestively.": "$n 暗示性地眨眼。",
+    "You wink at $N.": "你对着 $N 眨眼。",
+    "$n winks at $N.": "$n 对着 $N 眨眼。",
+    "$n winks at you.": "$n 对你眨眼。",
+    "You wink at yourself.  You look silly!": "你对着自己眨眼。你看起来很傻！",
+    "$n winks at $mself.  $e looks silly!": "$n 对着自己眨眼。$e 看起来很傻！",
+    "-- socials: shrug --": "-- 社交：耸肩 --",
+    "You shrug.": "你耸肩。",
+    "$n shrugs.": "$n 耸肩。",
+    "You shrug at $N.": "你对着 $N 耸肩。",
+    "$n shrugs at $N.": "$n 对着 $N 耸肩。",
+    "$n shrugs at you.": "$n 对你耸肩。",
+    "You shrug to yourself.": "你对自己耸肩。",
+    "$n shrugs to $mself.": "$n 对自己耸肩。",
+    "-- socials: dance --": "-- 社交：跳舞 --",
+    "Feels silly, doesn't it?": "感觉傻傻的，不是吗？",
+    "$n dances wildly before you!": "$n 在你面前疯狂地跳舞！",
+    "You lead $M to the dancefloor.": "你领 $M 到舞池。",
+    "$n sends $N across the dancefloor.": "$n 送 $N 过舞池。",
+    "$n sends you across the dancefloor.": "$n 送你过舞池。",
+    "Eh, WHO?": "嗯，谁？",
+    "You skip and dance around by yourself.": "你独自蹦蹦跳跳地跳舞。",
+    "$n skips a light Fandango.": "$n 跳着轻快的方丹戈舞。",
+    "-- socials: cheer --": "-- 社交：欢呼 --",
+    "You cheer wildly!": "你疯狂地欢呼！",
+    "$n cheers wildly!": "$n 疯狂地欢呼！",
+    "You cheer for $N!": "你为 $N 欢呼！",
+    "$n cheers for $N!": "$n 为 $N 欢呼！",
+    "$n cheers for you!": "$n 为你欢呼！",
+    "You cheer for yourself.": "你为自己欢呼。",
+    "$n cheers for $mself... how sad.": "$n 为自己欢呼……真可悲。",
+    "-- socials: clap --": "-- 社交：鼓掌 --",
+    "You clap your hands together.": "你拍拍手。",
+    "$n shows $s approval by clapping $s hands together.": "$n 拍手表示 $s 赞同。",
+    "You clap at $S performance.": "你为 $S 表演鼓掌。",
+    "$n claps at $N's performance.": "$n 为 $N 的表演鼓掌。",
+    "$n claps at your performance.": "$n 为你的表演鼓掌。",
+    "You clap at your own performance.": "你为自己的表演鼓掌。",
+    "$n claps at $s own performance.": "$n 为 $s 自己的表演鼓掌。",
+    "-- socials: kiss --": "-- 社交：亲吻 --",
+    "Isn't there someone you want to kiss?": "你不是有想亲吻的人吗？",
+    "You kiss $M.": "你亲吻了 $M。",
+    "$n kisses $N.": "$n 亲吻了 $N。",
+    "$n kisses you.": "$n 亲吻了你。",
+    "Never around when required.": "需要的时候从不在。",
+    "All the lonely people :(": "所有孤独的人 :("
+  },
+  "patterns": [
+    {
+      "pattern": "^You must be level (\\d+) to use this object\\.$",
+      "replacement": "你必须达到 \\1 级才能使用这个物品。"
+    },
+    {
+      "pattern": "^Save failed: (.+)$",
+      "replacement": "存档失败：\\1"
+    },
+    {
+      "pattern": "^Spell cast failed: (.+)$",
+      "replacement": "施法失败：\\1"
+    },
+    {
+      "pattern": "^hopelessly vulnerable to (.+)\\.$",
+      "replacement": "对 \\1 毫无防御。"
+    },
+    {
+      "pattern": "^defenseless against (.+)\\.$",
+      "replacement": "对 \\1 毫无防备。"
+    },
+    {
+      "pattern": "^barely protected from (.+)\\.$",
+      "replacement": "对 \\1 勉强防护。"
+    },
+    {
+      "pattern": "^slightly armored against (.+)\\.$",
+      "replacement": "对 \\1 略有防护。"
+    },
+    {
+      "pattern": "^somewhat armored against (.+)\\.$",
+      "replacement": "对 \\1 有些防护。"
+    },
+    {
+      "pattern": "^armored against (.+)\\.$",
+      "replacement": "对 \\1 有防护。"
+    },
+    {
+      "pattern": "^well-armored against (.+)\\.$",
+      "replacement": "对 \\1 防护良好。"
+    },
+    {
+      "pattern": "^very well-armored against (.+)\\.$",
+      "replacement": "对 \\1 防护很好。"
+    },
+    {
+      "pattern": "^heavily armored against (.+)\\.$",
+      "replacement": "对 \\1 防护厚重。"
+    },
+    {
+      "pattern": "^superbly armored against (.+)\\.$",
+      "replacement": "对 \\1 防护极佳。"
+    },
+    {
+      "pattern": "^almost invulnerable to (.+)\\.$",
+      "replacement": "几乎对 \\1 免疫。"
+    },
+    {
+      "pattern": "^divinely armored against (.+)\\.$",
+      "replacement": "对 \\1 神圣护体。"
+    },
+    {
+      "pattern": "^I see no (.+) here\\.$",
+      "replacement": "我在这里没看到 \\1。"
+    },
+    {
+      "pattern": "^I see nothing in the (.+)\\.$",
+      "replacement": "我在 \\1 里什么也没看到。"
+    },
+    {
+      "pattern": "^I see nothing like that in the (.+)\\.$",
+      "replacement": "我在 \\1 里没看到类似的东西。"
+    },
+    {
+      "pattern": "^The (.+) is closed\\.$",
+      "replacement": "\\1 关着。"
+    },
+    {
+      "pattern": "^You are not carrying any (.+)\\.$",
+      "replacement": "你没带着任何 \\1。"
+    },
+    {
+      "pattern": "^You drop (.+)\\.$",
+      "replacement": "你放下了 \\1。"
+    },
+    {
+      "pattern": "^You open (.+)\\.$",
+      "replacement": "你打开了 \\1。"
+    },
+    {
+      "pattern": "^You close (.+)\\.$",
+      "replacement": "你关上了 \\1。"
+    },
+    {
+      "pattern": "^You lock (.+)\\.$",
+      "replacement": "你锁上了 \\1。"
+    },
+    {
+      "pattern": "^You unlock (.+)\\.$",
+      "replacement": "你解开了 \\1。"
+    },
+    {
+      "pattern": "^You pick the lock on (.+)\\.$",
+      "replacement": "你撬开了 \\1 的锁。"
+    },
+    {
+      "pattern": "^(.+) is standing too close to the lock\\.$",
+      "replacement": "\\1 站得离锁太近了。"
+    },
+    {
+      "pattern": "^You disarm (.+)!$",
+      "replacement": "你缴了 \\1 的械！"
+    },
+    {
+      "pattern": "^You fail to disarm (.+)\\.$",
+      "replacement": "你没能缴了 \\1 的械。"
+    },
+    {
+      "pattern": "^The spell '(.+)' is not fully implemented yet\\.$",
+      "replacement": "法术 '\\1' 尚未完全实现。"
+    },
+    {
+      "pattern": "^You wield (.+)\\.$",
+      "replacement": "你挥舞着 \\1。"
+    },
+    {
+      "pattern": "^You hold (.+) in your hand\\.$",
+      "replacement": "你手持 \\1。"
+    },
+    {
+      "pattern": "^You light (.+) and hold it\\.$",
+      "replacement": "你点亮了 \\1 并拿着它。"
+    },
+    {
+      "pattern": "^You are zapped by (.+) and drop it\\.$",
+      "replacement": "你被 \\1 电击了一下，把它掉在了地上。"
+    },
+    {
+      "pattern": "^You can't remove (.+)\\.$",
+      "replacement": "你无法卸下 \\1。"
+    },
+    {
+      "pattern": "^You fumble and almost drop (.+)\\.$",
+      "replacement": "你手一滑，差点掉了 \\1。"
+    },
+    {
+      "pattern": "^(.+) feels like a part of you!$",
+      "replacement": "\\1 感觉像你身体的一部分！"
+    },
+    {
+      "pattern": "^(.+) feels a little clumsy in your hands\\.$",
+      "replacement": "\\1 在你手里感觉有点笨拙。"
+    },
+    {
+      "pattern": "^Your skill with (.+) is adequate\\.$",
+      "replacement": "你对 \\1 的技能还算可以。"
+    },
+    {
+      "pattern": "^You are skilled with (.+)\\.$",
+      "replacement": "你很擅长使用 \\1。"
+    },
+    {
+      "pattern": "^You feel quite confident with (.+)\\.$",
+      "replacement": "你对 \\1 感到相当自信。"
+    },
+    {
+      "pattern": "^You don't even know which end is up on (.+)\\.$",
+      "replacement": "你连 \\1 哪头是上都不知道。"
+    },
+    {
+      "pattern": "^You buy (.+) for (\\d+) silver\\.$",
+      "replacement": "你花了 \\2 银币买了 \\1。"
+    },
+    {
+      "pattern": "^You sell (.+) for (\\d+) silver and (\\d+) gold",
+      "replacement": "你卖了 \\1，得到 \\2 银币和 \\3 金币"
+    },
+    {
+      "pattern": "^You are already learned at (.+)\\.$",
+      "replacement": "你已经精通 \\1 了。"
+    },
+    {
+      "pattern": "^You have (\\d+) practice sessions left\\.$",
+      "replacement": "你还有 \\1 次练习机会。"
+    },
+    {
+      "pattern": "^Your (.+) increases!$",
+      "replacement": "你的 \\1 提升了！"
+    },
+    {
+      "pattern": "^Your (.+) is already at maximum\\.$",
+      "replacement": "你的 \\1 已经是最大了。"
+    },
+    {
+      "pattern": "^(.+) isn't following you\\.$",
+      "replacement": "\\1 没在跟随你。"
+    },
+    {
+      "pattern": "^You tell the group '(.+)'$",
+      "replacement": "你对团队说：'\\1'"
+    },
+    {
+      "pattern": "^There's nothing in (.+) to pour\\.$",
+      "replacement": "\\1 里没有东西可倒。"
+    },
+    {
+      "pattern": "^You fill (.+) with (.+) from (.+)\\.$",
+      "replacement": "你从 \\3 把 \\2 装入了 \\1。"
+    },
+    {
+      "pattern": "^You invert (.+), spilling (.+) all over the ground\\.$",
+      "replacement": "你倒转 \\1，把 \\2 洒了一地。"
+    },
+    {
+      "pattern": "^You pour some (.+) for (.+)\\.$",
+      "replacement": "你给 \\2 倒了一些 \\1。"
+    },
+    {
+      "pattern": "^You pour (.+) from (.+) into (.+)\\.$",
+      "replacement": "你把 \\1 从 \\2 倒入了 \\3。"
+    },
+    {
+      "pattern": "^(.+) is already filled to the top\\.$",
+      "replacement": "\\1 已经满了。"
+    },
+    {
+      "pattern": "^Subject set to (.+)\\.$",
+      "replacement": "主题设为 \\1。"
+    },
+    {
+      "pattern": "^Current board changed to (.+)\\.$",
+      "replacement": "当前板改为 \\1。"
+    },
+    {
+      "pattern": "^Recipient list set to (.+)\\.$",
+      "replacement": "收件人列表设为 \\1。"
+    },
+    {
+      "pattern": "^Recipient list defaulted to (.+)\\.$",
+      "replacement": "收件人列表默认为 \\1。"
+    },
+    {
+      "pattern": "^This note will expire on (.+)\\.$",
+      "replacement": "此笔记将于 \\1 过期。"
+    },
+    {
+      "pattern": "^Prefix (?:set|changed) to (.+)\\.$",
+      "replacement": "前缀设为 \\1。"
+    },
+    {
+      "pattern": "^(.+) is now aliased to '(.+)'\\.$",
+      "replacement": "\\1 现在别名为 '\\2'。"
+    },
+    {
+      "pattern": "^(.+) is now realiased to '(.+)'\\.$",
+      "replacement": "\\1 现在重新别名为 '\\2'。"
+    },
+    {
+      "pattern": "^(.+) aliases to '(.+)'\\.$",
+      "replacement": "\\1 别名为 '\\2'。"
+    },
+    {
+      "pattern": "^You permit (.+) to follow you into private areas\\.$",
+      "replacement": "你允许 \\1 跟随你进入私人区域。"
+    },
+    {
+      "pattern": "^You no longer permit (.+) to follow you into private areas\\.$",
+      "replacement": "你不再允许 \\1 跟随你进入私人区域。"
+    },
+    {
+      "pattern": "^(.+) is not carrying anything\\.$",
+      "replacement": "\\1 没带任何东西。"
+    },
+    {
+      "pattern": "^(.+)\nDon't even think about it\\.$",
+      "replacement": "\\1\n想都别想。"
+    },
+    {
+      "pattern": "^(.+) says 'Type 'heal' for a list of spells\\.'$",
+      "replacement": "\\1 说：'输入 heal 查看法术列表。'"
+    },
+    {
+      "pattern": "^Wimpy set to (\\d+) hit points\\.$",
+      "replacement": "胆怯值设为 \\1 点。"
+    },
+    {
+      "pattern": "^They are now a member of clan (.+)\\.$",
+      "replacement": "他们现在是 \\1 氏族的成员了。"
+    },
+    {
+      "pattern": "^They are now a (.+)\\.$",
+      "replacement": "他们现在是 \\1 了。"
+    },
+    {
+      "pattern": "^Error (?:saving password|recording feedback): (.+)$",
+      "replacement": "错误：\\1"
+    },
+    {
+      "pattern": "^Scroll set to (\\d+) lines\\.$",
+      "replacement": "滚动设为 \\1 行。"
+    },
+    {
+      "pattern": "^You currently display (\\d+) lines per page\\.$",
+      "replacement": "你当前每页显示 \\1 行。"
+    },
+    {
+      "pattern": "^Give me a password for (.+): $",
+      "replacement": "请为 \\1 设一个密码："
+    },
+    {
+      "pattern": "^Did I get that right, (.+) \\(Y/N\\)\\? $",
+      "replacement": "我没弄错吧，\\1（Y/N）？"
+    },
+    {
+      "pattern": "^The following races are available:\\n\\r  $",
+      "replacement": "以下种族可选：\\n\\r  "
+    }
+  ],
+  "help": {
+    "race": "ROM 有以下可选种族：\n  人类  标准种族\n  矮人  优秀的战士和牧师，创建消耔8点\n  精灵  优秀的盗贼和法师，创建消耔5点\n  巨人  巨大的、强壮的战士，创建消耔6点\n\n不同种族有不同的初始属性和属性上限。\n创建消耔会增加升级所需的经验值。\n更多信息请查看各种族的帮助（如 'help dwarf'）",
+    "human": "人类是世界上最常见的种族，占据了冒险者的大多数。\n虽然他们没有其他种族的特殊天赋，但他们更加全能，\n擅长所有四个职业。人类也可以将主要属性训练得比其他\n种族更高，并且能从魔法设备中获得更多好处。",
+    "dwarf": "矮人是个子矮小、结实 robust 的半人类，以暴戾的脾气和\n强大的耐力闻名。矮人拥有高力量和体质，但敏捷较差。\n他们不如人类聪明，但因长寿而通常更智慧。矮人是出色\n的战士和牧师，但很差的法师或盗贼。\n\n矮人对毒素和疾病有很强的抵抗力，但不会游泳，\n因此很容易淹死。他们免费获得狂暴技能（战士），\n并拥有夜视能力。",
+    "elf": "精灵比人类略高，但体型轻得多。他们缺乏其他种族的\n力量和耐力，但更加敏捷。精灵是出色的法师和盗贼，\n但作为战士或牧师只是一般。\n\n精灵因其魔法本质而能有效抵抗魅惑法术。\n然而，他们被铁器烧伜，因此不能使用铁或钢制品。\n精灵很难被发现，因此精灵战士和盗贼自动获得\n潜行和隐藏技能。他们拥有夜视能力。",
+    "giant": "巨人是最大的种族，身高9到12英尺。他们比任何其他\n种族都强壮，几乎和矮人一样耐用。然而他们不太\n聪明，巨大的体型使他们比其他种族更笨拙。\n巨人制作了所有种族中最好的战士，但不适合其他职业。\n\n巨人因其巨大体型而耐热和耐寒。然而，他们迟钝的\n头脑使他们极易受到精神攻击。巨人和因体型和耐力，\n免费获得快速治疗和撞击技能。"
+  },
+  "areas": {
+    "rooms": {
+      "3001": {
+        "name": "莫塔神殿",
+        "description": "你站在莫塔神殿大厅的南端。神殿由巨大的大理石块建造，外观永恒，大部分墙壁覆盖着古老的壁画，描绘着神祇、巨人和农民。巨大的台阶通向神殿大门，沿着神殿坐落的巨大山丘而下，通往下方的神殿广场。同样巨大的台阶向上延伸。"
+      },
+      "3002": {
+        "name": "牧师内殿",
+        "description": "这是内殿。墙上挂着强大的莫塔的画像，就在靠西墙的祭坛上方。地板中间的一口井通向黑暗的深处。"
+      },
+      "3003": {
+        "name": "牧师酒吧",
+        "description": "酒吧是这个国家最好的酒吧之一，幸运的是这是会员制。精美的家具摆放在房间四周。墙上挂着一个小小的标志。"
+      },
+      "3004": {
+        "name": "牧师公会入口",
+        "description": "入口大厅是一个小而朴素的房间，反映了牧师公会的真正本质——服务与奉献。出口通向东方通往神殿广场。北墙上有一个通往酒吧的小入口。"
+      },
+      "3005": {
+        "name": "神殿广场",
+        "description": "你站在神殿广场上。巨大的大理石台阶通向神殿大门。牧师公会入口在西边，古老的咕噜野猪旅馆在东边。南边通向主街。"
+      },
+      "3006": {
+        "name": "咕噜野猪旅馆入口",
+        "description": "你站在咕噜野猪旅馆的大厅里。大厅用简单但实用的家具精心装饰。小楼梯通向废弃的接待室，东边通向酒吧。"
+      },
+      "3007": {
+        "name": "咕噜野猪旅馆",
+        "description": "你站在酒吧里。酒吧靠北墙设置，古老的木制吧台上刻着文字、符号和标记。西墙里嵌着一个壁炉，东南方向通向旅馆。"
+      },
+      "3008": {
+        "name": "废弃的接待处",
+        "description": "你站在一个布满灰尘的废弃接待处。楼梯通向下方通往入口大厅。"
+      },
+      "3009": {
+        "name": "面包店",
+        "description": "你站在小面包店里。丹麦面包和优质面包的甜香弥漫在空气中。架子上整齐地摆放着面包，看起来是最高品质的。"
+      },
+      "3010": {
+        "name": "杂货店",
+        "description": "你在杂货店里。各种各样的物品堆放在柜台后面的架子上，安全地放在你够不到的地方。墙上挂着一张小纸条。"
+      },
+      "3011": {
+        "name": "武器店",
+        "description": "你在武器店里。柜台上有一张小纸条。"
+      },
+      "3012": {
+        "name": "主街",
+        "description": "你站在米德加德主街的尽头。南边是魔法用户公会的入口。街道向东延伸至市场广场。魔法商店在北边，西边通向市场。"
+      },
+      "3013": {
+        "name": "主街",
+        "description": "你走在穿过米德加德城的主街上。南边是盔甲店入口，北边是面包店。东边是市场广场。"
+      },
+      "3014": {
+        "name": "市场广场",
+        "description": "你站在市场广场上，著名的米德加德广场。广场中央矗立着一座巨大而奇特的雕像。道路通向四面八方，北通神殿广场。"
+      },
+      "3015": {
+        "name": "主街",
+        "description": "你走在穿过城镇的主街上。北边是杂货店，主街继续向东延伸。西边你能看到和听到市场，南边是珠宝店。"
+      },
+      "3016": {
+        "name": "主街",
+        "description": "主街，北边是武器店，南边是战士公会。东边离开城镇，西边街道通向市场广场。"
+      },
+      "3017": {
+        "name": "法师公会入口",
+        "description": "入口大厅是一个狭小、灯光昏暗的房间。"
+      },
+      "3018": {
+        "name": "法师酒吧",
+        "description": "酒吧是这个国家最奇怪的酒吧之一。神秘的图像在空中漂浮。精美家具的幻象出现在房间四周。"
+      },
+      "3019": {
+        "name": "法师实验室",
+        "description": "这是魔法实验实验室。黑暗的烟熏石头拱立在许多巨大的橡木桌上方，大部分桌上堆满了奇怪的管道和烧瓶。地板上覆盖着奇怪的物质。"
+      },
+      "3020": {
+        "name": "盔甲店",
+        "description": "盔甲店，墙上和橱窗里陈列着各种盔甲。你能看到头盔、盾牌和锁子甲。北边是主街。墙上有一张小纸条。"
+      },
+      "3021": {
+        "name": "战士公会入口",
+        "description": "战士公会入口大厅。一个必须小心说话（说错或说对）的地方。东边是酒吧，北边是主街。"
+      },
+      "3022": {
+        "name": "战士酒吧",
+        "description": "战士酒吧，曾经装饰得很漂亮。但现在家具都变成了碎片散落在你周围。南边是院子，西边是入口大厅。"
+      },
+      "3023": {
+        "name": "比武训练场",
+        "description": "战士的训练场。北边是酒吧。一口井通向黑暗深处。"
+      },
+      "3024": {
+        "name": "穷巷东端",
+        "description": "你在穷巷。南边是邋遢旅馆，东边是公共广场。忧郁的地图店在北边。巷子继续向西延伸。"
+      },
+      "3025": {
+        "name": "公共广场",
+        "description": "公共广场，人们从你身边经过，互相交谈。西边是穷巷，东边通向主街。"
+      },
+      "3026": {
+        "name": "珠宝店",
+        "description": "你站在珠宝店里。玻璃柜里展示着各种精美的珠宝和宝石。"
+      },
+      "3027": {
+        "name": "主街",
+        "description": "你走在主街上。北边是盗贼公会入口，南边是盔甲店。"
+      },
+      "3028": {
+        "name": "盗贼公会入口",
+        "description": "一个隐蔽的入口通向地下。楼梯向下通往盗贼公会。"
+      },
+      "3029": {
+        "name": "盗贼酒吧",
+        "description": "一个昏暗的地下酒吧。盗贼们在这里放松和分享消息。"
+      },
+      "3030": {
+        "name": "盗贼藏身处",
+        "description": "一个隐蔽的藏身处，盗贼们在这里密谋。"
+      },
+      "3031": {
+        "name": "肮脏的巷子",
+        "description": "一条肮脏的小巷，垃圾散落一地。"
+      },
+      "3032": {
+        "name": "肮脏的巷子",
+        "description": "一条肮脏的小巷，墙壁上满是污垢。"
+      },
+      "3033": {
+        "name": "肮脏的巷子",
+        "description": "一条肮脏的小巷，空气中弥漫着臭味。"
+      },
+      "3034": {
+        "name": "肮脏的巷子",
+        "description": "一条肮脏的小巷，老鼠在阴影中窜动。"
+      },
+      "3035": {
+        "name": "肮脏的巷子",
+        "description": "一条肮脏的小巷，地面湿滑。"
+      },
+      "3036": {
+        "name": "肮脏的巷子",
+        "description": "一条肮脏的小巷，破旧的建筑物矗立在两侧。"
+      },
+      "3037": {
+        "name": "肮脏的巷子",
+        "description": "一条肮脏的小巷，远处传来嘈杂的声音。"
+      },
+      "3038": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，积水很深。"
+      },
+      "3039": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，脚下泥泞不堪。"
+      },
+      "3040": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，墙壁摇摇欲坠。"
+      },
+      "3041": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，空气中弥漫着潮湿的气味。"
+      },
+      "3042": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，地面坑坑洼洼。"
+      },
+      "3043": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，破败的建筑环绕着你。"
+      },
+      "3044": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，远处传来狗叫声。"
+      },
+      "3045": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，积水映着天空。"
+      },
+      "3046": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，墙壁上爬满了藤蔓。"
+      },
+      "3047": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，空气中弥漫着腐烂的气味。"
+      },
+      "3048": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，地面覆盖着厚厚的泥浆。"
+      },
+      "3049": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，破旧的窗户从上方注视着你。"
+      },
+      "3050": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，积水溅到你的靴子上。"
+      },
+      "3051": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，墙壁上满是涂鸦。"
+      },
+      "3052": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，远处传来音乐声。"
+      },
+      "3053": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，空气中弥漫着炊烟。"
+      },
+      "3054": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，地面覆盖着落叶。"
+      },
+      "3055": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，破旧的灯笼挂在墙上。"
+      },
+      "3056": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，积水反射着光线。"
+      },
+      "3057": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，墙壁上长满了苔藓。"
+      },
+      "3058": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，远处传来争吵声。"
+      },
+      "3059": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，空气中弥漫着香料味。"
+      },
+      "3060": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，地面铺着碎石。"
+      },
+      "3061": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，破旧的木门紧闭着。"
+      },
+      "3062": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，积水开始退去。"
+      },
+      "3063": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，墙壁上挂着破布。"
+      },
+      "3064": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，远处传来笑声。"
+      },
+      "3065": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，空气中弥漫着鱼腥味。"
+      },
+      "3066": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，地面覆盖着稻草。"
+      },
+      "3067": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，破旧的招牌在风中摇晃。"
+      },
+      "3068": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，积水映着月光。"
+      },
+      "3069": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，墙壁上满是裂缝。"
+      },
+      "3070": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，远处传来钟声。"
+      },
+      "3071": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，空气中弥漫着酒味。"
+      },
+      "3072": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，地面铺着木板。"
+      },
+      "3073": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，破旧的窗帘在窗户上飘动。"
+      },
+      "3074": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，积水开始结冰。"
+      },
+      "3075": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，墙壁上挂着铁链。"
+      },
+      "3076": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，远处传来猫叫声。"
+      },
+      "3077": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，空气中弥漫着面包香。"
+      },
+      "3078": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，地面覆盖着锯末。"
+      },
+      "3079": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，破旧的桶堆在墙边。"
+      },
+      "3080": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，积水映着星光。"
+      },
+      "3081": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，墙壁上挂着蛛网。"
+      },
+      "3082": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，远处传来脚步声。"
+      },
+      "3083": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，空气中弥漫着花香。"
+      },
+      "3084": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，地面铺着鹅卵石。"
+      },
+      "3085": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，破旧的箱子堆在角落。"
+      },
+      "3086": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，积水开始变清。"
+      },
+      "3087": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，墙壁上挂着工具。"
+      },
+      "3088": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，远处传来歌声。"
+      },
+      "3089": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，空气中弥漫着皮革味。"
+      },
+      "3090": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，地面覆盖着沙子。"
+      },
+      "3091": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，破旧的椅子倒在墙边。"
+      },
+      "3092": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，积水映着晨光。"
+      },
+      "3093": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，墙壁上挂着绳索。"
+      },
+      "3094": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，远处传来马蹄声。"
+      },
+      "3095": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，空气中弥漫着铁锈味。"
+      },
+      "3096": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，地面铺着石板。"
+      },
+      "3097": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，破旧的灯笼发出微光。"
+      },
+      "3098": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，积水映着夕阳。"
+      },
+      "3099": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，墙壁上挂着盾牌。"
+      },
+      "3100": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，远处传来鸡叫声。"
+      },
+      "3101": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，空气中弥漫着木屑味。"
+      },
+      "3102": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，地面覆盖着干草。"
+      },
+      "3103": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，破旧的木桶滚落在地。"
+      },
+      "3104": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，积水映着灯火。"
+      },
+      "3105": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，墙壁上挂着钥匙。"
+      },
+      "3106": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，远处传来婴儿哭声。"
+      },
+      "3107": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，空气中弥漫着草药味。"
+      },
+      "3108": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，地面铺着砖块。"
+      },
+      "3109": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，破旧的扫帚靠在墙上。"
+      },
+      "3110": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，积水映着霓虹。"
+      },
+      "3111": {
+        "name": "泥泞的巷子",
+        "description": "一条泥泞的巷子，你终于走出了这片迷宫。"
+      },
+      "3112": {
+        "name": "公园小径",
+        "description": "你站在公园的西入口。一条小径向东通往公园，向西通过入口你将到达公园路。"
+      },
+      "3113": {
+        "name": "公园小径",
+        "description": "你在公园里。小径通向北方和西方。西边是公园入口，东边你能看到一个小池塘。"
+      },
+      "3114": {
+        "name": "池塘",
+        "description": "你在池塘里游泳，感觉相当愚蠢。你可以从池塘的东西两端回到小径上。"
+      },
+      "3115": {
+        "name": "公园小径",
+        "description": "你在公园里。小径通向北方和东方。东边是公园入口，西边你能看到一个小池塘。"
+      },
+      "3116": {
+        "name": "公园东入口",
+        "description": "你站在公园的东端。一条小径向西通往公园。向东通过入口你将到达翡翠大道。"
+      },
+      "3117": {
+        "name": "翡翠大道",
+        "description": "你在翡翠大道上，道路继续向北和向南延伸。西边是公园入口，东边是米德加德不算大的市政厅。"
+      },
+      "3118": {
+        "name": "公园路",
+        "description": "你在公园路上，道路通向北方和南方。"
+      },
+      "3119": {
+        "name": "翡翠大道",
+        "description": "你站在翡翠大道的一个弯道处。道路通向北方和西方。东边，你看到一些破旧的贫民区……看起来像是城市的糟糕部分。"
+      },
+      "3120": {
+        "name": "路口",
+        "description": "你站在路口中央。道路通向四面八方。一根巨大的黑色铁链粗如树干，固定在路口中心的地面上。另一端消失在城墙之外。"
+      },
+      "3121": {
+        "name": "翡翠大道",
+        "description": "你站在翡翠大道的一个弯道处。道路通向南方和东方。"
+      },
+      "3122": {
+        "name": "公园路",
+        "description": "你在公园路上，道路通向南方和北方。榆树街在东边。"
+      },
+      "3123": {
+        "name": "榆树街",
+        "description": "你在榆树街上。公园路在西边，榆树街继续向东延伸。"
+      },
+      "3124": {
+        "name": "榆树街",
+        "description": "你接近榆树街的尽头。一棵老榆树长在这里。南边有一个沉重的铁栅栏，围绕着城市的墓地。你能看到格栅上挂着一个牌子。"
+      },
+      "3125": {
+        "name": "翡翠大道",
+        "description": "你在翡翠大道上，道路继续向北延伸。环城大道在南边。"
+      },
+      "3126": {
+        "name": "公园路",
+        "description": "你在公园路上，道路继续向北延伸。环城大道在南边。"
+      },
+      "3127": {
+        "name": "环城大道",
+        "description": "你站在城墙的西南角。环城大道向北和向东延伸。"
+      },
+      "3128": {
+        "name": "环城大道",
+        "description": "你走在风景优美的环城大道上，它继续环绕米德加德城。城市的南门在东边，城墙的西南角在西边。"
+      },
+      "3129": {
+        "name": "环城大道",
+        "description": "环城大道继续环绕城市。城市的南门在西边，公园路在北边。城墙的东北角在东边。"
+      },
+      "3130": {
+        "name": "环城大道",
+        "description": "你站在城墙的东南角。环城大道向北和向西延伸。"
+      },
+      "3131": {
+        "name": "公园路",
+        "description": "你在公园路上，道路继续向北和向南延伸。"
+      },
+      "3132": {
+        "name": "翡翠大道",
+        "description": "你站在翡翠大道的北端。北边是南方广场和凯特餐厅，东边是小街便士巷。"
+      },
+      "3133": {
+        "name": "翡翠大道",
+        "description": "你站在翡翠大道的一个弯道处。东边道路继续延伸，南边是路口。"
+      },
+      "3134": {
+        "name": "翡翠大道",
+        "description": "你站在翡翠大道的一个弯道处。西边道路继续延伸，北边是路口。"
+      },
+      "3135": {
+        "name": "公园路",
+        "description": "你在公园路的一个弯道处。北边道路继续延伸，东边是路口。南边，古老的悬崖从地下深处升起，形成一堵墙。"
+      },
+      "3136": {
+        "name": "公园路",
+        "description": "你在公园路的一个弯道处。南边道路继续延伸，西边是路口。"
+      },
+      "3137": {
+        "name": "市政厅等候室",
+        "description": "你站在市政厅的等候室里。木椅沿着墙壁排列，房间中央放着一张长桌子。"
+      },
+      "3138": {
+        "name": "市长办公室",
+        "description": "你在米德加德市长不算大的办公室里。一张大而光滑但完全空荡的桌子放在一把扶手椅前，那椅子看起来非常舒适，最像一张大床。"
+      },
+      "3139": {
+        "name": "便士巷",
+        "description": "你在便士巷上。翡翠大道在西边，便士巷继续向东延伸。"
+      },
+      "3140": {
+        "name": "便士巷",
+        "description": "你在便士巷上。狭窄的道路继续向北和向西延伸，环城大道在东边与这条街交汇。"
+      },
+      "3141": {
+        "name": "便士巷尽头",
+        "description": "你站在便士巷的尽头。唯一的出口似乎是南边。"
+      },
+      "3142": {
+        "name": "卫队长办公室",
+        "description": "你在卫队长办公室。米德加德市徽挂在北墙上，南边有一扇沉重的钢门。"
+      },
+      "3143": {
+        "name": "监狱",
+        "description": "你在一个黑暗潮湿的监狱里。黑暗的石墙坚硬而冰冷。北边有一扇沉重的钢门。"
+      },
+      "3144": {
+        "name": "榆树街尽头",
+        "description": "榆树街在这里结束，旁边是一个危险的破旧街区。你可以向东进入贫民区，或向南前往墓地。你注意到这不是城里最快乐的角落。"
+      },
+      "3150": {
+        "name": "凯特餐厅",
+        "description": "烤面包和炖菜的香味引导你跳舞般进入餐厅门口。这里没有油腻的勺子——卡座墙壁覆盖着休闲的佩斯利花纹；椅子很舒适。"
+      },
+      "3160": {
+        "name": "忧郁的地图店",
+        "description": "当你走进去时，一阵突如其来的风吹进商店，使几张纸片在房间里飞舞。你眨眼间被扬起的灰尘刺痛了眼睛，环顾这个商店。"
+      },
+      "3161": {
+        "name": "忧郁的房间",
+        "description": "当你进入这个房间时，淡淡的香味挑逗着你的鼻子。你踩上一块柔软的熊皮地毯，环顾四周。一张简单的床靠着远墙放置。"
+      },
+      "3170": {
+        "name": "愚蠢神殿",
+        "description": "当你进入废弃的仓库时，你的眼睛剧烈眨眼以适应几乎完全的黑暗。你想知道窗户在哪里，因为你踩进了地板中间的一个泥水坑。"
+      },
+      "3200": {
+        "name": "桥下",
+        "description": "桥拱被海藻覆盖，高出水面一英尺。河水温柔地流过城墙下部的开口。"
+      },
+      "3201": {
+        "name": "河上",
+        "description": "北边你看到穷巷的破旧建筑。河水流向西边的桥。河岸太陡无法攀爬。"
+      },
+      "3202": {
+        "name": "河上",
+        "description": "北边你看到垃圾场。河水从东向西流。河岸太陡无法攀爬。一座桥从头顶经过，连接垃圾场和步道。"
+      },
+      "3203": {
+        "name": "河上",
+        "description": "河堤直接在北边，凯特餐厅的小船码头在南边。河水东西方向流淌。"
+      },
+      "3204": {
+        "name": "河上",
+        "description": "你看到北岸的仓库。东边河水经过东桥穿过城墙。西边的河堤顺着水流方向。"
+      },
+      "3205": {
+        "name": "河上",
+        "description": "河水从东城墙的一个洞进入。洞口被几根垂直插入墙内的铁栅栏堵住了。头顶你能看到东桥的石墩。"
+      },
+      "3250": {
+        "name": "城墙路",
+        "description": "城墙路沿着城市的东墙向北和向南延伸。东大门在你北边，南边是与一条黑暗巷子的交叉口。你检查确保钱包还在。"
+      },
+      "3251": {
+        "name": "城墙路",
+        "description": "你沿着城市的东墙走在城墙路上，道路延伸于东大门和南边的桥之间。一条黑暗肮脏的巷子在西方。你小心翼翼地绕过一池水。"
+      },
+      "3252": {
+        "name": "城墙路",
+        "description": "米德加德的城墙在你东边高耸，保护城市免受敌人侵害……你希望如此。北边是与一条黑暗巷子的交叉口，南边是米德加德河上的桥。"
+      },
+      "3253": {
+        "name": "桥上",
+        "description": "你正在穿过一座坚固的石桥，桥跨越米德加德河。在你下方，河流流入城墙上的一个开口，用坚固的金属栅栏密封。北边是城墙路。"
+      },
+      "3254": {
+        "name": "南桥",
+        "description": "你站在一座小而摇晃的桥上，从米德加德城市垃圾场通往城市南部更吸引人的步道。你能闻到垃圾场的臭味。"
+      },
+      "3255": {
+        "name": "米德加德南门内",
+        "description": "两座坚固的石塔围绕着城墙中的一扇沉重木门，以防御潜伏在南方森林中的地精。如果你敢，你可以向南离开城市。"
+      },
+      "3256": {
+        "name": "米德加德南门外",
+        "description": "你站在米德加德南墙上坚固的木门外。守卫从大门两侧的塔楼上怀疑地注视着你，他们站岗保护城市。"
+      },
+      "3257": {
+        "name": "城墙路",
+        "description": "你走在城墙路上，就在米德加德西大门北边。道路沿着西墙继续向北，通往一个繁忙的氏族街交叉口。"
+      },
+      "3258": {
+        "name": "城墙路",
+        "description": "城墙路与拥挤的氏族路在此交汇，充满了商店和工匠。街道向东延伸，通往城市的远墙。城墙路继续向北和向南延伸。"
+      },
+      "3259": {
+        "name": "城墙路",
+        "description": "你走在城墙路上，它沿着米德加德西墙内侧延伸。南边，你能看到与拥挤的氏族街的交叉口。城墙的西北角在北边。"
+      },
+      "3260": {
+        "name": "西北角",
+        "description": "你站在城墙的西北角下方，在城墙路的一个转弯处。你可以向南前往西大门，或向东前往北大门。"
+      },
+      "3261": {
+        "name": "城墙路",
+        "description": "城墙在你上方高耸，当你走在城墙路上，在西边城墙的西北角和东边的米德加德北大门之间。"
+      },
+      "3262": {
+        "name": "米德加德北门内",
+        "description": "两座小塔围绕着坚固的木门，由一座设有谋杀孔的小石桥连接。这个大门不像其他大门那样守卫严密，因为外面的平原是安全的。"
+      },
+      "3263": {
+        "name": "城墙路",
+        "description": "你走在城墙路上，在北大门和城墙的东北角之间。你能看到路上的血迹……最好小心小偷。"
+      },
+      "3264": {
+        "name": "东北角",
+        "description": "城墙路在这里转弯，当你经过城墙的东北边缘。北大门在你西边，向南的道路通往米德加德的东大门。"
+      },
+      "3265": {
+        "name": "城墙路",
+        "description": "你北边是与拥挤的氏族街的交叉口。米德加德的东墙在你旁边，北边你能看到城墙的东北角。"
+      },
+      "3266": {
+        "name": "城墙路",
+        "description": "这里，城墙路与一条繁忙的氏族街交汇，通向西方和城市的远墙。你能闻到香料、香水、新鞣制的皮革和其他奇怪的气味。"
+      },
+      "3267": {
+        "name": "城墙路",
+        "description": "你在城墙路的中心，就在城市东大门北边。北边，你能看到与拥挤的氏族街的交叉口。大门的守卫怀疑地注视着你。"
+      },
+      "3268": {
+        "name": "米德加德北门外",
+        "description": "你站在有围墙的米德加德城北大门外。北边能看到一条尘土飞扬的小径，它环绕着城市的城墙。再往北是北方的广阔平原。"
+      },
+      "3270": {
+        "name": "环城大道",
+        "description": "米德加德坚固的石墙在西边耸立，阻挡邪恶。环城大道向北通往一座桥，并继续向南沿着一个美丽的公园延伸。"
+      },
+      "3271": {
+        "name": "环城大道近公园",
+        "description": "你走在环城大道上，沿着米德加德的西墙。北边，道路经过一个美丽的公园，南边，你能看到城墙的西南角。"
+      },
+      "3272": {
+        "name": "环城大道经便士巷",
+        "description": "你在一条环绕米德加德内墙的道路上。北边，环城大道通往一座桥进入米德加德北部。南边，你能看到与榆树街的交叉口。"
+      },
+      "3273": {
+        "name": "环城大道经榆树街",
+        "description": "当你经过榆树街墓地时，空气变得寒冷。米德加德的城墙在东边，环城大道继续向北和向南延伸。西边，你看到榆树街在墓地旁。"
+      },
+      "3301": {
+        "name": "氏族路",
+        "description": "你站在氏族路的西端。这里的交通很轻。这是米德加德一个较安静的区域。你能听到东边讨价还价的声音。"
+      },
+      "3302": {
+        "name": "氏族路",
+        "description": "你走在氏族路上。南边是货币兑换所。氏族路继续向东和向西延伸。"
+      },
+      "3303": {
+        "name": "氏族路",
+        "description": "这段氏族路上的商店早已关闭并用木板封住。没有太多交通经过这里，因为没有什么可买的。"
+      },
+      "3314": {
+        "name": "氏族路",
+        "description": "这段氏族路上充满了噪音和灯光。氏族路继续向东和向西延伸。"
+      },
+      "3315": {
+        "name": "氏族路",
+        "description": "氏族路在这里似乎稍微变宽了，允许更多交通通过。南边是繁忙酒吧的另一个入口。这扇门也敞开着，传出声音。"
+      },
+      "3316": {
+        "name": "氏族路",
+        "description": "你站在氏族路的东端。东边，城市周围的高墙在你面前耸立，投下阴影。氏族路继续向西延伸。"
+      },
+      "3334": {
+        "name": "货币兑换所",
+        "description": "几盏 strategically 放置的灯笼在没有窗户的情况下保持这里明亮。房间装饰得出奇地好，墙上挂着挂毯。你会用你的生命打赌这里很安全。"
+      },
+      "3352": {
+        "name": "灰雁酒馆",
+        "description": "潜水。这是你所能说的关于这个地方的全部；它就是个潜水处。你小心翼翼地跨过地板上死去和/或喝醉的水手，走向房间中央。"
+      },
+      "3355": {
+        "name": "安迪酒吧",
+        "description": "繁忙的酒吧充满了顾客。人们在笑和唱歌。一位吟游诗人在酒吧的另一部分弹奏着他的鲁特琴，几个人甚至在跳舞。"
+      },
+      "3356": {
+        "name": "酒吧房间",
+        "description": "酒吧的这部分充满了舞蹈和歌声。一位流浪的吟游诗人坐在角落的椅子上弹着鲁特琴。一位红发女子站在他旁边唱着喜剧英雄的故事。"
+      },
+      "3357": {
+        "name": "酒吧柜台",
+        "description": "一张长长的桃花心木酒吧设置在酒吧的后部。杯子排在酒吧后面的架子上。强烈而难看的液体瓶子装饰着下面的架子之一。"
+      },
+      "3358": {
+        "name": "酒吧柜台",
+        "description": "一张长长的桃花心木酒吧设置在酒吧的后部。杯子排在酒吧后面的架子上。强烈而难看的液体瓶子装饰着下面的架子之一。"
+      },
+      "3359": {
+        "name": "安迪旅馆",
+        "description": "你站在安迪酒吧楼上的安迪旅馆。几把椅子和几个茶几给房间一种家的氛围。一个大石壁炉在一面墙上明亮地燃烧，温暖着房间。"
+      }
+    },
+    "objects": {}
+  }
+}

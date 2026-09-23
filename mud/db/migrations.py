@@ -88,6 +88,7 @@ def _ensure_character_schema_columns(conn) -> None:
         ("title", "VARCHAR", None),
         ("bamfin", "VARCHAR", None),
         ("bamfout", "VARCHAR", None),
+        ("language", "VARCHAR DEFAULT 'en'", None),
         ("security", "INTEGER DEFAULT 0", None),
         ("points", "INTEGER DEFAULT 0", "UPDATE characters SET points = creation_points WHERE points IS NULL"),
         ("last_level", "INTEGER DEFAULT 0", None),

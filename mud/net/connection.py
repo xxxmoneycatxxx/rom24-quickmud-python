@@ -57,6 +57,7 @@ from mud.security import bans
 from mud.security.bans import BanFlag
 from mud.security.hash_utils import hash_password
 from mud.skills.groups import get_group, list_groups
+from mud.i18n import t
 from mud.utils.act import act_format
 from mud.utils.messaging import push_message
 from mud.utils.prompt import bust_a_prompt
@@ -740,7 +741,7 @@ async def _prompt(
 
 async def _prompt_ansi_preference(conn: TelnetStream) -> tuple[bool, bool] | None:
     while True:
-        response = await _prompt(conn, "Do you want ANSI? (Y/n) ")
+        response = await _prompt(conn, t("Do you want ANSI? (Y/n) "))
         if response is None:
             return None
         lowered = response.lower()
@@ -750,7 +751,7 @@ async def _prompt_ansi_preference(conn: TelnetStream) -> tuple[bool, bool] | Non
             return True, True
         if lowered.startswith("n"):
             return False, True
-        await _send_line(conn, "Please answer Y or N.")
+        await _send_line(conn, t("Please answer Y or N."))
 
 
 def default_login_room_vnum(char: Character) -> int:
@@ -979,7 +980,7 @@ async def _await_login_motd_continue(conn: TelnetStream, char: Character) -> boo
     """Mirror ROM's ``do_help(...); d->connected = CON_READ_MOTD`` gate."""
 
     await _send_login_motd(char)
-    response = await _prompt(conn, "[Hit Return to continue] ")
+    response = await _prompt(conn, t("[Hit Return to continue] "))
     return response is not None
 
 
@@ -1258,26 +1259,26 @@ def _finalize_disconnect(
 
 
 async def _prompt_new_password(conn: TelnetStream, char_name: str) -> str | None:
-    prompt = f"Give me a password for {char_name}: "
+    prompt = t("Give me a password for {char_name}: ").format(char_name=char_name)
     while True:
         password = await _prompt(conn, prompt, hide_input=True)
         if password is None:
             return None
         if len(password) < 5:
-            await _send_line(conn, "Password must be at least five characters long.")
-            prompt = "Password: "
+            await _send_line(conn, t("Password must be at least five characters long."))
+            prompt = t("Password: ")
             continue
         # mirrors ROM src/nanny.c:396-405 — '~' is the pfile field terminator
         if "~" in password:
-            await _send_line(conn, "New password not acceptable, try again.")
-            prompt = "Password: "
+            await _send_line(conn, t("New password not acceptable, try again."))
+            prompt = t("Password: ")
             continue
-        confirm = await _prompt(conn, "Please retype password: ", hide_input=True)
+        confirm = await _prompt(conn, t("Please retype password: "), hide_input=True)
         if confirm is None:
             return None
         if password != confirm:
-            await _send_line(conn, "Passwords don't match.")
-            prompt = "Retype password: "
+            await _send_line(conn, t("Passwords don't match."))
+            prompt = t("Retype password: ")
             continue
         return password
 
@@ -1299,7 +1300,7 @@ async def _run_character_login(
     """
     _register_descriptor(conn, host_for_ban or getattr(conn, "peer_host", None))
     while True:
-        submitted = await _prompt(conn, "Name: ")
+        submitted = await _prompt(conn, t("Name: "))
         if submitted is None:
             return None
         username = sanitize_account_name(submitted)
@@ -1307,21 +1308,21 @@ async def _run_character_login(
             continue
         _set_descriptor_name(conn, username)
         if not is_valid_account_name(username):
-            await _send_line(conn, "Illegal name, try another.")
+            await _send_line(conn, t("Illegal name, try another."))
             continue
 
         if character_exists(username):
             allow_reconnect = False
             if is_account_active(username):
-                decision = await _prompt_yes_no(conn, "This character is already playing. Reconnect? (Y/N) ")
+                decision = await _prompt_yes_no(conn, t("This character is already playing. Reconnect? (Y/N) "))
                 if decision is None:
                     return None
                 if not decision:
-                    await _send_line(conn, "Ok, please choose another name.")
+                    await _send_line(conn, t("Ok, please choose another name."))
                     continue
                 allow_reconnect = True
 
-            password = await _prompt(conn, "Password: ", hide_input=True)
+            password = await _prompt(conn, t("Password: "), hide_input=True)
             if password is None:
                 return None
             result = login_with_host(username, password, host_for_ban, allow_reconnect=allow_reconnect)
@@ -1330,66 +1331,66 @@ async def _run_character_login(
 
             reason = result.failure
             if reason is LoginFailureReason.DUPLICATE_SESSION:
-                await _send_line(conn, "Ok, please choose another name.")
+                await _send_line(conn, t("Ok, please choose another name."))
                 continue
             if reason is LoginFailureReason.BAD_CREDENTIALS:
                 # mirroring ROM src/nanny.c:269-274 — one attempt, then close
-                message = "Reconnect failed." if allow_reconnect else "Wrong password."
+                message = t("Reconnect failed.") if allow_reconnect else t("Wrong password.")
                 await _send_line(conn, message)
                 return None
             if reason is LoginFailureReason.WIZLOCK:
-                await _send_line(conn, "The game is wizlocked.")
+                await _send_line(conn, t("The game is wizlocked."))
                 return None
             if reason is LoginFailureReason.NEWLOCK:
-                await _send_line(conn, "The game is newlocked.")
+                await _send_line(conn, t("The game is newlocked."))
                 return None
             if reason is LoginFailureReason.ACCOUNT_BANNED:
-                await _send_line(conn, "You are denied access.")
+                await _send_line(conn, t("You are denied access."))
                 return None
             if reason is LoginFailureReason.HOST_BANNED:
-                await _send_line(conn, "Your site has been banned from this mud.")
+                await _send_line(conn, t("Your site has been banned from this mud."))
                 return None
             if reason is LoginFailureReason.HOST_NEWBIES:
-                await _send_line(conn, "New players are not allowed from your site.")
+                await _send_line(conn, t("New players are not allowed from your site."))
                 return None
-            await _send_line(conn, "Login failed.")
+            await _send_line(conn, t("Login failed."))
             continue
 
         # New character — apply pre-creation bans before confirming the name.
         # mirroring ROM src/comm.c:check_parse_name — reject mob-keyword collisions early
         if not is_valid_character_name(username):
-            await _send_line(conn, "Illegal name, try another.")
+            await _send_line(conn, t("Illegal name, try another."))
             continue
         if await _close_duplicate_newbie_descriptors(conn, username):
-            await _send_line(conn, "Illegal name, try another.")
+            await _send_line(conn, t("Illegal name, try another."))
             continue
 
         precheck = login_with_host(username, "", host_for_ban)
         failure = precheck.failure
         if failure and failure is not LoginFailureReason.UNKNOWN_ACCOUNT:
             if failure is LoginFailureReason.NEWLOCK:
-                await _send_line(conn, "The game is newlocked.")
+                await _send_line(conn, t("The game is newlocked."))
             elif failure is LoginFailureReason.WIZLOCK:
-                await _send_line(conn, "The game is wizlocked.")
+                await _send_line(conn, t("The game is wizlocked."))
             elif failure is LoginFailureReason.HOST_BANNED:
-                await _send_line(conn, "Your site has been banned from this mud.")
+                await _send_line(conn, t("Your site has been banned from this mud."))
             elif failure is LoginFailureReason.HOST_NEWBIES:
-                await _send_line(conn, "New players are not allowed from your site.")
+                await _send_line(conn, t("New players are not allowed from your site."))
             elif failure is LoginFailureReason.ACCOUNT_BANNED:
-                await _send_line(conn, "You are denied access.")
+                await _send_line(conn, t("You are denied access."))
             else:
-                await _send_line(conn, "Character creation is unavailable right now.")
+                await _send_line(conn, t("Character creation is unavailable right now."))
             return None
 
         # mirroring ROM src/nanny.c:CON_CONFIRM_NEW_NAME
-        confirm = await _prompt_yes_no(conn, f"Did I get that right, {username.capitalize()} (Y/N)? ")
+        confirm = await _prompt_yes_no(conn, t("Did I get that right, {name} (Y/N)? ").format(name=username.capitalize()))
         if confirm is None:
             return None
         if not confirm:
-            await _send_line(conn, "Ok, what IS it, then?")
+            await _send_line(conn, t("Ok, what IS it, then?"))
             continue
 
-        await _send_line(conn, "New character.")
+        await _send_line(conn, t("New character."))
         password = await _prompt_new_password(conn, username.capitalize())
         if password is None:
             return None
@@ -1412,10 +1413,10 @@ async def _run_character_login(
 async def _prompt_for_race(conn: TelnetStream, help_character: object | None = None) -> PcRaceType | None:
     races = get_creation_races()
     # mirroring ROM src/nanny.c:461 — "The following races are available:\n\r  "
-    race_listing = "The following races are available:\n\r  " + " ".join(race.name for race in races) + " "
+    race_listing = t("The following races are available:\n\r  ") + " ".join(race.name for race in races) + " "
     await _send_line(conn, race_listing)
     helper = help_character or SimpleNamespace(name="", trust=0, level=0, is_npc=False, room=None)
-    prompt = "What is your race (help for more information)? "
+    prompt = t("What is your race (help for more information)? ")
     while True:
         response = await _prompt(conn, prompt)
         if response is None:
@@ -1440,11 +1441,11 @@ async def _prompt_for_race(conn: TelnetStream, help_character: object | None = N
         # mirroring ROM src/nanny.c:460-471 — "That is not a valid race." then listing + retry prompt
         await _send_line(conn, "That is not a valid race.")
         await _send_line(conn, race_listing)
-        prompt = "What is your race? (help for more information) "
+        prompt = t("What is your race? (help for more information) ")
 
 
 async def _prompt_for_sex(conn: TelnetStream) -> Sex | None:
-    prompt = "What is your sex (M/F)? "
+    prompt = "What is your sex (M/F)? "  # TODO: i18n
     while True:
         response = await _prompt(conn, prompt)
         if response is None:
@@ -1795,7 +1796,7 @@ async def _prompt_for_weapon(conn: TelnetStream, class_type: ClassType) -> int |
     choices = get_weapon_choices(class_type)
     normalized = {choice.lower(): choice for choice in choices}
     # mirroring ROM src/nanny.c:612-622 — weapon prompt uses \n\r line endings
-    prompt = "Please pick a weapon from the following choices:\n\r" + " ".join(choices) + " \n\rYour choice? "
+    prompt = t("Please pick a weapon from the following choices:\n\r") + " ".join(choices) + " \n\rYour choice? "
     while True:
         response = await _prompt(conn, prompt)
         if response is None:
@@ -1964,7 +1965,7 @@ async def _select_character(
         if active_connection is not None:
             decision = await _prompt_yes_no(
                 conn,
-                "That character is already playing. Reconnect? (Y/N) ",
+                t("That character is already playing. Reconnect? (Y/N) "),
             )
             if decision is None:
                 return None
@@ -2166,7 +2167,7 @@ async def handle_connection_with_stream(
 
         outfit_message: str | None = None
         if is_new_player and give_school_outfit(char):
-            outfit_message = "You have been equipped by Mota."
+            outfit_message = t("You have been equipped by Mota.")
 
         _apply_qmconfig_telnetga(
             char,
@@ -2182,7 +2183,7 @@ async def handle_connection_with_stream(
             if not reconnecting and not await _await_login_motd_continue(conn, char):
                 return
             if not reconnecting:
-                await send_to_char(char, "\nWelcome to ROM 2.4.  Please don't feed the mobiles!\n")
+                await send_to_char(char, t("\nWelcome to ROM 2.4.  Please don't feed the mobiles!\n"))
             if outfit_message:
                 await send_to_char(char, outfit_message)
             if not reconnecting and _should_send_newbie_help(char):
@@ -2196,7 +2197,7 @@ async def handle_connection_with_stream(
 
         try:
             if reconnecting:
-                await send_to_char(char, RECONNECT_MESSAGE)
+                await send_to_char(char, t(RECONNECT_MESSAGE))
             note_reminder = _announce_login_or_reconnect(char, host_for_ban, reconnecting)
             if reconnecting and note_reminder:
                 await send_to_char(
@@ -2411,7 +2412,7 @@ async def handle_connection(reader: asyncio.StreamReader, writer: asyncio.Stream
         _mark_descriptor_playing(conn, char)
         outfit_message: str | None = None
         if is_new_player and give_school_outfit(char):
-            outfit_message = "You have been equipped by Mota."
+            outfit_message = t("You have been equipped by Mota.")
 
         _apply_qmconfig_telnetga(
             char,
@@ -2426,7 +2427,7 @@ async def handle_connection(reader: asyncio.StreamReader, writer: asyncio.Stream
             if not reconnecting and not await _await_login_motd_continue(conn, char):
                 return
             if not reconnecting:
-                await send_to_char(char, "\nWelcome to ROM 2.4.  Please don't feed the mobiles!\n")
+                await send_to_char(char, t("\nWelcome to ROM 2.4.  Please don't feed the mobiles!\n"))
             if outfit_message:
                 await send_to_char(char, outfit_message)
             if not reconnecting and _should_send_newbie_help(char):
@@ -2440,7 +2441,7 @@ async def handle_connection(reader: asyncio.StreamReader, writer: asyncio.Stream
 
         try:
             if reconnecting:
-                await send_to_char(char, RECONNECT_MESSAGE)
+                await send_to_char(char, t(RECONNECT_MESSAGE))
             note_reminder = _announce_login_or_reconnect(char, host_for_ban, reconnecting)
             if reconnecting and note_reminder:
                 await send_to_char(

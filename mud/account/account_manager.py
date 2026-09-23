@@ -251,6 +251,7 @@ def save_character_to_db(session: Session, character: Character) -> None:
     db_char.bamfin = str(bamfin) if bamfin is not None else None
     bamfout = getattr(pcdata, "bamfout", None)
     db_char.bamfout = str(bamfout) if bamfout is not None else None
+    db_char.language = getattr(pcdata, "language", "en") or "en"
     db_char.security = int(getattr(pcdata, "security", 0))
     db_char.points = int(getattr(pcdata, "points", 0))
     db_char.last_level = int(getattr(pcdata, "last_level", 0))

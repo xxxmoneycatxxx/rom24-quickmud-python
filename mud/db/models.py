@@ -153,6 +153,7 @@ class Character(Base):
     title: Mapped[str | None] = mapped_column(String, nullable=True)
     bamfin: Mapped[str | None] = mapped_column(String, nullable=True)
     bamfout: Mapped[str | None] = mapped_column(String, nullable=True)
+    language: Mapped[str] = mapped_column(String, default="en")  # i18n: player language preference
     security: Mapped[int] = mapped_column(Integer, default=0)
     points: Mapped[int] = mapped_column(Integer, default=0)
     last_level: Mapped[int] = mapped_column(Integer, default=0)

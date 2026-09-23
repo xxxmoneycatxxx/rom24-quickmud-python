@@ -40,18 +40,42 @@ def _sex_of(target: Any) -> Sex | None:
 
 
 def _subject_pronoun(sex: Sex | None) -> str:
+    from mud.i18n import get_pronouns
+
+    i18n = get_pronouns()
+    if i18n is not None:
+        sex_key = {Sex.MALE: "male", Sex.FEMALE: "female", Sex.NONE: "none"}.get(
+            sex if isinstance(sex, Sex) else Sex.NONE, "none"
+        )
+        return i18n.get("subject", {}).get(sex_key, "他/她/它")
     if isinstance(sex, Sex):
         return _SUBJECT_PRONOUNS.get(sex, "they")
     return "they"
 
 
 def _object_pronoun(sex: Sex | None) -> str:
+    from mud.i18n import get_pronouns
+
+    i18n = get_pronouns()
+    if i18n is not None:
+        sex_key = {Sex.MALE: "male", Sex.FEMALE: "female", Sex.NONE: "none"}.get(
+            sex if isinstance(sex, Sex) else Sex.NONE, "none"
+        )
+        return i18n.get("object", {}).get(sex_key, "他/她/它")
     if isinstance(sex, Sex):
         return _OBJECT_PRONOUNS.get(sex, "them")
     return "them"
 
 
 def _possessive_pronoun(sex: Sex | None) -> str:
+    from mud.i18n import get_pronouns
+
+    i18n = get_pronouns()
+    if i18n is not None:
+        sex_key = {Sex.MALE: "male", Sex.FEMALE: "female", Sex.NONE: "none"}.get(
+            sex if isinstance(sex, Sex) else Sex.NONE, "none"
+        )
+        return i18n.get("possessive", {}).get(sex_key, "他/她/它的")
     if isinstance(sex, Sex):
         return _POSSESSIVE_PRONOUNS.get(sex, "their")
     return "their"
@@ -153,6 +177,12 @@ def act_format(
 
     if not format_str:
         return ""
+
+    # i18n: translate the template BEFORE token expansion so entity names
+    # are inserted into the translated text in the correct word order.
+    from mud.i18n import translate_template
+
+    format_str = translate_template(format_str)
 
     result: list[str] = []
     length = len(format_str)

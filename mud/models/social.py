@@ -76,21 +76,38 @@ _POSSESSIVE_PRONOUNS: dict[Sex, str] = {
 
 def expand_placeholders(message: str, actor: object, victim: object | None = None) -> str:
     """Replace basic ROM placeholders in social messages."""
+    from mud.i18n import is_translated, get_pronouns
+
+    i18n_pronouns = get_pronouns() if is_translated() else None
 
     def subj(sex: Sex | object) -> str:
+        if i18n_pronouns:
+            sex_name = _sex_name(sex)
+            return i18n_pronouns.get("subject", {}).get(sex_name, "they")
         if isinstance(sex, Sex):
             return _SUBJECT_PRONOUNS.get(sex, "they")
         return "they"
 
     def obj(sex: Sex | object) -> str:
+        if i18n_pronouns:
+            sex_name = _sex_name(sex)
+            return i18n_pronouns.get("object", {}).get(sex_name, "them")
         if isinstance(sex, Sex):
             return _OBJECT_PRONOUNS.get(sex, "them")
         return "them"
 
     def poss(sex: Sex | object) -> str:
+        if i18n_pronouns:
+            sex_name = _sex_name(sex)
+            return i18n_pronouns.get("possessive", {}).get(sex_name, "their")
         if isinstance(sex, Sex):
             return _POSSESSIVE_PRONOUNS.get(sex, "their")
         return "their"
+
+    def _sex_name(sex: Sex | object) -> str:
+        if isinstance(sex, Sex):
+            return {Sex.MALE: "male", Sex.FEMALE: "female"}.get(sex, "none")
+        return "none"
 
     # Names
     result = message.replace("$n", getattr(actor, "name", ""))

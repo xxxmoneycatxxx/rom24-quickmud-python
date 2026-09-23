@@ -316,6 +316,9 @@ def do_help(ch: Character, args: str, *, limit_results: bool = False) -> str:
             text = candidate.text
             if text.startswith("."):
                 text = text[1:]
+            # Translate help text if i18n is active
+            from mud.i18n import translate_help
+            text = translate_help(candidate.keywords, text)
             sections.append(text)
             chunk = "\n".join(sections)
             chunks.append(_ensure_crlf(chunk))

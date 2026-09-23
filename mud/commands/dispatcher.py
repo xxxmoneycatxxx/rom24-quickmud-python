@@ -160,7 +160,7 @@ from .movement import do_down, do_east, do_enter, do_north, do_south, do_up, do_
 from .murder import do_murder
 from .notes import do_board, do_note
 from .obj_manipulation import do_put, do_quaff, do_remove, do_sacrifice
-from .player_config import do_delet, do_delete, do_nofollow, do_noloot, do_nosummon
+from .player_config import do_delet, do_delete, do_language, do_nofollow, do_noloot, do_nosummon
 from .player_info import do_info, do_play, do_scroll, do_show
 from .position import do_rest, do_sit, do_sleep, do_stand, do_wake
 from .remaining_rom import (
@@ -428,6 +428,7 @@ COMMANDS: list[Command] = [
     Command("noloot", do_noloot, min_position=Position.DEAD),
     Command("nofollow", do_nofollow, min_position=Position.DEAD),
     Command("nosummon", do_nosummon, min_position=Position.DEAD),
+    Command("language", do_language, min_position=Position.DEAD),
     Command("delete", do_delete, min_position=Position.STANDING, log_level=LogLevel.ALWAYS),
     Command("delet", do_delet, min_position=Position.DEAD, show=False, log_level=LogLevel.ALWAYS),
     # Immortal Commands - Basic

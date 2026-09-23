@@ -198,6 +198,7 @@ class PCData:
     bamfin: str | None = None
     bamfout: str | None = None
     title: str | None = None
+    language: str = "en"  # Player's language preference (en/zh)
     perm_hit: int = 0
     perm_mana: int = 0
     perm_move: int = 0
@@ -1298,6 +1299,7 @@ def from_orm(db_char: DBCharacter) -> Character:
     saved_bamfout = getattr(db_char, "bamfout", None)
     if saved_bamfout is not None:
         pcdata.bamfout = str(saved_bamfout)
+    pcdata.language = getattr(db_char, "language", "en") or "en"
     pcdata.security = int(getattr(db_char, "security", 0) or 0)
     saved_points = getattr(db_char, "points", None)
     if saved_points is None:

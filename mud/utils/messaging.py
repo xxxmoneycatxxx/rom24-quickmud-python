@@ -121,7 +121,13 @@ def push_message(character: Character | None, message: str) -> None:
             return
     mailbox = getattr(character, "messages", None)
     if isinstance(mailbox, list):
-        mailbox.append(str(message))
+        # i18n: translate for the mailbox fallback path (tests, disconnected).
+        from mud.i18n import is_translated, t
+
+        msg = str(message)
+        if is_translated():
+            msg = t(msg)
+        mailbox.append(msg)
 
 
 def send_to_char_buffered(character: Character | None, message: str) -> None:

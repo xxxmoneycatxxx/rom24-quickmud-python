@@ -1,11 +1,22 @@
 services:
   mud:
     build: .
+    container_name: quickmud-server
     ports:
       - "${PORT:-5001}:${PORT:-5001}"
     env_file:
       - .env
+    environment:
+      - LANGUAGE=${LANGUAGE:-zh}
     volumes:
       - .:/app
+      - ./data:/app/data  # 持久化数据目录
     working_dir: /app
     command: mud runserver
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; s=socket.socket(); s.settimeout(5); s.connect(('localhost', int('${PORT:-5001}'))); s.close()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s

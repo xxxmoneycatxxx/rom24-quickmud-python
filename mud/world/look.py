@@ -310,6 +310,10 @@ def _look_room(char: Character, room) -> str:
     is_builder = False  # TODO: Implement IS_BUILDER check when area builders are added
 
     room_name = room.name or ""
+    # Translate room name if i18n is active
+    from mud.i18n import translate_room
+    vnum = getattr(room, "vnum", 0)
+    room_name = translate_room(vnum, "name", room_name)
     if (is_immortal and (getattr(char, "is_npc", False) or has_holylight)) or is_builder:
         # Show room vnum for immortals with holylight or builders
         vnum = getattr(room, "vnum", 0)
@@ -324,6 +328,9 @@ def _look_room(char: Character, room) -> str:
     comm_flags = getattr(char, "comm", 0)
     if not (comm_flags & CommFlag.BRIEF):
         room_desc = room.description or ""
+        # Translate room description if i18n is active
+        from mud.i18n import translate_room
+        room_desc = translate_room(vnum, "description", room_desc)
         lines.append(room_desc)
 
     # Objects in room — ROM src/act_info.c:1106

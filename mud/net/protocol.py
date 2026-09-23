@@ -34,6 +34,12 @@ async def send_to_char(char: Character, message: str | Iterable[str]) -> None:
     else:
         text = str(message)
 
+    # i18n: translate fixed messages at the delivery chokepoint.
+    from mud.i18n import is_translated, t
+
+    if is_translated():
+        text = t(text)
+
     session = getattr(char, "desc", None)
     lines_pref = int(getattr(char, "lines", 0) or 0)
     if (
