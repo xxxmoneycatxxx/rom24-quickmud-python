@@ -355,9 +355,21 @@ def format_obj_to_char(obj: Any, char: Any, f_short: bool) -> str:
         buf += "(Humming) "
 
     if f_short:
-        buf += getattr(obj, "short_descr", "") or ""
+        raw_short = getattr(obj, "short_descr", "") or ""
+        # i18n: translate object short_descr by prototype vnum.
+        from mud.i18n import translate_object as _i18n_obj
+        proto_vnum = getattr(getattr(obj, "prototype", None), "vnum", 0) or 0
+        if proto_vnum:
+            raw_short = _i18n_obj(proto_vnum, "short_descr", raw_short)
+        buf += raw_short
     else:
-        buf += getattr(obj, "description", "") or ""
+        raw_desc = getattr(obj, "description", "") or ""
+        # i18n: translate object description by prototype vnum.
+        from mud.i18n import translate_object as _i18n_obj
+        proto_vnum = getattr(getattr(obj, "prototype", None), "vnum", 0) or 0
+        if proto_vnum:
+            raw_desc = _i18n_obj(proto_vnum, "description", raw_desc)
+        buf += raw_desc
 
     return buf
 

@@ -132,7 +132,13 @@ def _room_occupant_line(observer: Character, victim) -> str:
     # value for normally-spawned mobs).  Fall back to start_pos if present.
     ref_pos = getattr(victim, "start_pos", getattr(victim, "default_pos", None))
     if getattr(victim, "is_npc", False) and long_descr and getattr(victim, "position", None) == ref_pos:
-        return prefix + str(long_descr).rstrip("\r\n")
+        # i18n: translate mob long_descr by prototype vnum.
+        _ld = str(long_descr)
+        from mud.i18n import translate_mob as _i18n_mob
+        _proto_vnum = getattr(getattr(victim, "prototype", None), "vnum", 0) or 0
+        if _proto_vnum:
+            _ld = _i18n_mob(_proto_vnum, "long_descr", _ld)
+        return prefix + _ld.rstrip("\r\n")
 
     base = prefix + pers(victim, observer)
     position = getattr(victim, "position", None)
@@ -387,6 +393,12 @@ def _look_char(char: Character, victim: Character) -> str:
     # Show description
     desc = getattr(victim, "description", None)
     if desc:
+        # i18n: translate mob description by prototype vnum.
+        if getattr(victim, "is_npc", False):
+            from mud.i18n import translate_mob as _i18n_mob
+            _proto_vnum = getattr(getattr(victim, "prototype", None), "vnum", 0) or 0
+            if _proto_vnum:
+                desc = _i18n_mob(_proto_vnum, "description", desc)
         lines.append(desc)
     else:
         # ROM src/act_info.c:453 — act("You see nothing special about $M.", ch,

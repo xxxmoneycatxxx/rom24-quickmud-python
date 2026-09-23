@@ -294,6 +294,23 @@ def translate_object(vnum: int, field: str, default: str) -> str:
     return default
 
 
+def translate_mob(vnum: int, field: str, default: str) -> str:
+    """Translate a mob's name or description by vnum.
+
+    The ``areas.mobs`` section maps vnum (as string) to a dict with
+    ``"short_descr"`` and/or ``"long_descr"`` keys.  Returns *default*
+    if no translation is available.
+    """
+    if not is_translated():
+        return default
+    _ensure_loaded()
+    mobs = _table.get("areas", {}).get("mobs", {})
+    entry = mobs.get(str(vnum))
+    if entry and field in entry:
+        return entry[field]
+    return default
+
+
 # ---------------------------------------------------------------------------
 # Internal helpers
 # ---------------------------------------------------------------------------

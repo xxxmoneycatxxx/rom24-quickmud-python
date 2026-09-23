@@ -3679,6 +3679,874 @@
         "description": "You are on a little sand bar in the water.\n"
       }
     },
-    "objects": {}
+    "objects": {
+      "3000": {
+        "short_descr": "一桶啤酒",
+        "description": "一桶啤酒被留在了这里。"
+      },
+      "3001": {
+        "short_descr": "一瓶啤酒",
+        "description": "一瓶啤酒被留在了这里。"
+      },
+      "3002": {
+        "short_descr": "一瓶黑啤",
+        "description": "一瓶深色黑啤被留在了这里。"
+      },
+      "3003": {
+        "short_descr": "一瓶烈酒",
+        "description": "一瓶烈酒被留在了这里。"
+      },
+      "3004": {
+        "short_descr": "一瓶地方特产酒",
+        "description": "一瓶深色酒被留在了这里。"
+      },
+      "3005": {
+        "short_descr": "哈桑的弯刀",
+        "description": "哈桑的弯刀躺在地上，等待它的主人。"
+      },
+      "3006": {
+        "short_descr": "一块氏族石",
+        "description": "有人把他们的氏族石丢在这里了。"
+      },
+      "3009": {
+        "short_descr": "一大块馅饼",
+        "description": "一大块馅饼被留在了这里。"
+      },
+      "3010": {
+        "short_descr": "捐献池",
+        "description": "祭坛前有一个用于献祭的坑。"
+      },
+      "3011": {
+        "short_descr": "一条面包",
+        "description": "这里有一条面包。看起来不太陈。"
+      },
+      "3012": {
+        "short_descr": "一个肉桂卷",
+        "description": "一个热气腾腾的肉桂卷在这里。看起来很好吃！"
+      },
+      "3013": {
+        "short_descr": "一批萨拉的饼干",
+        "description": "一盘巧克力曲奇饼干在这里。"
+      },
+      "3014": {
+        "short_descr": "一个蓝莓丹麦酥",
+        "description": "一个美味的蓝莓丹麦酥在这里。"
+      },
+      "3020": {
+        "short_descr": "一把匕首",
+        "description": "一把有着细长刀刃的匕首在这里。"
+      },
+      "3021": {
+        "short_descr": "一把短剑",
+        "description": "一把短剑躺在地上。"
+      },
+      "3022": {
+        "short_descr": "一把长剑",
+        "description": "一把长剑被留在了这里。"
+      },
+      "3023": {
+        "short_descr": "一根木棒",
+        "description": "一根结实的木棒在这里。"
+      },
+      "3024": {
+        "short_descr": "一把铁锤",
+        "description": "一把沉重的铁锤在这里。"
+      },
+      "3025": {
+        "short_descr": "一把手斧",
+        "description": "一把小手斧被遗忘在地板上。"
+      },
+      "3026": {
+        "short_descr": "一把战斧",
+        "description": "一把巨大的钢斧躺在地上。"
+      },
+      "3027": {
+        "short_descr": "一把长矛",
+        "description": "一把长矛靠在墙上。"
+      },
+      "3028": {
+        "short_descr": "一根木杖",
+        "description": "一根结实的木杖躺在地板上。"
+      },
+      "3029": {
+        "short_descr": "一把连枷",
+        "description": "一把小铁连枷在这里。"
+      },
+      "3030": {
+        "short_descr": "一支火把",
+        "description": "一支大火把。"
+      },
+      "3031": {
+        "short_descr": "一盏带罩的黄铜灯",
+        "description": "一盏带罩的黄铜灯被留在了这里。"
+      },
+      "3032": {
+        "short_descr": "一个袋子",
+        "description": "一个小袋子。"
+      },
+      "3033": {
+        "short_descr": "一个盒子",
+        "description": "一个小盒子。"
+      },
+      "3039": {
+        "short_descr": "一卷取消卷轴",
+        "description": "一卷羊皮纸卷轴在这里。"
+      },
+      "3040": {
+        "short_descr": "一卷鉴定卷轴",
+        "description": "一卷卷轴被随意地丢在这里。"
+      },
+      "3041": {
+        "short_descr": "一瓶黄色隐形药水",
+        "description": "一小瓶黄色药水被随意地丢在这里。"
+      },
+      "3042": {
+        "short_descr": "一卷回城卷轴",
+        "description": "一卷卷轴被随意地丢在这里。"
+      },
+      "3043": {
+        "short_descr": "一枚防护戒指",
+        "description": "一枚附魔防护戒指躺在地上。"
+      },
+      "3044": {
+        "short_descr": "一根魔法飞弹魔杖",
+        "description": "一根木棍躺在地上。"
+      },
+      "3045": {
+        "short_descr": "一件鳞甲",
+        "description": "一件鳞甲躺在地上。"
+      },
+      "3046": {
+        "short_descr": "一件青铜胸甲",
+        "description": "一件青铜胸甲躺在地上。"
+      },
+      "3047": {
+        "short_descr": "一件特殊青铜胸甲",
+        "description": "一件特殊青铜胸甲躺在地上。"
+      },
+      "3050": {
+        "short_descr": "一个木筏",
+        "description": "一个木筏被留在了这里。"
+      },
+      "3051": {
+        "short_descr": "一条独木舟",
+        "description": "一条独木舟被留在了这里。"
+      },
+      "3052": {
+        "short_descr": "一个皮革护腕",
+        "description": "一个结实的皮革护腕在这里。"
+      },
+      "3053": {
+        "short_descr": "一条皮带",
+        "description": "一条柔软的皮带在这里。"
+      },
+      "3054": {
+        "short_descr": "一条宽皮带",
+        "description": "一条宽皮带在这里。"
+      },
+      "3060": {
+        "short_descr": "一件皮甲",
+        "description": "一件皮甲躺在地上。"
+      },
+      "3061": {
+        "short_descr": "一顶皮帽",
+        "description": "一顶皮帽躺在地上。"
+      },
+      "3062": {
+        "short_descr": "一条皮裤",
+        "description": "一条皮裤躺在地上。"
+      },
+      "3063": {
+        "short_descr": "一双皮靴",
+        "description": "一双皮靴躺在这里。"
+      },
+      "3064": {
+        "short_descr": "一副皮手套",
+        "description": "一副皮手套躺在地上。"
+      },
+      "3065": {
+        "short_descr": "一副皮袖套",
+        "description": "一副皮袖套躺在地上。"
+      },
+      "3100": {
+        "short_descr": "一件锁子甲",
+        "description": "一件锁子甲躺在地上。"
+      },
+      "3101": {
+        "short_descr": "一顶锁子甲头巾",
+        "description": "一顶锁子甲头巾躺在地上。"
+      },
+      "3102": {
+        "short_descr": "一件锁子甲护腿",
+        "description": "一件锁子甲护腿躺在地上。"
+      },
+      "3103": {
+        "short_descr": "一双铁扣靴子",
+        "description": "一双铁扣靴子躺在这里。"
+      },
+      "3104": {
+        "short_descr": "一副锁子甲手套",
+        "description": "一副锁子甲手套躺在地上。"
+      },
+      "3105": {
+        "short_descr": "一副锁子甲袖套",
+        "description": "一副锁子甲袖套躺在地上。"
+      },
+      "3110": {
+        "short_descr": "一件锁子甲衫",
+        "description": "一件锁子甲衫躺在地上。"
+      },
+      "3111": {
+        "short_descr": "一顶锁子甲面罩",
+        "description": "一顶锁子甲面罩躺在地上。"
+      },
+      "3112": {
+        "short_descr": "一件长锁子甲裙",
+        "description": "一件长锁子甲裙躺在地上。"
+      },
+      "3113": {
+        "short_descr": "一双铁扣靴",
+        "description": "一双铁扣靴躺在这里。"
+      },
+      "3114": {
+        "short_descr": "一副链甲护手",
+        "description": "一副链甲护手躺在地上。"
+      },
+      "3115": {
+        "short_descr": "一副链甲袖套",
+        "description": "一副链甲袖套躺在地上。"
+      },
+      "3116": {
+        "short_descr": "一面大金属盾",
+        "description": "一面大金属盾躺在地上。"
+      },
+      "3117": {
+        "short_descr": "一面小木盾",
+        "description": "一面小木盾躺在地上。"
+      },
+      "3120": {
+        "short_descr": "一把钥匙",
+        "description": "一把铁钥匙被留在了这里。"
+      },
+      "3121": {
+        "short_descr": "一把钥匙",
+        "description": "一把生锈的钥匙被留在了这里。"
+      },
+      "3122": {
+        "short_descr": "一把钥匙",
+        "description": "一把木钥匙被留在了这里。"
+      },
+      "3123": {
+        "short_descr": "一把钥匙",
+        "description": "一把黄铜钥匙被留在了这里。"
+      },
+      "3124": {
+        "short_descr": "一把长剑",
+        "description": "一把长剑被留在了这里。"
+      },
+      "3129": {
+        "short_descr": "一副手铐",
+        "description": "一副手铐被留在了这里。"
+      },
+      "3130": {
+        "short_descr": "书桌",
+        "description": "一张书桌靠西墙摆放着。"
+      },
+      "3131": {
+        "short_descr": "保险箱",
+        "description": "一个保险箱放在房间的暗角里。"
+      },
+      "3132": {
+        "short_descr": "银币",
+        "description": "这里有很多银子。"
+      },
+      "3133": {
+        "short_descr": "城市钥匙",
+        "description": "非常大的城市钥匙躺在这里。"
+      },
+      "3134": {
+        "short_descr": "长椅",
+        "description": "一把白色木长椅立在这里。"
+      },
+      "3135": {
+        "short_descr": "一座喷泉",
+        "description": "一座白色小喷泉在此喷涌。"
+      },
+      "3136": {
+        "short_descr": "一小堆硬币",
+        "description": "一小堆硬币在这里。"
+      },
+      "3137": {
+        "short_descr": "一把钢钥匙",
+        "description": "一把大钢钥匙被留在了这里。"
+      },
+      "3138": {
+        "short_descr": "一个水牛皮水袋",
+        "description": "一头胀大的死水牛在地板上。"
+      },
+      "3139": {
+        "short_descr": "接待员的辞职信",
+        "description": "接待员的辞职信贴在墙上。"
+      },
+      "3140": {
+        "short_descr": "银行清算通知",
+        "description": "银行清算通知贴在墙上。"
+      },
+      "3150": {
+        "short_descr": "一杯肉桂咖啡",
+        "description": "一杯热气腾腾的肉桂咖啡在这里。"
+      },
+      "3151": {
+        "short_descr": "一碗鸡汤面",
+        "description": "一碗热腾腾的鸡汤面在这里。"
+      },
+      "3152": {
+        "short_descr": "一碗炖牛肉",
+        "description": "一碗浓稠的炖牛肉，里面有很多蔬菜，在此冒着热气。"
+      },
+      "3153": {
+        "short_descr": "一块饼干",
+        "description": "一块涂满黄油的美味饼干在这里。"
+      },
+      "3154": {
+        "short_descr": "一瓶乔治·基利安爱尔兰红啤",
+        "description": "一瓶深色啤酒在这里。"
+      },
+      "3161": {
+        "short_descr": "一把白色钥匙",
+        "description": "一把白色钥匙被留在了这里。"
+      },
+      "3162": {
+        "short_descr": "一张米德加德城地图",
+        "description": "一张卷起的地图在这里。"
+      },
+      "3163": {
+        "short_descr": "一张赛拉地图",
+        "description": "一张卷起的地图在这里。"
+      },
+      "3164": {
+        "short_descr": "一张米德加德南部地图",
+        "description": "一张卷起的地图在这里。"
+      },
+      "3165": {
+        "short_descr": "一张矮人王国地图",
+        "description": "一张卷起的地图在这里。"
+      },
+      "3166": {
+        "short_descr": "一张莫里亚第一层地图",
+        "description": "一张卷起的地图在这里。"
+      },
+      "3167": {
+        "short_descr": "一张新萨洛斯地图",
+        "description": "一张卷起的地图在这里。"
+      },
+      "3168": {
+        "short_descr": "一张奥林匹斯地图",
+        "description": "一张卷起的地图在这里。"
+      },
+      "3200": {
+        "short_descr": "点唱机",
+        "description": "一台霓虹灯点唱机坐落在酒吧角落。"
+      },
+      "3237": {
+        "short_descr": "捐献池",
+        "description": "祭坛前有一个用于献祭的坑。"
+      },
+      "3238": {
+        "short_descr": "一个水牛皮水袋",
+        "description": "一头胀大的死水牛在地板上。"
+      },
+      "3240": {
+        "short_descr": "一卷鉴定卷轴",
+        "description": "一卷卷轴被随意地丢在这里。"
+      },
+      "3241": {
+        "short_descr": "一瓶黄色隐形药水",
+        "description": "一小瓶黄色药水被随意地丢在这里。"
+      },
+      "3242": {
+        "short_descr": "一卷回城卷轴",
+        "description": "一卷卷轴被随意地丢在这里。"
+      },
+      "3280": {
+        "short_descr": "一瓶治疗药水",
+        "description": "一瓶治疗药水在这里。"
+      },
+      "3281": {
+        "short_descr": "一瓶庇护药水",
+        "description": "一瓶庇护药水在这里。"
+      },
+      "3282": {
+        "short_descr": "一瓶神圣防护药水",
+        "description": "一瓶神圣防护药水在这里。"
+      },
+      "3283": {
+        "short_descr": "一瓶轻度治疗药水",
+        "description": "一瓶轻度治疗药水在这里。"
+      },
+      "3284": {
+        "short_descr": "一瓶严重治疗药水",
+        "description": "一瓶严重治疗药水在这里。"
+      },
+      "3285": {
+        "short_descr": "一瓶致命治疗药水",
+        "description": "一瓶致命治疗药水在这里。"
+      },
+      "3286": {
+        "short_descr": "一瓶解毒剂",
+        "description": "一瓶解毒剂在这里。"
+      },
+      "3287": {
+        "short_descr": "一瓶治愈失明药水",
+        "description": "一瓶治愈失明药水在这里。"
+      },
+      "3288": {
+        "short_descr": "一瓶圣水",
+        "description": "一瓶圣水在这里。"
+      },
+      "3289": {
+        "short_descr": "一瓶护甲药水",
+        "description": "一瓶护甲药水在这里。"
+      },
+      "3290": {
+        "short_descr": "一瓶否定药水",
+        "description": "一瓶否定药水在这里。"
+      },
+      "3291": {
+        "short_descr": "一瓶飞行药水",
+        "description": "一瓶飞行药水在这里。"
+      },
+      "3292": {
+        "short_descr": "一瓶真实视野药水",
+        "description": "一瓶真实视野药水在这里。"
+      },
+      "3349": {
+        "short_descr": "一把发光的长剑",
+        "description": "一把发光的长剑在这里。"
+      },
+      "3350": {
+        "short_descr": "一把制式长剑",
+        "description": "你看到一把制式长剑在这里。"
+      },
+      "3351": {
+        "short_descr": "一把制式匕首",
+        "description": "你看到一把制式匕首在这里。"
+      },
+      "3352": {
+        "short_descr": "一把制式铁锤",
+        "description": "你看到一把制式铁锤在这里。"
+      },
+      "3353": {
+        "short_descr": "一件制式背心",
+        "description": "你看到一件制式背心在这里。"
+      },
+      "3354": {
+        "short_descr": "一面制式盾牌",
+        "description": "你看到一面制式盾牌在这里。"
+      },
+      "3355": {
+        "short_descr": "一件制式斗篷",
+        "description": "你看到一件制式斗篷在这里。"
+      },
+      "3356": {
+        "short_descr": "一顶制式头盔",
+        "description": "你看到一顶制式头盔在这里。"
+      },
+      "3357": {
+        "short_descr": "一条制式护腿",
+        "description": "你看到一条制式护腿在这里。"
+      },
+      "3358": {
+        "short_descr": "一双制式靴子",
+        "description": "你看到一双制式靴子在这里。"
+      },
+      "3359": {
+        "short_descr": "一副制式手套",
+        "description": "你看到一副制式手套在这里。"
+      },
+      "3360": {
+        "short_descr": "一副制式袖套",
+        "description": "你看到一副制式袖套在这里。"
+      },
+      "3361": {
+        "short_descr": "一件制式披风",
+        "description": "你看到一件制式披风在这里。"
+      },
+      "3362": {
+        "short_descr": "一条制式腰带",
+        "description": "你看到一条制式腰带在这里。"
+      },
+      "3363": {
+        "short_descr": "一个制式护腕",
+        "description": "你看到一个制式护腕在这里。"
+      },
+      "3364": {
+        "short_descr": "一枚城卫印章戒指",
+        "description": "你看到一枚带有奇怪符号的戒指在地上。"
+      },
+      "3365": {
+        "short_descr": "一面战争旗帜",
+        "description": "一面战争旗帜在地上。"
+      },
+      "3371": {
+        "short_descr": "一枚钻石婚戒",
+        "description": "瓦妮娅的钻石婚戒被留在了这里。"
+      },
+      "3372": {
+        "short_descr": "一枚金色婚戒",
+        "description": "豪斯的金色婚戒被留在了这里。"
+      },
+      "3373": {
+        "short_descr": "一颗小珍珠",
+        "description": "一颗小而圆润的珍珠躺在地上。"
+      },
+      "3374": {
+        "short_descr": "一颗石榴石",
+        "description": "一颗石榴石吸引了你的目光。"
+      },
+      "3375": {
+        "short_descr": "一颗祖母绿",
+        "description": "一颗深绿色的祖母绿向你眨眼。"
+      },
+      "3376": {
+        "short_descr": "一颗红宝石",
+        "description": "一颗美丽的小红宝石在这里。"
+      },
+      "3377": {
+        "short_descr": "一颗钻石",
+        "description": "一颗钻石捕捉并反射着光芒。"
+      },
+      "3378": {
+        "short_descr": "一颗蛋白石",
+        "description": "一颗光泽柔和的蛋白石让你想起远方。"
+      }
+    },
+    "mobs": {
+      "3000": {
+        "short_descr": "巫师",
+        "long_descr": "一个巫师在柜台后面走来走去，自言自语。",
+        "description": "巫师看起来年老昏聩，却又像是非常强大的法师。他穿着精致的长袍，戴着许多精美的戒指和手镯。"
+      },
+      "3001": {
+        "short_descr": "面包师",
+        "long_descr": "面包师平静地看着你，一只手把脸上的面粉擦掉。",
+        "description": "一个胖胖的、和善的面包师。但你能看到他身上有很多伤疤。"
+      },
+      "3002": {
+        "short_descr": "杂货商",
+        "long_descr": "一个杂货商站在柜台后面，脸上带着略微不耐烦的表情。",
+        "description": "一个高大的杂货商，把两袋200磅重的面粉扛在肩上。"
+      },
+      "3003": {
+        "short_descr": "武器匠",
+        "long_descr": "一个武器匠在这里。",
+        "description": "一个年轻的武器匠，还有很多东西要学。"
+      },
+      "3004": {
+        "short_descr": "甲胄匠",
+        "long_descr": "一个甲胄匠站在这里。",
+        "description": "一个年老但非常强壮的甲胄匠，他一生中做过的铠甲比你见过的还多。"
+      },
+      "3005": {
+        "short_descr": "小偷",
+        "long_descr": "一个小偷，全身黑衣。",
+        "description": "数数你的钱！\n"
+      },
+      "3006": {
+        "short_descr": "船长",
+        "long_descr": "一个退休的船长站在这里，卖船。",
+        "description": "这位船长杀过的鲨鱼比你吃的豌豆还多。"
+      },
+      "3007": {
+        "short_descr": "水手",
+        "long_descr": "一个水手站在这里，等着训练你。",
+        "description": "他看起来是个强壮、健康的水手。"
+      },
+      "3008": {
+        "short_descr": "宠物店男孩",
+        "long_descr": "一个宠物店男孩在这里，轻轻地哼着歌。",
+        "description": "他年轻、短发，看起来非常开心。"
+      },
+      "3009": {
+        "short_descr": "珠宝商",
+        "long_descr": "珠宝商站在桌子后面。",
+        "description": "他很胖，脸上带着满足但警惕的表情。"
+      },
+      "3010": {
+        "short_descr": "皮革匠",
+        "long_descr": "皮革匠坐在桌旁，缝制一顶皮帽。",
+        "description": "她看起来像个诚实、勤劳的工匠，勉强够糊口。"
+      },
+      "3011": {
+        "short_descr": "哈桑",
+        "long_descr": "哈桑在这里，等待主持正义。",
+        "description": "高大。非常高。\n愚笨。非常愚笨。\n\n哈桑，莫塔神殿的守卫，高耸在你面前。他超过12英尺高，每一寸都是肌肉。在他面前犯罪将是很糟糕的事情。"
+      },
+      "3012": {
+        "short_descr": "治疗师",
+        "long_descr": "一个治疗师在这里，出售法术。",
+        "description": "虽然已从冒险中退休，治疗师仍然伸出援手。\n输入 'heal' 查看法术列表。\n"
+      },
+      "3020": {
+        "short_descr": "公会大师",
+        "long_descr": "你的公会大师站在这里。",
+        "description": "尽管你的公会大师看起来年老疲惫，但你能清楚地看到她拥有的渊博知识。她穿着精美的魔法衣物，你注意到她被一层蓝色微光笼罩。"
+      },
+      "3021": {
+        "short_descr": "公会大师",
+        "long_descr": "你的公会大师站在这里。",
+        "description": "你毫不怀疑这位公会大师与你的神非常亲近；他有着平和、慈爱的神情。你注意到他被一层白色光环笼罩。"
+      },
+      "3022": {
+        "short_descr": "公会大师",
+        "long_descr": "你的公会大师站在这里。",
+        "description": "你意识到每当你的公会大师移动时，你都无法察觉：这就是真正盗贼的方式。她穿着破旧的衣服，看起来像个乞丐。"
+      },
+      "3023": {
+        "short_descr": "公会大师",
+        "long_descr": "你的公会大师站在这里。",
+        "description": "这就是你的大师。一个矮小、强壮的矮人，肌肉鼓胀。身上的几道伤疤证明他在你出生之前就开始用武器了。他脸上带着平静的表情。"
+      },
+      "3024": {
+        "short_descr": "大法师",
+        "long_descr": "一个大法师守卫着入口。",
+        "description": "他是一位经验丰富的法师，专攻战斗魔法领域。他在这里守卫法师公会，他对攻击和防御法术的超凡知识使他成为致命的对手。"
+      },
+      "3025": {
+        "short_descr": "圣堂骑士",
+        "long_descr": "一个圣堂骑士守卫着入口。",
+        "description": "他是一名特别训练的战士，属于信仰的军事修会。他的职责是保护信徒免受迫害和异教徒的攻击，他的宗教虔诚加上超凡的技艺使他成为致命的对手。"
+      },
+      "3026": {
+        "short_descr": "刺客",
+        "long_descr": "一个刺客守卫着入口。",
+        "description": "他是一名专门以最有效方式杀人的小偷，使用各种武器。他对武器使用方式和地点的超凡知识，加上非凡的隐蔽能力，使他成为致命的对手。"
+      },
+      "3027": {
+        "short_descr": "骑士",
+        "long_descr": "一个骑士守卫着入口。",
+        "description": "他是一位通过无数英勇事迹获得骑士身份的专家战士。他的职责是保护剑士公会，他的极端技艺和丰富的战争经验使他成为致命的对手。"
+      },
+      "3040": {
+        "short_descr": "酒保",
+        "long_descr": "一个酒保平静地看着你，同时熟练地调酒。",
+        "description": "一个看起来疲倦的酒保，讨厌酒吧里有人闹事。"
+      },
+      "3041": {
+        "short_descr": "服务员",
+        "long_descr": "一个服务员到处走来走去。",
+        "description": "一个看起来疲倦的服务员。"
+      },
+      "3042": {
+        "short_descr": "服务员",
+        "long_descr": "一个年轻时曾是著名大法师的人，现在过着安静平和的服务员生活。",
+        "description": ""
+      },
+      "3043": {
+        "short_descr": "服务员",
+        "long_descr": "一个似乎已经与神取得联系的服务员。",
+        "description": ""
+      },
+      "3044": {
+        "short_descr": "服务员",
+        "long_descr": "一个知道他所有顾客把钱藏在哪里的服务员。",
+        "description": ""
+      },
+      "3045": {
+        "short_descr": "服务员",
+        "long_descr": "一个能轻易杀了你、还能端着好几杯烈焰鸡尾酒的服务员。",
+        "description": ""
+      },
+      "3046": {
+        "short_descr": "邋遢鬼",
+        "long_descr": "邋遢鬼站在这里，渴望为你特调一杯。",
+        "description": "邋遢鬼看起来真的很……脏。他喜欢让顾客开心，但别惹他，否则他会生气的。"
+      },
+      "3060": {
+        "short_descr": "城卫兵",
+        "long_descr": "一个城卫兵站在这里。",
+        "description": "一个高大、强壮、乐于助人、值得信赖的守卫。"
+      },
+      "3061": {
+        "short_descr": "清洁工",
+        "long_descr": "一个清洁工在四处打扫。",
+        "description": ""
+      },
+      "3062": {
+        "short_descr": "肮脏的小狗",
+        "long_descr": "一只肮脏的小狗在这里。",
+        "description": "小狗是一只臭味熏天的小狗，牙齿上挂着腐烂的肉。"
+      },
+      "3063": {
+        "short_descr": "流浪汉",
+        "long_descr": "一个流浪汉在这里，寻找猎物。",
+        "description": "他看起来很凶。"
+      },
+      "3064": {
+        "short_descr": "醉汉",
+        "long_descr": "一个唱着歌的开心醉汉四处游荡，唱着关于莫里亚的歌。",
+        "description": "一个看起来太开心、带了太多钱的醉汉。"
+      },
+      "3065": {
+        "short_descr": "乞丐",
+        "long_descr": "一个乞丐在这里，讨几枚硬币。",
+        "description": "这个乞丐看起来对生活已经厌倦了。"
+      },
+      "3066": {
+        "short_descr": "巷猫",
+        "long_descr": "一只巷猫对你嘶嘶叫。",
+        "description": "这只巷猫半饿着，而且不止一点野性。"
+      },
+      "3067": {
+        "short_descr": "城卫兵",
+        "long_descr": "一个城卫兵在这里守卫着城门。",
+        "description": "一个高大、强壮、乐于助人、值得信赖的守卫。"
+      },
+      "3068": {
+        "short_descr": "城卫兵",
+        "long_descr": "一个城卫兵在这里守卫着城门。",
+        "description": "一个高大、强壮、乐于助人、值得信赖的守卫。"
+      },
+      "3069": {
+        "short_descr": "城卫兵",
+        "long_descr": "一个城卫兵在这里守卫着市长。",
+        "description": "一个高大、强壮、乐于助人、值得信赖的守卫。"
+      },
+      "3070": {
+        "short_descr": "古老药剂师",
+        "long_descr": "一个老人贪婪地看着你。\n老人说：'你想买一瓶漂亮的爱情药水吗？'\n",
+        "description": "他看起来非常危险。我不会试图抢劫他。\n"
+      },
+      "3071": {
+        "short_descr": "城卫兵",
+        "long_descr": "一个城卫兵在这里警觉地守卫着城门。",
+        "description": "一个高大、强壮、乐于助人、值得信赖的守卫。"
+      },
+      "3072": {
+        "short_descr": "城卫兵",
+        "long_descr": "一个城卫兵在这里守卫着城门。他半睡半醒。",
+        "description": "一个高大、强壮、乐于助人、值得信赖的守卫。"
+      },
+      "3090": {
+        "short_descr": "小猫",
+        "long_descr": "一只忠诚的小猫在这里。",
+        "description": "这只小猫看起来像一个可爱、小小的、凶猛的战士。"
+      },
+      "3091": {
+        "short_descr": "小狗",
+        "long_descr": "一只忠诚的小狗在这里。",
+        "description": "这只小狗看起来像一个可爱、小小的、凶猛的战士。"
+      },
+      "3092": {
+        "short_descr": "比格犬",
+        "long_descr": "一只小而忠诚的比格犬在这里。",
+        "description": "这只比格犬看起来像个凶猛的战士。"
+      },
+      "3093": {
+        "short_descr": "罗威纳犬",
+        "long_descr": "一只大而忠诚的罗威纳犬在这里。",
+        "description": "这只罗威纳犬看起来像个强壮的凶猛战士。"
+      },
+      "3094": {
+        "short_descr": "狼",
+        "long_descr": "一只训练有素的大狼在这里。",
+        "description": "这只狼看起来像个强壮、无畏的战士。"
+      },
+      "3095": {
+        "short_descr": "鹰",
+        "long_descr": "一只忠诚的鹰在头顶盘旋。",
+        "description": "这只鹰看起来像个强壮凶猛的战士。"
+      },
+      "3096": {
+        "short_descr": "狮子",
+        "long_descr": "一只忠诚的大狮子在这里。",
+        "description": "这只大狮子看起来非常凶猛。"
+      },
+      "3097": {
+        "short_descr": "老虎",
+        "long_descr": "一只忠诚的大老虎在这里。",
+        "description": "这只条纹大老虎看起来像个野蛮的战士。"
+      },
+      "3100": {
+        "short_descr": "女仆",
+        "long_descr": "女仆在等你的点单。",
+        "description": "她非常漂亮，金色头发，深蓝色眼睛。来这儿更频繁的好理由。"
+      },
+      "3120": {
+        "short_descr": "司事",
+        "long_descr": "一个司事坐在这里，喝着热茶。",
+        "description": "司事看起来像是在又一次掘墓工作后休息。"
+      },
+      "3121": {
+        "short_descr": "天鹅",
+        "long_descr": "一只天鹅在池塘里游来游去。",
+        "description": "白色的天鹅非常优雅。"
+      },
+      "3122": {
+        "short_descr": "小鸭子",
+        "long_descr": "一只小鸭子在池塘里游来游去。",
+        "description": "小鸭子太可爱了，看起来更像一个小毛球。"
+      },
+      "3123": {
+        "short_descr": "麻雀",
+        "long_descr": "一只麻雀在地上扑腾。",
+        "description": "这只麻雀看起来在享受生活。"
+      },
+      "3124": {
+        "short_descr": "鸭子",
+        "long_descr": "一只鸭子在这里，快乐地嘎嘎叫。",
+        "description": "这只鸭子相当胖。看起来在享受生活。"
+      },
+      "3140": {
+        "short_descr": "卫队长",
+        "long_descr": "卫队长看起来非常不安。",
+        "description": "一个高大、强壮、愤怒的队长。"
+      },
+      "3141": {
+        "short_descr": "城卫兵",
+        "long_descr": "一个城卫兵站在这里，看起来非常不安。",
+        "description": "一个高大、强壮、愤怒的守卫。"
+      },
+      "3142": {
+        "short_descr": "秘书",
+        "long_descr": "一个秘书坐在书桌旁。",
+        "description": "她看起来非常忙碌。\n秘书说：'抱歉，市长今天非常忙。'\n秘书说：'请坐下来等一会儿。'\n"
+      },
+      "3143": {
+        "short_descr": "市长",
+        "long_descr": "市长在这里。他和你的握手。",
+        "description": "他是一个结实的中年人，头发稀疏灰白。"
+      },
+      "3144": {
+        "short_descr": "镇上报信人",
+        "long_descr": "镇上报信人在这里，安静地哭泣。",
+        "description": "他非常称职——已经完全泪如雨下了。"
+      },
+      "3150": {
+        "short_descr": "艾丝米",
+        "long_descr": "女服务员艾丝米一边哼着歌，一边想知道你想点什么。\n",
+        "description": "艾丝米把一缕深色头发从金属框眼镜旁拨开，对你温暖地微笑。"
+      },
+      "3160": {
+        "short_descr": "梅兰科利",
+        "long_descr": "梅兰科利在这里，翻弄着一堆卷轴、文件和地图。",
+        "description": "凌乱的棕色头发框着一张苍白如鬼的脸。浮肿的眼睑围绕着两只天蓝色、迷人的眼睛。一件旧棕色长袍裹着她虚弱的身体。她从纸堆和地图上抬起头来，询问地看着你，微微笑着。"
+      },
+      "3161": {
+        "short_descr": "利斯特",
+        "long_descr": "一条绿树蛇坐在书堆上。",
+        "description": "这是梅兰科利的宠物树蛇，利斯特。他的下巴有些奇怪，好像在对你微笑。他很友好，但别让他喝醉。"
+      },
+      "3162": {
+        "short_descr": "奥托兑换商",
+        "long_descr": "金钱兑换商奥托坐在桌后，等你的硬币。",
+        "description": "奥托是个胖得离谱的男人，穿着华丽的衣服。显然在这个繁忙的城市里，兑换生意相当赚钱，或者关于他销赃服务的传闻是真的……"
+      },
+      "3163": {
+        "short_descr": "小偷",
+        "long_descr": "一个小偷，全身黑衣。",
+        "description": "数数你的钱！\n"
+      }
+    }
   }
 }

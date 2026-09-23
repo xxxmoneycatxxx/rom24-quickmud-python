@@ -326,6 +326,12 @@ def pers(target: Character | None, observer: Character | None) -> str:
         return "someone"
     if getattr(target, "is_npc", False):
         name = getattr(target, "short_descr", None) or getattr(target, "name", None)
+        # i18n: translate mob short_descr by prototype vnum.
+        if name:
+            from mud.i18n import translate_mob as _i18n_mob
+            proto_vnum = getattr(getattr(target, "prototype", None), "vnum", 0) or 0
+            if proto_vnum:
+                name = _i18n_mob(proto_vnum, "short_descr", name)
     else:
         name = getattr(target, "name", None)
     text = str(name).strip() if name else ""
@@ -346,6 +352,12 @@ def describe_character(observer: Character, target: Character | None) -> str:
     name: str | None
     if getattr(target, "is_npc", False):
         name = getattr(target, "short_descr", None) or getattr(target, "name", None)
+        # i18n: translate mob short_descr by prototype vnum.
+        if name:
+            from mud.i18n import translate_mob as _i18n_mob
+            proto_vnum = getattr(getattr(target, "prototype", None), "vnum", 0) or 0
+            if proto_vnum:
+                name = _i18n_mob(proto_vnum, "short_descr", name)
     else:
         name = getattr(target, "name", None)
 
