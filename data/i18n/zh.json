@@ -559,7 +559,57 @@
     "What is your race (help for more information)? ": "你的种族是什么（输入 help 获取更多信息）？",
     "What is your race? (help for more information) ": "你的种族是什么？（输入 help 获取更多信息）",
     "Please pick a weapon from the following choices:\n\r": "请从以下武器中选择：\n\r",
-    "That character is already playing. Reconnect? (Y/N) ": "该角色正在游戏中。重新连接？(Y/N) "
+    "That character is already playing. Reconnect? (Y/N) ": "该角色正在游戏中。重新连接？(Y/N) ",
+    "-- connection: character creation --": "-- 连接：角色创建 --",
+    "What is your sex (M/F)? ": "你的性别是什么（M/F）？",
+    "What IS your sex? ": "你到底是什么性别？",
+    "That's not a sex.": "那不是个性别。",
+    "That's not a class.": "那不是个职业。",
+    "What IS your class? ": "你到底是什么职业？",
+    "You may be good, neutral, or evil.": "你可以选择善良、中立或邪恶。",
+    "Which alignment (G/N/E)? ": "选择阵营（G善良/N中立/E邪恶）？",
+    "That's not a valid alignment.": "那不是有效的阵营。",
+    "Do you wish to customize this character?": "你想要自定义这个角色吗？",
+    "Customization takes time, but allows a wider range of skills and abilities.": "自定义需要时间，但允许更广泛的技能和能力。",
+    "Customize (Y/N)? ": "自定义（Y/N）？",
+    "Please answer (Y/N)? ": "请回答（Y/N）？",
+    "No additional groups are available.": "没有额外的技能组可选。",
+    "No additional skills are available.": "没有额外的技能可选。",
+    "You already have the following groups: ": "你已有以下技能组：",
+    "Type 'list', 'learned', 'add <group>', 'drop <group>', 'info <group>', 'premise', or 'done'.": "输入 'list'（列表）、'learned'（已学）、'add <组>'（添加）、'drop <组>'（丢弃）、'info <组>'（信息）、'premise'（前提）或 'done'（完成）。",
+    "Choice (add,drop,list,help)?": "选择（add/drop/list/help）？",
+    "Customization> ": "自定义> ",
+    "You haven't purchased any groups yet.": "你还没有购买任何技能组。",
+    "You haven't purchased any skills yet.": "你还没有购买任何技能。",
+    "You must provide a skill or group name to add.": "你必须提供要添加的技能或技能组名称。",
+    "You already know that group.": "你已经知道这个技能组了。",
+    "You already know that skill.": "你已经知道这个技能了。",
+    "Unable to add that group.": "无法添加该技能组。",
+    "Unable to add that skill.": "无法添加该技能。",
+    "No skills or groups by that name.": "没有该名称的技能或技能组。",
+    "You must provide a group name to drop.": "你必须提供要丢弃的技能组名称。",
+    "Group dropped.": "技能组已丢弃。",
+    "Skill dropped.": "技能已丢弃。",
+    "You haven't bought any such skill or group.": "你没有购买过该技能或技能组。",
+    "Usage: info <group>": "用法：info <技能组>",
+    "No group of that name exists.": "不存在该名称的技能组。",
+    "That group has no additional skills.": "该技能组没有额外技能。",
+    "Choices are: list, learned, add <group>, drop <group>, info <group>, premise, help, and done.": "可选：list、learned、add <组>、drop <组>、info <组>、premise、help、done。",
+    "Keep these stats? (K to keep, R to reroll): ": "保留这些属性？（K保留/R重投）：",
+    "Please type K to keep or R to reroll.": "请输入 K 保留或 R 重投。",
+    "That is not a valid hometown.": "那不是有效的故乡。",
+    "Choose your hometown: ": "选择你的故乡：",
+    "That's not a valid selection. Choices are:": "那不是有效的选择。可选：",
+    "Illegal character name, try another.": "非法角色名，请换一个。",
+    "No help on that word.": "没有该词的帮助。",
+    "That is not a valid race.": "那不是有效的种族。",
+    "Unable to create that character. That name may already be taken.": "无法创建该角色。该名字可能已被占用。",
+    "Ok, goodbye.": "好的，再见。",
+    "Reconnect attempt failed.": "重新连接失败。",
+    "Failed to load that character. Please try again.": "加载该角色失败，请重试。",
+    "Available hometowns: ": "可选故乡：",
+    "Select a class [": "选择职业 [",
+    "]: ": "]："
   },
   "templates": {
     "$n is already dead.": "$n 已经死了。",
@@ -1073,6 +1123,54 @@
     {
       "pattern": "^The following races are available:\\n\\r  $",
       "replacement": "以下种族可选：\\n\\r  "
+    },
+    {
+      "pattern": "^Creation points: (\\d+)$",
+      "replacement": "创建点数：\\1"
+    },
+    {
+      "pattern": "^Experience per level: (\\d+)$",
+      "replacement": "每级经验：\\1"
+    },
+    {
+      "pattern": "^Rolled stats: (.+)$",
+      "replacement": "投骰属性：\\1"
+    },
+    {
+      "pattern": "^(.+) group added\\.$",
+      "replacement": "\\1 技能组已添加。"
+    },
+    {
+      "pattern": "^(.+) skill added\\.$",
+      "replacement": "\\1 技能已添加。"
+    },
+    {
+      "pattern": "^You must select at least (\\d+) creation points \\(need (\\d+) more\\)\\.$",
+      "replacement": "你必须至少选择 \\1 创建点数（还需 \\2 点）。"
+    },
+    {
+      "pattern": "^You cannot take more than (\\d+) creation points\\.$",
+      "replacement": "你最多只能拿 \\1 创建点数。"
+    },
+    {
+      "pattern": "^Group members for (.+):$",
+      "replacement": "\\1 的技能组成员："
+    },
+    {
+      "pattern": "^Your hometown will be (.+)\\. Accept\\? \\(Y/N\\) $",
+      "replacement": "你的故乡将是 \\1。接受吗？（Y/N） "
+    },
+    {
+      "pattern": "^(.+) is currently the only available hometown\\.$",
+      "replacement": "\\1 是目前唯一可用的故乡。"
+    },
+    {
+      "pattern": "^Available hometowns: (.+)$",
+      "replacement": "可选故乡：\\1"
+    },
+    {
+      "pattern": "^Select a class \\[(.+)\\]: $",
+      "replacement": "选择职业 [\\1]："
     }
   ],
   "help": {
@@ -1080,7 +1178,13 @@
     "human": "人类是世界上最常见的种族，占据了冒险者的大多数。\n虽然他们没有其他种族的特殊天赋，但他们更加全能，\n擅长所有四个职业。人类也可以将主要属性训练得比其他\n种族更高，并且能从魔法设备中获得更多好处。",
     "dwarf": "矮人是个子矮小、结实 robust 的半人类，以暴戾的脾气和\n强大的耐力闻名。矮人拥有高力量和体质，但敏捷较差。\n他们不如人类聪明，但因长寿而通常更智慧。矮人是出色\n的战士和牧师，但很差的法师或盗贼。\n\n矮人对毒素和疾病有很强的抵抗力，但不会游泳，\n因此很容易淹死。他们免费获得狂暴技能（战士），\n并拥有夜视能力。",
     "elf": "精灵比人类略高，但体型轻得多。他们缺乏其他种族的\n力量和耐力，但更加敏捷。精灵是出色的法师和盗贼，\n但作为战士或牧师只是一般。\n\n精灵因其魔法本质而能有效抵抗魅惑法术。\n然而，他们被铁器烧伜，因此不能使用铁或钢制品。\n精灵很难被发现，因此精灵战士和盗贼自动获得\n潜行和隐藏技能。他们拥有夜视能力。",
-    "giant": "巨人是最大的种族，身高9到12英尺。他们比任何其他\n种族都强壮，几乎和矮人一样耐用。然而他们不太\n聪明，巨大的体型使他们比其他种族更笨拙。\n巨人制作了所有种族中最好的战士，但不适合其他职业。\n\n巨人因其巨大体型而耐热和耐寒。然而，他们迟钝的\n头脑使他们极易受到精神攻击。巨人和因体型和耐力，\n免费获得快速治疗和撞击技能。"
+    "giant": "巨人是最大的种族，身高9到12英尺。他们比任何其他\n种族都强壮，几乎和矮人一样耐用。然而他们不太\n聪明，巨大的体型使他们比其他种族更笨拙。\n巨人制作了所有种族中最好的战士，但不适合其他职业。\n\n巨人因其巨大体型而耐热和耐寒。然而，他们迟钝的\n头脑使他们极易受到精神攻击。巨人和因体型和耐力，\n免费获得快速治疗和撞击技能。",
+    "greeting": ".\n本 MUD 基于.....\n\n                                ROM 2.4 beta 版\n\n               原始 DikuMUD 作者：Hans Staerfeldt, Katja Nyboe,\n               Tom Madsen, Michael Seifert, 和 Sebastian Hammer\n               基于 MERC 2.1 代码，作者 Hatchet, Furey, 和 Kahn\n               ROM 2.4 版权 (c) 1993-1998 Russ Taylor\n\n你希望以什么名字为人所知？ ~\n\n-1 MOTD~\n* 你有责任了解规则（输入 'rules'）。不知晓规则不是借口。\n* 重要命令：help（帮助）、commands（命令列表）、news（新闻）、notes（笔记）\n* 使用 delete 命令删除不需要的角色\n\n[按回车继续]",
+    "newbie": "啊！又一个寻求冒险的凡人。你应该先通过泥巴学校，\n积累经验来面对外面的考验。一定要在公会房间练习武器，\n否则你的停留将会非常短暂。输入 'equipment' 查看你的装备，\n'spells' 查看你的法术，'skills' 查看你的技能，\n'commands' 查看命令列表。大多数命令和能力都有帮助可用。\n\n请输入 'help rules' 查看 ROM 的规则。",
+    "premise": "创建点数（CP）是你用来购买技能和技能组的货币。\n你拥有的创建点数越多，升级所需的经验就越多。\n技能组是相关技能的包——购买一个组，你就获得其中所有的技能。\n\n每个技能组有一个创建点数成本。你可以使用 'add <组名>' 购买，\n'drop <组名>' 丢弃，'info <组名>' 查看组内技能。\n\n你最多可以拥有 300 创建点数。",
+    "group header": "以下技能和技能组可供你的角色选择：\n（输入 list 可再次查看此列表）",
+    "group help": "以下命令可用：\nlist         显示所有尚未购买的技能组和技能\nlearned      显示所有已购买的技能组和技能\npremise      创建点数和技能组的简要说明\nadd <名称>   购买一个技能或技能组\ndrop <名称>  丢弃一个技能或技能组\ninfo <名称>  列出技能组包含的技能\nhelp <名称>  技能、技能组或其他帮助主题的帮助\ndone         退出角色创建流程",
+    "menu choice": "选择（add/drop/list/help）？\n\nROM 技能系统允许你完全自定义新角色，\n让他或她精通你选择的技能。但要注意，\n你在角色创建时选择的技能是你永远不会\n再学到的技能。技能用创建点数支付，\n创建点数越多，升级越难。此外，高成本\n的技能更难练习。\n\n技能组是角色的包deal——购买一个组，\n你就获得其中所有的技能。"
   },
   "areas": {
     "rooms": {

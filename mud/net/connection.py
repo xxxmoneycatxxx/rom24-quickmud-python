@@ -895,6 +895,9 @@ async def _send_help_greeting(conn: TelnetStream) -> None:
     text, _ = _split_greeting_and_embedded_motd(greeting)
     if not text:
         return
+    # Translate greeting via i18n help table if available.
+    from mud.i18n import translate_help
+    text = translate_help(["greeting"], text)
     if conn.ansi_enabled:
         # Ensure ANSI-capable clients receive an ANSI escape sequence in the greeting.
         text = "{x" + text
@@ -1433,19 +1436,19 @@ async def _prompt_for_race(conn: TelnetStream, help_character: object | None = N
                 page = text.rstrip("\r\n")
                 await _send(conn, page + "\r\n")
             else:
-                await _send_line(conn, "No help on that word.")
+                await _send_line(conn, t("No help on that word."))
             continue
         race = lookup_creation_race(stripped)
         if race is not None:
             return race
         # mirroring ROM src/nanny.c:460-471 — "That is not a valid race." then listing + retry prompt
-        await _send_line(conn, "That is not a valid race.")
+        await _send_line(conn, t("That is not a valid race."))
         await _send_line(conn, race_listing)
         prompt = t("What is your race? (help for more information) ")
 
 
 async def _prompt_for_sex(conn: TelnetStream) -> Sex | None:
-    prompt = "What is your sex (M/F)? "  # TODO: i18n
+    prompt = t("What is your sex (M/F)? ")
     while True:
         response = await _prompt(conn, prompt)
         if response is None:
@@ -1455,13 +1458,14 @@ async def _prompt_for_sex(conn: TelnetStream) -> Sex | None:
             return Sex.MALE
         if lowered.startswith("f"):
             return Sex.FEMALE
-        await _send_line(conn, "That's not a sex.")
-        prompt = "What IS your sex? "
+        await _send_line(conn, t("That's not a sex."))
+        prompt = t("What IS your sex? ")
 
 
 async def _prompt_for_class(conn: TelnetStream) -> ClassType | None:
     classes = get_creation_classes()
-    prompt = "Select a class [" + " ".join(cls.name for cls in classes) + "]: "
+    class_list = " ".join(cls.name for cls in classes)
+    prompt = t("Select a class [").format() + class_list + t("]: ")
     while True:
         response = await _prompt(conn, prompt)
         if response is None:
@@ -1470,15 +1474,15 @@ async def _prompt_for_class(conn: TelnetStream) -> ClassType | None:
         if class_type is not None:
             return class_type
         # mirroring ROM src/nanny.c:538-539 — "That's not a class." + "What IS your class? "
-        await _send_line(conn, "That's not a class.")
-        prompt = "What IS your class? "
+        await _send_line(conn, t("That's not a class."))
+        prompt = t("What IS your class? ")
 
 
 async def _prompt_for_alignment(conn: TelnetStream) -> int | None:
     await _send_line(conn, "")
-    await _send_line(conn, "You may be good, neutral, or evil.")
+    await _send_line(conn, t("You may be good, neutral, or evil."))
     while True:
-        response = await _prompt(conn, "Which alignment (G/N/E)? ")
+        response = await _prompt(conn, t("Which alignment (G/N/E)? "))
         if response is None:
             return None
         lowered = response.strip().lower()
@@ -1488,18 +1492,18 @@ async def _prompt_for_alignment(conn: TelnetStream) -> int | None:
             return 0
         if lowered.startswith("e"):
             return -750
-        await _send_line(conn, "That's not a valid alignment.")
+        await _send_line(conn, t("That's not a valid alignment."))
 
 
 async def _prompt_customization_choice(conn: TelnetStream) -> bool | None:
     await _send_line(conn, "")
-    await _send_line(conn, "Do you wish to customize this character?")
+    await _send_line(conn, t("Do you wish to customize this character?"))
     await _send_line(
         conn,
-        "Customization takes time, but allows a wider range of skills and abilities.",
+        t("Customization takes time, but allows a wider range of skills and abilities."),
     )
     # mirroring ROM src/nanny.c:582-628 — Customize prompt with ROM-exact "Please answer (Y/N)? " retry
-    return await _prompt_yes_no(conn, "Customize (Y/N)? ", retry_message="Please answer (Y/N)? ")
+    return await _prompt_yes_no(conn, t("Customize (Y/N)? "), retry_message=t("Please answer (Y/N)? "))
 
 
 async def _run_customization_menu(
@@ -1517,7 +1521,7 @@ async def _run_customization_menu(
             for line in _format_three_column_table(group_entries):
                 await _send_line(conn, line)
         else:
-            await _send_line(conn, "No additional groups are available.")
+            await _send_line(conn, t("No additional groups are available."))
 
         if group_entries and skill_entries:
             await _send_line(conn, "")
@@ -1528,10 +1532,10 @@ async def _run_customization_menu(
             for line in _format_three_column_table(skill_entries):
                 await _send_line(conn, line)
         else:
-            await _send_line(conn, "No additional skills are available.")
+            await _send_line(conn, t("No additional skills are available."))
 
-        await _send_line(conn, f"Creation points: {selection.creation_points}")
-        await _send_line(conn, f"Experience per level: {selection.experience_per_level()}")
+        await _send_line(conn, t("Creation points: {}").format(selection.creation_points))
+        await _send_line(conn, t("Experience per level: {}").format(selection.experience_per_level()))
 
     helper = helper_char or SimpleNamespace(name="", trust=0, level=0, is_npc=False, room=None)
 
@@ -1541,7 +1545,7 @@ async def _run_customization_menu(
         if menu_choice_help:
             await _send(conn, menu_choice_help.rstrip("\r\n") + "\r\n")
         elif fallback:
-            await _send_line(conn, "Choice (add,drop,list,help)?")
+            await _send_line(conn, t("Choice (add,drop,list,help)?"))
 
     await _send_line(conn, "")
     header_text = _resolve_help_text(helper, "group header", limit_first=True)
@@ -1552,15 +1556,15 @@ async def _run_customization_menu(
 
     groups = selection.group_names()
     if groups:
-        await _send_line(conn, "You already have the following groups: " + ", ".join(groups))
+        await _send_line(conn, t("You already have the following groups: ") + ", ".join(groups))
     await _send_line(
         conn,
-        "Type 'list', 'learned', 'add <group>', 'drop <group>', 'info <group>', 'premise', or 'done'.",
+        t("Type 'list', 'learned', 'add <group>', 'drop <group>', 'info <group>', 'premise', or 'done'."),
     )
     await _send_menu_choice_help(fallback=True)
 
     while True:
-        response = await _prompt(conn, "Customization> ")
+        response = await _prompt(conn, t("Customization> "))
         if response is None:
             return None
         stripped = response.strip()
@@ -1578,12 +1582,12 @@ async def _run_customization_menu(
                 needed = minimum - selection.creation_points
                 await _send_line(
                     conn,
-                    f"You must select at least {minimum} creation points (need {needed} more).",
+                    t("You must select at least {} creation points (need {} more).").format(minimum, needed),
                 )
                 await _send_menu_choice_help(fallback=True)
                 continue
-            await _send_line(conn, f"Creation points: {selection.creation_points}")
-            await _send_line(conn, f"Experience per level: {selection.experience_per_level()}")
+            await _send_line(conn, t("Creation points: {}").format(selection.creation_points))
+            await _send_line(conn, t("Experience per level: {}").format(selection.experience_per_level()))
             return selection
 
         if command == "list":
@@ -1601,7 +1605,7 @@ async def _run_customization_menu(
                 for line in _format_three_column_table([(name, str(cost)) for name, cost in learned_groups]):
                     await _send_line(conn, line)
             else:
-                await _send_line(conn, "You haven't purchased any groups yet.")
+                await _send_line(conn, t("You haven't purchased any groups yet."))
 
             if learned_groups and learned_skills:
                 await _send_line(conn, "")
@@ -1612,94 +1616,94 @@ async def _run_customization_menu(
                 for line in _format_three_column_table([(name, str(cost)) for name, cost in learned_skills]):
                     await _send_line(conn, line)
             else:
-                await _send_line(conn, "You haven't purchased any skills yet.")
+                await _send_line(conn, t("You haven't purchased any skills yet."))
 
-            await _send_line(conn, f"Creation points: {selection.creation_points}")
-            await _send_line(conn, f"Experience per level: {selection.experience_per_level()}")
+            await _send_line(conn, t("Creation points: {}").format(selection.creation_points))
+            await _send_line(conn, t("Experience per level: {}").format(selection.experience_per_level()))
             await _send_menu_choice_help(fallback=True)
             continue
 
         if command == "add":
             if not argument:
-                await _send_line(conn, "You must provide a skill or group name to add.")
+                await _send_line(conn, t("You must provide a skill or group name to add."))
                 await _send_menu_choice_help(fallback=True)
                 continue
             if selection.has_group(argument):
-                await _send_line(conn, "You already know that group.")
+                await _send_line(conn, t("You already know that group."))
                 await _send_menu_choice_help(fallback=True)
                 continue
             if selection.has_skill(argument):
-                await _send_line(conn, "You already know that skill.")
+                await _send_line(conn, t("You already know that skill."))
                 await _send_menu_choice_help(fallback=True)
                 continue
 
             group_cost = selection.cost_for_group(argument)
             if group_cost is not None:
                 if group_cost > 0 and selection.creation_points + group_cost > selection.maximum_creation_points():
-                    await _send_line(conn, "You cannot take more than 300 creation points.")
+                    await _send_line(conn, t("You cannot take more than {} creation points.").format(selection.maximum_creation_points()))
                     await _send_menu_choice_help(fallback=True)
                     continue
                 if selection.add_group(argument, deduct=True):
                     await _send_line(
                         conn,
-                        f"{selection.display_group_name(argument)} group added.",
+                        t("{} group added.").format(selection.display_group_name(argument)),
                     )
-                    await _send_line(conn, f"Creation points: {selection.creation_points}")
-                    await _send_line(conn, f"Experience per level: {selection.experience_per_level()}")
+                    await _send_line(conn, t("Creation points: {}").format(selection.creation_points))
+                    await _send_line(conn, t("Experience per level: {}").format(selection.experience_per_level()))
                     await _send_menu_choice_help(fallback=True)
                     continue
-                await _send_line(conn, "Unable to add that group.")
+                await _send_line(conn, t("Unable to add that group."))
                 await _send_menu_choice_help(fallback=True)
                 continue
 
             skill_cost = selection.cost_for_skill(argument)
             if skill_cost is not None:
                 if skill_cost > 0 and selection.creation_points + skill_cost > selection.maximum_creation_points():
-                    await _send_line(conn, "You cannot take more than 300 creation points.")
+                    await _send_line(conn, t("You cannot take more than {} creation points.").format(selection.maximum_creation_points()))
                     await _send_menu_choice_help(fallback=True)
                     continue
                 if selection.add_skill(argument):
                     await _send_line(
                         conn,
-                        f"{selection.display_skill_name(argument)} skill added.",
+                        t("{} skill added.").format(selection.display_skill_name(argument)),
                     )
-                    await _send_line(conn, f"Creation points: {selection.creation_points}")
-                    await _send_line(conn, f"Experience per level: {selection.experience_per_level()}")
+                    await _send_line(conn, t("Creation points: {}").format(selection.creation_points))
+                    await _send_line(conn, t("Experience per level: {}").format(selection.experience_per_level()))
                     await _send_menu_choice_help(fallback=True)
                     continue
-                await _send_line(conn, "Unable to add that skill.")
+                await _send_line(conn, t("Unable to add that skill."))
                 await _send_menu_choice_help(fallback=True)
                 continue
 
-            await _send_line(conn, "No skills or groups by that name.")
+            await _send_line(conn, t("No skills or groups by that name."))
             await _send_menu_choice_help(fallback=True)
             continue
 
         if command == "drop":
             if not argument:
-                await _send_line(conn, "You must provide a group name to drop.")
+                await _send_line(conn, t("You must provide a group name to drop."))
                 await _send_menu_choice_help(fallback=True)
                 continue
             if selection.drop_group(argument):
-                await _send_line(conn, "Group dropped.")
-                await _send_line(conn, f"Creation points: {selection.creation_points}")
-                await _send_line(conn, f"Experience per level: {selection.experience_per_level()}")
+                await _send_line(conn, t("Group dropped."))
+                await _send_line(conn, t("Creation points: {}").format(selection.creation_points))
+                await _send_line(conn, t("Experience per level: {}").format(selection.experience_per_level()))
                 await _send_menu_choice_help(fallback=True)
                 continue
             if selection.drop_skill(argument):
-                await _send_line(conn, "Skill dropped.")
-                await _send_line(conn, f"Creation points: {selection.creation_points}")
-                await _send_line(conn, f"Experience per level: {selection.experience_per_level()}")
+                await _send_line(conn, t("Skill dropped."))
+                await _send_line(conn, t("Creation points: {}").format(selection.creation_points))
+                await _send_line(conn, t("Experience per level: {}").format(selection.experience_per_level()))
                 await _send_menu_choice_help(fallback=True)
                 continue
-            await _send_line(conn, "You haven't bought any such skill or group.")
+            await _send_line(conn, t("You haven't bought any such skill or group."))
             await _send_menu_choice_help(fallback=True)
             continue
 
         if command == "info":
             topic = argument.strip().lower()
             if not topic:
-                await _send_line(conn, "Usage: info <group>")
+                await _send_line(conn, t("Usage: info <group>"))
                 await _send_menu_choice_help(fallback=True)
                 continue
             if topic == "all":
@@ -1709,15 +1713,15 @@ async def _run_customization_menu(
                 continue
             group = get_group(argument)
             if group is None:
-                await _send_line(conn, "No group of that name exists.")
+                await _send_line(conn, t("No group of that name exists."))
                 await _send_menu_choice_help(fallback=True)
                 continue
             if group.skills:
-                await _send_line(conn, f"Group members for {group.name}:")
+                await _send_line(conn, t("Group members for {}:").format(group.name))
                 for line in _format_name_columns(group.skills):
                     await _send_line(conn, line)
             else:
-                await _send_line(conn, "That group has no additional skills.")
+                await _send_line(conn, t("That group has no additional skills."))
             await _send_menu_choice_help(fallback=True)
             continue
 
@@ -1726,7 +1730,7 @@ async def _run_customization_menu(
             if text:
                 await _send(conn, text.rstrip("\r\n") + "\r\n")
             else:
-                await _send_line(conn, "No help on that word.")
+                await _send_line(conn, t("No help on that word."))
             await _send_menu_choice_help(fallback=True)
             continue
 
@@ -1736,13 +1740,13 @@ async def _run_customization_menu(
             if text:
                 await _send(conn, text.rstrip("\r\n") + "\r\n")
             else:
-                await _send_line(conn, "No help on that word.")
+                await _send_line(conn, t("No help on that word."))
             await _send_menu_choice_help(fallback=True)
             continue
 
         await _send_line(
             conn,
-            "Choices are: list, learned, add <group>, drop <group>, info <group>, premise, help, and done.",
+            t("Choices are: list, learned, add <group>, drop <group>, info <group>, premise, help, and done."),
         )
         await _send_menu_choice_help(fallback=True)
 
@@ -1750,9 +1754,9 @@ async def _run_customization_menu(
 async def _prompt_for_stats(conn: TelnetStream, race: PcRaceType) -> list[int] | None:
     while True:
         stats = roll_creation_stats(race)
-        await _send_line(conn, "Rolled stats: " + _format_stats(stats))
+        await _send_line(conn, t("Rolled stats: {}").format(_format_stats(stats)))
         while True:
-            choice = await _prompt(conn, "Keep these stats? (K to keep, R to reroll): ")
+            choice = await _prompt(conn, t("Keep these stats? (K to keep, R to reroll): "))
             if choice is None:
                 return None
             lowered = choice.lower()
@@ -1760,7 +1764,7 @@ async def _prompt_for_stats(conn: TelnetStream, race: PcRaceType) -> list[int] |
                 return stats
             if lowered.startswith("r"):
                 break
-            await _send_line(conn, "Please type K to keep or R to reroll.")
+            await _send_line(conn, t("Please type K to keep or R to reroll."))
 
 
 async def _prompt_for_hometown(conn: TelnetStream) -> int | None:
@@ -1770,25 +1774,25 @@ async def _prompt_for_hometown(conn: TelnetStream) -> int | None:
     if len(options) == 1:
         label, vnum = options[0]
         while True:
-            decision = await _prompt_yes_no(conn, f"Your hometown will be {label}. Accept? (Y/N) ")
+            decision = await _prompt_yes_no(conn, t("Your hometown will be {}. Accept? (Y/N) ").format(label))
             if decision is None:
                 return None
             if decision:
                 return vnum
-            await _send_line(conn, f"{label} is currently the only available hometown.")
+            await _send_line(conn, t("{} is currently the only available hometown.").format(label))
     else:
         await _send_line(
             conn,
-            "Available hometowns: " + ", ".join(name for name, _ in options),
+            t("Available hometowns: ") + ", ".join(name for name, _ in options),
         )
         while True:
-            response = await _prompt(conn, "Choose your hometown: ")
+            response = await _prompt(conn, t("Choose your hometown: "))
             if response is None:
                 return None
             selected_vnum = lookup_hometown(response)
             if selected_vnum is not None:
                 return selected_vnum
-            await _send_line(conn, "That is not a valid hometown.")
+            await _send_line(conn, t("That is not a valid hometown."))
     return None
 
 
@@ -1807,7 +1811,7 @@ async def _prompt_for_weapon(conn: TelnetStream, class_type: ClassType) -> int |
             if vnum is not None:
                 return vnum
         # mirroring ROM src/nanny.c:638-649 — invalid retry also uses \n\r
-        await _send_line(conn, "That's not a valid selection. Choices are:")
+        await _send_line(conn, t("That's not a valid selection. Choices are:"))
         prompt = " ".join(choices) + " \n\rYour choice? "
 
 
@@ -1823,15 +1827,15 @@ async def _run_character_creation_flow(
     # mirroring ROM src/comm.c:check_parse_name — character-creation-time
     # validator with mob-keyword collision check.
     if not is_valid_character_name(sanitized):
-        await _send_line(conn, "Illegal character name, try another.")
+        await _send_line(conn, t("Illegal character name, try another."))
         return False
 
     if permit_banned:
-        await _send_line(conn, "Your site has been banned from this mud.")
+        await _send_line(conn, t("Your site has been banned from this mud."))
         return False
 
     if newbie_banned:
-        await _send_line(conn, "New players are not allowed from your site.")
+        await _send_line(conn, t("New players are not allowed from your site."))
         return False
 
     display = sanitized.capitalize()
@@ -1888,7 +1892,7 @@ async def _run_character_creation_flow(
         train=selection.train_value(),
     )
     if not success:
-        await _send_line(conn, "Unable to create that character. That name may already be taken.")
+        await _send_line(conn, t("Unable to create that character. That name may already be taken."))
         return False
 
     announce_wiznet_new_player(
@@ -1956,7 +1960,7 @@ async def _select_character(
     if permit_banned:
         act_flags = int(getattr(account, "act", 0) or 0)
         if not (act_flags & permit_bit):
-            await _send_line(conn, "Your site has been banned from this mud.")
+            await _send_line(conn, t("Your site has been banned from this mud."))
             return None
 
     existing_session = SESSIONS.get(chosen_name)
@@ -1970,7 +1974,7 @@ async def _select_character(
             if decision is None:
                 return None
             if not decision:
-                await _send_line(conn, "Ok, goodbye.")
+                await _send_line(conn, t("Ok, goodbye."))
                 return None
 
         await _close_duplicate_reconnect_descriptors(
@@ -1981,17 +1985,17 @@ async def _select_character(
         transferred_char = await _disconnect_session(existing_session)
         if transferred_char is not None:
             if permit_banned and not _has_permit_flag(transferred_char):
-                await _send_line(conn, "Your site has been banned from this mud.")
+                await _send_line(conn, t("Your site has been banned from this mud."))
                 return None
             # mirroring ROM src/nanny.c:197-205 — PLR_DENY blocks access
             if is_character_denied_access(transferred_char):
                 log_game_event(f"Denying access to {chosen_name}@{getattr(conn, 'host', '?')}.")
-                await _send_line(conn, "You are denied access.")
+                await _send_line(conn, t("You are denied access."))
                 return None
             return transferred_char, True
 
         if active_connection is not None:
-            await _send_line(conn, "Reconnect attempt failed.")
+            await _send_line(conn, t("Reconnect attempt failed."))
             return None
 
     # ROM src/comm.c:check_reconnect (1846-1872, fConn=TRUE) — a link-dead char
@@ -2003,11 +2007,11 @@ async def _select_character(
     linkdead = _find_linkdead_character(chosen_name)
     if linkdead is not None:
         if permit_banned and not _has_permit_flag(linkdead):
-            await _send_line(conn, "Your site has been banned from this mud.")
+            await _send_line(conn, t("Your site has been banned from this mud."))
             return None
         if is_character_denied_access(linkdead):
             log_game_event(f"Denying access to {chosen_name}@{getattr(conn, 'host', '?')}.")
-            await _send_line(conn, "You are denied access.")
+            await _send_line(conn, t("You are denied access."))
             return None
         # ROM check_reconnect rebinds the descriptor (src/comm.c:1855) — the char
         # is no longer link-dead. Clear the marker; the handler attaches the new
@@ -2018,15 +2022,15 @@ async def _select_character(
     char = load_character(chosen_name)
     if char:
         if permit_banned and not _has_permit_flag(char):
-            await _send_line(conn, "Your site has been banned from this mud.")
+            await _send_line(conn, t("Your site has been banned from this mud."))
             return None
         # mirroring ROM src/nanny.c:197-205 — PLR_DENY blocks access
         if is_character_denied_access(char):
             log_game_event(f"Denying access to {chosen_name}@{getattr(conn, 'host', '?')}.")
-            await _send_line(conn, "You are denied access.")
+            await _send_line(conn, t("You are denied access."))
             return None
         return char, False
-    await _send_line(conn, "Failed to load that character. Please try again.")
+    await _send_line(conn, t("Failed to load that character. Please try again."))
     return None
 
 
