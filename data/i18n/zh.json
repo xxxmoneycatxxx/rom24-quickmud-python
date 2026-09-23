@@ -2485,6 +2485,1198 @@
       "3760": {
         "name": "安全房间",
         "description": "你在一个安全的房间里，远离竞技场中那些凶恶的兔子和蜗牛。你可以在这里休息，向上走可以回到莫塔神殿。\n"
+      },
+      "7001": {
+        "name": "泥泞的下水道",
+        "description": "你站在泥中 没到膝盖. This is not the kind of place\nfor a picnic. 泥泞的下水道 继续延伸到 the south.\n"
+      },
+      "7002": {
+        "name": "泥泞的下水道 junction",
+        "description": "泥泞的下水道 向黑暗中延伸 向南. It looks as if \nno person has ever sat his foot here before. It's too muddy for that\nanyway. The sewer 通向北方, south and east from here.\n"
+      },
+      "7003": {
+        "name": "泥潭",
+        "description": "你站在泥中 all the way up 没到大腿 and it's not too \ncomfortable since you are used to a somewhat different environment.\nThe sewer leads 向北 of here. In the middle you can just make\nout an enormous 排水管 leading down.\n"
+      },
+      "7004": {
+        "name": "The Dark Pit",
+        "description": "You are standing by the edge of a dark pit that 通向下 into even\ndeeper 黑暗. >BWWAAADDRR< - 气味 from down there is 无法忍受的.\nThe sewer 向黑暗中延伸ness 向东.\n"
+      },
+      "7005": {
+        "name": "泥泞的下水道",
+        "description": "You are standing in the middle of a bend of 下水道 pipe. It is very\ndark around here and the mud is sticking to your legs, not very pleasant.\nThe pipe 通向东方 and south from here.\n"
+      },
+      "7006": {
+        "name": "泥泞的下水道",
+        "description": "You are standing in something that reminds you very much of porridge, this\nhas the advantage that it's not hot, it's rather cold actually. The pipe \nbends 向北 and east.\n"
+      },
+      "7007": {
+        "name": "泥泞的下水道 bend",
+        "description": "This isn't your idea of a place to stay too long. You're in up to your\nknees in something that resembles mud, but you're not quite sure. The\nbend in which you stand 通向西方 and south.\n"
+      },
+      "7008": {
+        "name": "A muddy intersection",
+        "description": "You have both your feet safely stuck in mud. It isn't the mud that's wrong\nit's 气味, the sounds, the total 黑暗 that surrounds you. Everything\nhere is so depressing. The pipe leads on with a trail of thick mud to the\nnorth, east and south.\n"
+      },
+      "7009": {
+        "name": "The Sewer Junction",
+        "description": "你站在 in the middle of a huge junction of sewer pipes right under\nwhat you'd think was an air shaft. The sewer pipes lead 向北,\nsouth, east and west. It look quite impossible to force your way up.\n"
+      },
+      "7010": {
+        "name": "A bend in sewer pipe",
+        "description": "你在 a bend in 下水道 pipe. A strong 气味 seeps in from the north.\nThe sewer goes north and east.\n"
+      },
+      "7011": {
+        "name": "泥泞的下水道 pipe",
+        "description": "You have entered a kind of tube intersection that 通向南方, west and east.\nYour legs are covered in mud up to the knees. REAL yucky! \n"
+      },
+      "7012": {
+        "name": "The bend in the Muddy sewer",
+        "description": "This is not your idea of a holiday. 你站在泥中 up 没到膝盖.\nIt's absolutely inconceivable how all this mud could have been placed\nhere. The pipe leads 向西 and south.\n"
+      },
+      "7013": {
+        "name": "A MUDDY intersection",
+        "description": "You wouldn't want to know the true feeling of standing in this mud up to \nyour hips. >BWAADR<. All that fills your mind right now is the dream of \na hot bath. This is NOT very clean mud you know, remember you're in the\nsewer! The pipes 通向北方, south and east.\n"
+      },
+      "7014": {
+        "name": "Muddy sewer",
+        "description": "你站在 in a bend of the pipe system of 下水道 with mud up to your\nthighs. Contemplating a higher level of existence here would be utterly\ninappropriate, as 气味 would keep any intelligent creature from even\nthinking of anything but getting away from this foul end of the WORLD.\nThe bend goes from north to west.\n"
+      },
+      "7015": {
+        "name": "The old well",
+        "description": "You are standing by an old and worn well from before this century. The sewer\nleads 向东 from here and the well 通向下 into 黑暗. Metal\nbars implanted in the side of the well lead down as a ladder.\n"
+      },
+      "7016": {
+        "name": "The ordinary bend",
+        "description": "你在 the middle of a bend in the pipe system of 下水道 system, \nWHAT a place!!! The pipe leads 向南 and the east.\n"
+      },
+      "7017": {
+        "name": "下水道 junction",
+        "description": "你在 a junction that 通向北方, west and south.\n"
+      },
+      "7018": {
+        "name": "The ordinary junction",
+        "description": "This looks like an ordinary junction, actually it seems very quiet\nhere. The pipelines lead west, east and north.\n"
+      },
+      "7021": {
+        "name": "A quiet pipe junction",
+        "description": "This is the kind of place to rest, though 气味 could be a LOT better\nthan this. The sewer goes east, north and west from here.\n"
+      },
+      "7022": {
+        "name": "The odd room with smooth walls",
+        "description": "As you enter you hear a loud click from one of the walls ... and you fall\nand fall and fall ...\n.\n.\n.\n.\n ... And come to an abrupt end. THIS is strange indeed. There's an arched\nentryway leading down.\n"
+      },
+      "7024": {
+        "name": "下水道",
+        "description": "你站在泥中 up to your ankles. This is an intersection with \nsewer pipes leading east, south and west.\n"
+      },
+      "7025": {
+        "name": "Another intersection",
+        "description": "You have never seen anything so BORING...This is an intersection with pipes\nleading north, south and east.\n"
+      },
+      "7026": {
+        "name": "A junction",
+        "description": "This one seems interesting, a big difference from all the other junctions.\nIt seems cleaner than the rest of them. Weird. Something that looks like \nan air shaft 通向上wards, but it looks far too slippery to climb.\nThe pipes lead 向南, west and north.\n"
+      },
+      "7028": {
+        "name": "下水道 junction",
+        "description": "你站在 in a junction of sewer pipes leading north, east and west.\n"
+      },
+      "7029": {
+        "name": "The Triple Junction",
+        "description": "你站在 in the middle of a huge junction of concrete sewer pipes. The \npipes lead into three different directions : east, south and west.\n"
+      },
+      "7030": {
+        "name": "The Quadruple Junction Under the Dump",
+        "description": "You are standing in something that reminds you of an entry to an ant hive.\nThere are enormous concrete pipes leading north, south, east and west. \nThere's also a metal ladder built into the concrete wall leading up through\na layer of garbage. \n"
+      },
+      "7031": {
+        "name": "A triple junction",
+        "description": "你站在 in a junction with pipes leading west, north and east.\n"
+      },
+      "7034": {
+        "name": "A bend in the sewer pipe",
+        "description": "You can look in two directions where the pipe leads : south and west.\n"
+      },
+      "7035": {
+        "name": "下水道 pipe bend",
+        "description": "You can look in two different directions where the pipe goes : west and \nnorth.\n"
+      },
+      "7036": {
+        "name": "The pit",
+        "description": "你站在 in a section of a pipe that leads to a dead end. In the floor\nthere's a pit leading down. There are bars set in the side of the pit wall\nfunctioning as a ladder.\n"
+      },
+      "7037": {
+        "name": "The round room",
+        "description": "As you enter 房间 it starts rotating - at first slowly, later faster\nand faster - You get totally confused as to where up and down are, but you are\ncertain that the doorway is in the opposite direction of what it was when\nyou entered. It now 通向东方. There was only this one exit.\n"
+      },
+      "7038": {
+        "name": "The three way junction",
+        "description": "You are standing in a junction of pipes that lead west, east and south.\n"
+      },
+      "7039": {
+        "name": "The Sewer Store Room",
+        "description": "你站在 in a small room lit by a single torch set in the wall. The only \nway out of here is 向北.\n"
+      },
+      "7041": {
+        "name": "The Shaft",
+        "description": "You are standing by the edge of a deep, dark shaft leading down. A single\nladder is your tool to work your way down if you so wish. The sewer pipe\n通向南方 from here.\n"
+      },
+      "7043": {
+        "name": "The Sewer Entrance",
+        "description": "你站在 in the middle of a pipe that leads from north to south. Above you\nan air shaft 通向上 into sunlight. It seems totally impossible to go up\nthat way.\n"
+      },
+      "7044": {
+        "name": "The junction going three ways",
+        "description": "你在 a 通道way in the pipes of 下水道 system leading north, east\nand west.\n"
+      },
+      "7045": {
+        "name": "The Sewer Room",
+        "description": "You are standing in a large room with chairs set in the walls. You have the\nfeeling of being watched. To the south there's an entry to a larger room.\n房间 is lit by five torches, also set in the walls. To the west there\nis a doorway leading out to 下水道s.\n"
+      },
+      "7046": {
+        "name": "The Sewer room",
+        "description": "This is a Room with walls that glitters like gold though not quite like it.\nThis is strange as it looks as if the glitter lights the whole room. It\nlooks very bright. To the south the floor is covered with yucky water. The\nNorth leads to sort of a Guard Room.\n"
+      },
+      "7047": {
+        "name": "The Pool in the Sewer",
+        "description": "你站在 in water to your waist.  To the north is the entrance to this room.\nA single door 通向东方.\n"
+      },
+      "7048": {
+        "name": "The Sewers",
+        "description": "你站在 in a dead end of 下水道. The only way out is south.\n你能看到 a shaft leading up but it looks too difficult to go up\nthat way.\n"
+      },
+      "7049": {
+        "name": "The junction",
+        "description": "你站在 in a junction leading north, west and east.\n"
+      },
+      "7050": {
+        "name": "The small room",
+        "description": "The only thing in this room of interest is a chair, and that's tight to the \nrock floor. A doorway 通向南方 and another 通向东方 into 黑暗.\n"
+      },
+      "7051": {
+        "name": "The Sewer pipe",
+        "description": "你在 what reminds you of a foul sewer, as if you liked being here! \n你能看到 two 出口 leading either north or south.\n"
+      },
+      "7052": {
+        "name": "The Grand Sewer",
+        "description": "你在 a Grand Sewer Pipe. This stretches toward the south. It's large \nindeed! A doorway leads 向东 from here.\n"
+      },
+      "7053": {
+        "name": "The South end of the Grand Pipe",
+        "description": "你站在 in water 没到膝盖. A doorway 通向西方 from here. The Pipe\nstretches north.\n"
+      },
+      "7055": {
+        "name": "The Edge of The Water Sewer",
+        "description": "你站在 in a room where half of the floor is covered in water. The water\n通向东方 and a doorway 通向西方.\n"
+      },
+      "7056": {
+        "name": "The Dark hallway",
+        "description": "You can't see much of this, even with a light. The hallway goes into a\n通道way 向南. A doorway 通向西方.\n"
+      },
+      "7057": {
+        "name": "黑暗 passageway",
+        "description": "You can't see anything but the ground where you put your feet. The \n通道way seems to continue south and north.\n"
+      },
+      "7058": {
+        "name": "黑暗 passageway",
+        "description": "You can't see anything but the ground where you put your feet. The\n通道way seems to continue south and north.\n"
+      },
+      "7059": {
+        "name": "黑暗 passageway",
+        "description": "You can't see anything but the ground where you put your feet. The\n通道way seems to continue south and north.\n"
+      },
+      "7060": {
+        "name": "黑暗 passageway",
+        "description": "You can't see anything but the ground where you put your feet. The\n通道way seems to continue west and north. To the east there's water\ncovering the floor and that leads through an arched entry to a watery\nsewer.\n"
+      },
+      "7061": {
+        "name": "The Watery Sewer Bend",
+        "description": "You can't see anything but 水 you're in up to your hips. The sewer\nseems to bend and lead south and west.\n"
+      },
+      "7062": {
+        "name": "The Watery sewer",
+        "description": "You can't see anything but 水 you're in up to your hips. The sewer\nseems to lead south and north.\n"
+      },
+      "7063": {
+        "name": "The Watery sewer",
+        "description": "You can't see anything but 水 you're in up to your hips. The sewer\nseems to lead south and north.\n"
+      },
+      "7064": {
+        "name": "The Watery Sewer Junction",
+        "description": "You can't see anything but 水 you're in up to your hips. The sewer\nseems to lead into a junction going south, north and east.\n"
+      },
+      "7065": {
+        "name": "The Watery sewer",
+        "description": "You can't see anything but 水 you're in up to your hips. The sewer\nseems to lead south and north.\n"
+      },
+      "7066": {
+        "name": "The Watery 下水道交汇口",
+        "description": "You can't see anything but 水 you're in up to your hips. The sewer\nseems to lead into a junction that goes north, south and east.\n"
+      },
+      "7067": {
+        "name": "The Watery sewer",
+        "description": "You can't see anything but 水 you're in up to your hips. The sewer\nseems to lead south and north.\n"
+      },
+      "7068": {
+        "name": "The Watery sewer bend",
+        "description": "You can't see anything but 水 you're in up to your hips. The sewer\nseems to bend and lead west and north.\n"
+      },
+      "7069": {
+        "name": "A ledge by the dark pool",
+        "description": "You can't see much here but the echo tells you that there's quite a drop\ndown. You can just make out a huge dark pool out there in 黑暗, \nmostly because of the trickling of water. The water from 下水道 actually\nwashes over this ledge and makes it quite slippery. From here it drops, \nlike a waterfall, into the pool far down.\n"
+      },
+      "7070": {
+        "name": "A ledge by the dark pool",
+        "description": "You can't see much here but the echo tells you that there's quite a drop\ndown. You can just make out a huge dark pool out there in 黑暗,\nmostly because of the trickling of water. The water from 下水道 actually\nwashes over this ledge and makes it quite slippery. From here it drops,\nlike a waterfall, into the pool far down. Under you there is a small fissure\nin the rock. It seems big enough to contain a few people.\n"
+      },
+      "7099": {
+        "name": "The fissure under the ledge",
+        "description": "This is a small fissure in the solid rock. Under you lies the deep dark pool.\nThe water trickles quietly down from the ledge above you. The water 气味s \nlike 水 in a sewer.\n"
+      },
+      "7101": {
+        "name": "Under the mudhole",
+        "description": "你站在 in a small room with a great big opening in the ceiling. From this\nopening there's mud dripping down in large lumps. >YUCK<. You can 气味 the \nfoul 恶臭 of the slimy sediment as you try not to get covered by the \nfalling sludge. To the east there is an entryway leading out from here and \nit seems absolutely impossible to force the muddy descent.\n"
+      },
+      "7102": {
+        "name": "Under the Dark Pit",
+        "description": "Nice place you found yourself. 你站在 in the middle of a room with only\ntwo 出口, Up and East. A tall ladder is left here so that you can climb\nup through the Pit without the use of a rope.\n"
+      },
+      "7103": {
+        "name": "A muddy bend in the sewer system",
+        "description": "You are standing in what looks like a bend in the pipe system of the\nsewer. The 'floor' is covered completely by mud! This includes covering\nyour legs up 没到膝盖 as well. The pipe 通向西方 and south.\n"
+      },
+      "7104": {
+        "name": "A junction in the sewer pipes",
+        "description": "你站在 in the middle of what looks like a triple junction of pipes\ngoing east, west and north.\n"
+      },
+      "7105": {
+        "name": "Down the old well",
+        "description": "You are dangling on the slippery sides of the old well leading down and up.\nThe only secure point here is the metal bars that are cemented into the \nsides, the ones that you cling frantically to so that you don't fall. Who\nknows how deep this well is?\n"
+      },
+      "7106": {
+        "name": "The northwestern corner of the ledge",
+        "description": "你站在, swaying out from the ledge, with only a couple of inches of safe, \nsolid ledge under your feet. The ledge continues 向东 but not back\nsouth. It seems that the ledge is too narrow to turn on so you'll have to\ncontinue forward.\n"
+      },
+      "7107": {
+        "name": "The narrow ledge",
+        "description": "你在 the progress of walking all the way around the ledge since there's\nno way of turning around on this all too narrow path. There IS another exit\nfrom here but that leads right into mid-air and with high probability of a\nfree fall session afterwards.\n"
+      },
+      "7108": {
+        "name": "The narrow ledge",
+        "description": "你在 the progress of walking all the way around the ledge since there's\nno way of turning around on this all too narrow path. There IS another exit\nfrom here but that leads right into mid-air and with high probability of a\nfree fall session afterwards.\n"
+      },
+      "7109": {
+        "name": "The narrow ledge",
+        "description": "你在 the progress of walking all the way around the ledge since there's\nno way of turning around on this all too narrow path. There IS another exit\nfrom here but that leads right into mid-air and with high probability of a\nfree fall session afterwards.\n"
+      },
+      "7110": {
+        "name": "The narrow ledge",
+        "description": "你在 the progress of walking all the way around the ledge since there's\nno way of turning around on this all too narrow path. There IS another exit\nfrom here but that leads right into mid-air and with high probability of a\nfree fall session afterwards.\n"
+      },
+      "7111": {
+        "name": "The southwestern corner of the ledge",
+        "description": "This seems like a ledge that is a little broader than the one just to the \nnorth of here. The ledge seems to lead around some sort of Abyss of total \n黑暗. The ledge seems to have an odd-looking edge here.\n"
+      },
+      "7112": {
+        "name": "An odd intersection",
+        "description": "你站在 in a rather odd intersection of pipes. The pipes actually don't\nresemble pipes anymore. They look more like a real stone tunnel, or a\n通道way hewn directly into the rock. The ways from here lead north, east\nand west.\n"
+      },
+      "7113": {
+        "name": "The narrow ledge going east to west",
+        "description": "你在 the process of walking all the way around the ledge since there's\nno way of turning around on this all too narrow path. There IS another exit\nfrom here but that leads right into mid-air and with high probability of a\nfree fall session afterwards.\n"
+      },
+      "7114": {
+        "name": "Mid-air",
+        "description": "You've just stepped into the most unlucky position in the whole of Merc Mud.\nThe result of such a foolish act should be punished with death, you know.\nWith an acceleration of approximately 9.82 metres per second per second, you\nare now descending the Abyss. What awaits you at the bottom will continue to\nbe a mystery. Bye Cruel World.\n\nYou've fallen, and you can't get up!!!\n"
+      },
+      "7115": {
+        "name": "The Broad ledge",
+        "description": "You are standing on a ledge that seems quite a lot larger than the rest \nof the ledges. This one leads 向西 and the east, plus it has an exit\ngoing 向南. Though you could jump into mid-air, but it probably \nwouldn't be such a good idea. The way south is in utter 黑暗.\n"
+      },
+      "7116": {
+        "name": "The northeastern corner of the ledge",
+        "description": "你站在, swaying out from the ledge, with only a couple of inches of safe,\nsolid ledge under your feet. The ledge continues 向西 and 通向南方\nfrom here into 黑暗.\n"
+      },
+      "7117": {
+        "name": "The narrow eastern ledge",
+        "description": "你在 the progress of walking all the way around the ledge since there's\nno way of turning around on this all too narrow path. There IS another exit\nfrom here but that leads right into mid-air and with high probability of a\nfree fall session afterwards. And THAT is west of here so watch your step.\n"
+      },
+      "7118": {
+        "name": "The narrow eastern ledge",
+        "description": "你在 the progress of walking all the way around the ledge since there's\nno way of turning around on this all too narrow path. There IS another exit\nfrom here but that leads right into mid-air and with high probability of a\nfree fall session afterwards. And THAT is west of here so watch your step.\n"
+      },
+      "7119": {
+        "name": "The narrow eastern ledge",
+        "description": "你在 the progress of walking all the way around the ledge since there's\nno way of turning around on this all too narrow path. There IS another exit\nfrom here but that leads right into mid-air and with high probability of a\nfree fall session afterwards. And THAT is west of here so watch your step.\n"
+      },
+      "7120": {
+        "name": "The narrow eastern ledge",
+        "description": "你在 the progress of walking all the way around the ledge since there's\nno way of turning around on this all too narrow path. There IS another exit\nfrom here but that leads right into mid-air and with high probability of a\nfree fall session afterwards. And THAT is west of here so watch your step.\nYou also see a small opening 向东.\n"
+      },
+      "7121": {
+        "name": "The southeastern corner of the ledge",
+        "description": "This seems like a ledge that is a little broader than the one just to the\nnorth of here. The ledge seems to lead around some sort of abyss of total\n黑暗.\n"
+      },
+      "7122": {
+        "name": "Under the pit",
+        "description": "你站在 in a completely dark cavern leading west. The wall looks weird here.\n"
+      },
+      "7123": {
+        "name": "Under The Shaft",
+        "description": "A ladder 通向上 from here to the Shaft.\n一个小的 opening 通向西方 from here.\n"
+      },
+      "7129": {
+        "name": "下水道 line.",
+        "description": "你在 a narrow part of 下水道. Down 下水道 continues and to the\nnorth is the ledge.\n"
+      },
+      "7130": {
+        "name": "下水道 pipe.",
+        "description": "你在 an odd sewer pipe You see some odd scratches on the pipe wall, as\nfrom a gigantic rat. 你能看到 some slimy water gently running down into\na sewer drain, and north the drain continues.\n"
+      },
+      "7190": {
+        "name": "Mid-air",
+        "description": "You've just stepped into the most unlucky position in the whole of DikuMUD.\nThe result of such a foolish act should be punished with death, you know.\nWith an acceleration of approximately 9.82 metres per second per second, you\nare now descending the Abyss. What awaits you at the bottom will continue to\nbe a mystery. Bye Cruel World.\n\nYou've fallen, and you can't get up!!!\n"
+      },
+      "7199": {
+        "name": "The Edge of the Water",
+        "description": "The pool side is dimly lit up by your light. 你能看到 absolutely nothing\nelse nearby. The 黑暗 here seems enormously oppressive. The air is\ndamp and the rock on which you stand is slippery. The pool seems too dark \nto make anything clear. The rock can be climbed upwards from here.\n"
+      },
+      "7200": {
+        "name": "The Treasury",
+        "description": "你在 a small but well equipped treasury.  你能看到 some writing on\nthe wall.  The ceiling has a funny glow, which enables you to see.  You can\nget back into the inner lair through the stone door which is east.\n"
+      },
+      "7201": {
+        "name": "The inner Lair",
+        "description": "你在 a octagonal room with smooth purple stone walls.  The floor is \nmade from black stone.  In the western wall you see a large black stone door.\n"
+      },
+      "7202": {
+        "name": "The Lair",
+        "description": "On the floor you see a lot of human decay, like bones and skulls. You also\nsee a lot of slime. On the wall is a torch sitting in its sconce. To the north \nare a wooden door.\n"
+      },
+      "7203": {
+        "name": "The Lair",
+        "description": "On the floor you see a lot of human decay, like bones and skulls. You also\nsee a lot of slime. On the wall is a torch sitting in its sconce.\n"
+      },
+      "7204": {
+        "name": "The Lair",
+        "description": "On the floor you see a lot of human decay, like bones and skulls. You also\nsee a lot of slime. On the wall is a torch sitting in its sconce.\n"
+      },
+      "7205": {
+        "name": "The Lair",
+        "description": "On the floor you see a lot of human decay, like bones and skulls. You also\nsee a lot of slime. On the wall is a torch sitting in its sconce.\n"
+      },
+      "7206": {
+        "name": "The lair.",
+        "description": "On the floor you see a lot of human decay, like bones and skulls. You also\nsee a lot of slime. On the wall is a torch sitting in its sconce.\n"
+      },
+      "7207": {
+        "name": "The lair.",
+        "description": "On the floor you see a lot of human decay, like bones and skulls. You also\nsee a lot of slime. On the wall is a torch sitting in its sconce.\n"
+      },
+      "7208": {
+        "name": "The lair entrance.",
+        "description": "你在 a dry part of 下水道. To the north is a wooden door, you \ncan see some slime at the lower part of the door. You also see some skulls\nand some broken bones.\n"
+      },
+      "7209": {
+        "name": "The crawlway.",
+        "description": "你在 a narrow crawlway.  You don't notice anything interesting here.\n"
+      },
+      "7210": {
+        "name": "The four-way junction.",
+        "description": "你在 a 下水道交汇口. To the north is a small hole, 向西 is a\nnarrow crawlway and 向东 and south 下水道 continues.\n"
+      },
+      "7211": {
+        "name": "The small cave.",
+        "description": "你在 a collapsed sewer drain, which now is more like a small cave.\n"
+      },
+      "7212": {
+        "name": "下水道 drain.",
+        "description": "你在 a dry sewer drain which bends 向北.\n"
+      },
+      "7213": {
+        "name": "下水道 drain.",
+        "description": "你在 a dry sewer drain which bends 向东.\n"
+      },
+      "7214": {
+        "name": "排水口 end.",
+        "description": "You are at the end of the drain around you 下水道 has collapsed, the only\nexit is west.\n"
+      },
+      "7215": {
+        "name": "The half-wet drain.",
+        "description": "你在 a sewer drain where the floor is covered with water. To the north\nit looks more dry, south however the drain runs down into some water.\n"
+      },
+      "7216": {
+        "name": "Under water in the sewer.",
+        "description": "You swim in some dirty water and is holding you breath. You'll better \ncontinue before you drown. It is a good thing that you can hold your light\nabove water-level.\n"
+      },
+      "7217": {
+        "name": "The half-dry drain.",
+        "description": "你在 a half-dry sewer drain. To the north the drain runs a little bit\ndownwards into some water 向东 你能看到 a small hole. To the west\nyou see another drain.\n"
+      },
+      "7218": {
+        "name": "The very small room.",
+        "description": "你在 a very small room, it is pretty uninteresting.\n"
+      },
+      "7219": {
+        "name": "A dry sewer drain.",
+        "description": "你在 a dry but dirty sewer drain. The drain continues east and south.\n"
+      },
+      "7220": {
+        "name": "A boring drain.",
+        "description": "你在 yet another sewer drain.\n"
+      },
+      "7221": {
+        "name": "下水道 drain.",
+        "description": "你在 a sewer drain, there is nothing special in here, except for a \nloud echo.\n"
+      },
+      "7222": {
+        "name": "下水道 drain.",
+        "description": "你在 a drain, with some slimy water on the floor.\n"
+      },
+      "7223": {
+        "name": "下水道 bend.",
+        "description": "You find yourself in an ordinary sewer bend, which bend from west to north.\n"
+      },
+      "7224": {
+        "name": "下水道 junction",
+        "description": "你站在 in a junction of three sewer drains. You see some odd scratches on\nthe pipe wall, as from a gigantic rat.North and south 下水道 continues \nas usual, but west it looks a little strange.\n"
+      },
+      "7225": {
+        "name": "下水道",
+        "description": "你在 a sewer, where the slimy water runs down through a tiny hole.\nYou see some odd scratches on the pipe wall, as from a gigantic rat. There \nis a sewer drain south.\n"
+      },
+      "7229": {
+        "name": "The strange sewer",
+        "description": "你在 a very strange sewer indeed, there are some odd scratches on the\npipe wall, as from a gigantic rat. And 你能看到 a lot of organic decay\nlike bones from animals AND humans. West the drain runs slightly upwards.\n"
+      },
+      "7230": {
+        "name": "The damp sewer",
+        "description": "你在 a sewer drain with a funny damp substance on the floor, in the \nsubstance you see a lot of decay. You see some odd scratches on the wall, as\nfrom a gigantic rat. Both 向东 and west the pipe seems to run down.\n"
+      },
+      "7231": {
+        "name": "The strange sewer",
+        "description": "你在 an ordinary sewer except for a lot of scratches on 下水道 wall,\nad a lot of debris on the floor.\n"
+      },
+      "7232": {
+        "name": "下水道",
+        "description": "你在 a sewer with more scratches on the walls. And of course a whole lot\nof decay. The drain runs east and north.\n"
+      },
+      "7233": {
+        "name": "下水道 drain",
+        "description": "你站在 in in a sewer drain, you are able to see some kind of cave-like\nroom. You see some odd scratches on the drain wall, as from a gigantic rat. \nThe sewer 通向南方.\n"
+      },
+      "7234": {
+        "name": "The rat's lair",
+        "description": "你在 a little cave. You are able to see quite a lot of debris on the \nfloor. There is a sewer drain west of here.\n"
+      },
+      "7279": {
+        "name": "The Wall of the Abyss",
+        "description": "You hang onto some steps leading down into utter 黑暗. There's an exit \nleading up as well, though you'll have to open the tiny rock again to do so.\n"
+      },
+      "7280": {
+        "name": "The entrance.",
+        "description": "你在 a very dark room. You notice that some faces are\nstaring at you from inside the walls. In the middle of 房间\nthere is a small altar. To the north there is a small round\ndoor.\n"
+      },
+      "7281": {
+        "name": "走廊.",
+        "description": "The 走廊 is glowing oppressively in a red hue. You can hear wailing\nthrough an open black hole 向东. To the south there is a round door.\n"
+      },
+      "7282": {
+        "name": "The Realm of lost souls",
+        "description": "You are standing in nothing. All around you there are stars.\nSometimes a shadow flies closely by you, wailing very loudly. \nTo the north there is a small bright hole. To the west there is \na small red hole.\n"
+      },
+      "7283": {
+        "name": "The T-crossing",
+        "description": "你在 a small hallway. There are doors 向东 and to\nthe west. To the south there are a black hole. There is writing\nin the wall. Wails can be heard from the south.\n"
+      },
+      "7284": {
+        "name": "The firedeath",
+        "description": "This room is very hot. There are flames surrounding you.  You can\nsee no 出口 at all!  Skeletons are lying all over the floor.\n"
+      },
+      "7285": {
+        "name": "The tortureroom.",
+        "description": "You are standing in a middle of a square room. Along the walls skeletons \nare hanging in rusty chains. In the middle of 房间 there is a big metal \nbox, covered with dust. To the south you can just make out a small exit.\n"
+      },
+      "7286": {
+        "name": "The hells yard",
+        "description": "You are standing in a lot of mud. A disgusting 气味 surrounds\nthe place, and makes you feel sick. Small flames sometimes shoot\nup from the hot mud. To the west there is a small door. To the \nnorth 你能看到 an iron door.\n"
+      },
+      "7301": {
+        "name": "The Entrance to the Realm of silence",
+        "description": "This is an utterly silent place. As you look around you see that there\nhasn't been a living thing in a long time. The dust lies here in a thick\nlayer on the floor and on the furniture. On the wall hangs a bleak and \nworn tapestry. A winding stone staircase 通向上 into 黑暗. On the \nwall 向西 你能看到 a huge torch stuck into the solid rock.\n一个大的 portcullis blocks your way 向北.\n"
+      },
+      "7399": {
+        "name": "On the walls of the Abyss",
+        "description": "You are clutching the steps on the wall so that you don't fall to the ground\ndown below.\n一个大的 sign says : I haven't gotten any further ... Yet. But  I'm pushing\n                    to get finished with this sewer. \n                                           Greetings and Good Health :)\n\n                                                     Redferne The Gentle\nThis stops your journey down, the only exit is up.\n"
+      },
+      "7400": {
+        "name": "Cave entrance",
+        "description": "You are standing in the cave entrance. It is very dark\ndown here. There is writing at the wall. There is an exit\n向北. A stairway 通向上.\n"
+      },
+      "7401": {
+        "name": "Cave tunnel",
+        "description": "You are walking in a tunnel. It is very cold. You\ncan feel the presence of a living thing ... SOMEWHERE.\n"
+      },
+      "7402": {
+        "name": "Cave room",
+        "description": "You are standing in a room. It's much cooler now.\nThe walls are glowing.\n"
+      },
+      "7403": {
+        "name": "Cave T-cross",
+        "description": "You are standing in a mud-like substance. 气味 here is\n糟糕的, it is rotten. To the west 你能看到 some light.\n"
+      },
+      "7404": {
+        "name": "Cave turning-point",
+        "description": "The mud are getting deeper. You are wondering, 'Would\nit be an idea to leave, before I disappear?'. To the\nsouth you notice a flat round stone are blocking the\nway. To the west 你能看到 mud.\n"
+      },
+      "7405": {
+        "name": "The secret room",
+        "description": "There is dust all over the place. It looks like nobody\nhas been here for ages. In the middle of 房间 you see\na socket with a crystal globe. The globe glows with a\npulsing light. To the north you see a stone door. To the\nsouth you see a grey block.\n"
+      },
+      "7406": {
+        "name": "泥潭",
+        "description": "You are standing in a lot of mud. The mud goes to your\nchest. You feel the presence of something IN the mud.\nThe only obvious exit is 向西.\n"
+      },
+      "7407": {
+        "name": "Tunnel",
+        "description": "The mud goes 没到膝盖. Otherwise 隧道 looks\nvery normal.\n"
+      },
+      "7408": {
+        "name": "The long tunnel",
+        "description": "Here There is almost no mud, as you stand at the top\nof a small rock. Just beside you there are a sign which\nsays 'WARNING! The worms are dangerous!'.\n"
+      },
+      "7409": {
+        "name": "The hot room",
+        "description": "You are very surprised, as this room for a change are\nhot instead of cold. To the north it goes downwards into\nsome mud. There are also an exit 向西.\n"
+      },
+      "7410": {
+        "name": "The small room",
+        "description": "As you look around you notice a small statue. There are\n出口 向西 and 向东.\n"
+      },
+      "7411": {
+        "name": "The stalagmite cave",
+        "description": "You are standing in a stalagmite cave. Water is dripping\nfrom the walls. It is very cold in here.\n"
+      },
+      "7412": {
+        "name": "The stalagmite tunnel",
+        "description": "You have entered a small tunnel. Here it is quite dry.\nMaybe it would be an idea to rest here.\n"
+      },
+      "7413": {
+        "name": "The spongy room",
+        "description": "You definitely NOT like this area. It is very dank, and most\nof the places it is wet.\n"
+      },
+      "7414": {
+        "name": "The stalagmite T-cross",
+        "description": "You are standing in a cross. To the north 你能看到\nsome light. Otherwise it is dark.\n"
+      },
+      "7415": {
+        "name": "The blind end room",
+        "description": "This room is obviously a blind end. To the north you see\na primitive picture.\n"
+      },
+      "7416": {
+        "name": "The treasure room",
+        "description": "This room is rich ornamented. The walls has carves showing\npersons dancing around a sun which is drawn at the floor. It\nlooks very old, and it is very dusty. To the south you see a\nsecret door.\n"
+      },
+      "7417": {
+        "name": "The square lair",
+        "description": "You are standing in the south-east part of the lair. You can\nsee a skeleton lying at the wall.\n"
+      },
+      "7418": {
+        "name": "The square lair",
+        "description": "You are standing in the north-east part of the lair. You see\na sign at the wall\n"
+      },
+      "7419": {
+        "name": "The square lair",
+        "description": "You are standing in the north-west part of the lair. Here's\nanother sign. There are a exit from the lair 向北.\n"
+      },
+      "7420": {
+        "name": "The lair end",
+        "description": "你能看到 a table in front of you. It's very dusty.\nAround the table five skeletons are siting. Exits are\nnorth and east.\n"
+      },
+      "7421": {
+        "name": "East tunnel",
+        "description": "You are standing in dark tunnel, 出口s are east\nand west. To the west you see a wooden door.\n"
+      },
+      "7422": {
+        "name": "North tunnel",
+        "description": "You are standing in a dark tunnel, it 通向上wards.\n"
+      },
+      "7423": {
+        "name": "The L-shaped room.",
+        "description": "You are standing in deep 黑暗. To the south there is a small exit.\nTo the east 你能看到 a gaping hole.\n"
+      },
+      "7424": {
+        "name": "The Circular hall.",
+        "description": "You are standing in round hall. To the north, east and south you\ncan see a stone head hanging on the walls.\n"
+      },
+      "7425": {
+        "name": "Dusty tunnel",
+        "description": "You are standing in dust. This place has not been\ntouched for a long time. Otherwise it is quite boring\nhere, looks like a place to rest! To the west you see\nthe outline of a door. A tunnel leads 向东.\n"
+      },
+      "7426": {
+        "name": "The crossing",
+        "description": "You are standing in a crossing of hallways. You can leave this place\nin every direction, except up and down. In the dust you notice strange\nfootprints.\n"
+      },
+      "7427": {
+        "name": "The L-shaped room",
+        "description": "You are standing in a L-shaped room. You can hear noises from the long\ntunnel 向东. You can feel fear! A sign is hanging on the wall.\n"
+      },
+      "7428": {
+        "name": "Dragons lair",
+        "description": "你能看到 burned walls, the floorstones are fiery red.  All kinds of bones\nare scattered all over the floor.  On the walls 你能看到 some burned\nshapes.  You 气味 burned flesh.  Two creatures are melted into the floor.\nYou're next.\n"
+      },
+      "7429": {
+        "name": "The burned room",
+        "description": "你在 a room, which once had been quite burned.\nThere is writing on the wall.\n"
+      },
+      "7430": {
+        "name": "The wind tunnel",
+        "description": "You are standing in a tunnel. Above you, you can feel\na breeze.\n"
+      },
+      "7431": {
+        "name": "The glittering room",
+        "description": "This room are all bright. In the walls 你能看到 some\nsilver. Exits are: West, east and south.\n"
+      },
+      "7432": {
+        "name": "The secret passageroom",
+        "description": "You have entered a tiny room. There WAS an exit down, and an\nexit 向西.\n"
+      },
+      "7433": {
+        "name": "End of long tunnel",
+        "description": "You are at a end of a long tunnel. Right in front of you,\n你能看到 a grey mass. To the east 你能看到 a tremendous\nlong tunnel, but you know that, you has just been there.\n"
+      },
+      "7434": {
+        "name": "Stair-room",
+        "description": "You are standing in a small room. Drawings of faces in pain\nare on the walls. You can feel that 黑暗 is ruling this place.\nthere are two 出口: south and down. You have a feeling the downward exit\nisn't finished yet...\n"
+      },
+      "7435": {
+        "name": "Dark tunnel",
+        "description": "You are standing in a dark tunnel. It continues 向北\nand 向南. Bones are spread on the floor\n"
+      },
+      "7436": {
+        "name": "Entrance to lair",
+        "description": "气味 here is 糟糕的.  To the south 你能看到 some smoke.\nA tunnel 通向北方, and east.\n"
+      },
+      "7437": {
+        "name": "North-eastern part of Basilisks cave",
+        "description": "It is hard to see here because of the smoke. To the north you\ncan see barely see a small tunnel. Other 出口 are 向南\nand 向西.\n"
+      },
+      "7438": {
+        "name": "South-eastern part of basilisks cave",
+        "description": "There are a very small hole in wall, from where the smoke\nare coming from. Otherwise it is pitch dark. Exits are north\nand west.\n"
+      },
+      "7439": {
+        "name": "North-western part of basilisks cave",
+        "description": "你能看到 some hay spread on the floor. 气味 is 糟糕的 here,\nand it makes you feel sick.  The basilisk sleeps here.\nWatch out ... Maybe it is not far away.\n"
+      },
+      "7440": {
+        "name": "South-western part of basilisks cave",
+        "description": "你能看到 nothing but smoke. \n"
+      },
+      "7441": {
+        "name": "The small cave",
+        "description": "You are standing in small cave. 你能看到\nsome light in the end. Exits are north and south.\n"
+      },
+      "7442": {
+        "name": "The northern end of the pool",
+        "description": "You have wet feet, you are standing in water. The water looks calm. You can\nsee that it's a big lake. Light seeps from 水.\n"
+      },
+      "7443": {
+        "name": "The pool",
+        "description": "You are swimming in water. It is getting deep here. It is dark in this end.\n"
+      },
+      "7444": {
+        "name": "The south end of the pool",
+        "description": "你站在ing in water up to you neck. You can only see water.\n"
+      },
+      "7445": {
+        "name": "The pool",
+        "description": "You are swimming in DARKNESS. You feel something\ntouching your right leg.\n"
+      },
+      "3900": {
+        "name": "West trail around Midgaard",
+        "description": "You are on a dusty trail following the outside wall of Midgaard.\nTo the east the wall towers over you and 向西 you see the\nforest of Haon-Dor. The trail 通向北方 and south along the wall. \n"
+      },
+      "3901": {
+        "name": "West trail around Midgaard",
+        "description": "You are on a dusty trail following the outside wall of Midgaard.\nTo the east the wall towers over you and 向西 you see the\nforest of Haon-Dor. The trail 通向北方 and south along the wall. \n"
+      },
+      "3902": {
+        "name": "Northwest corner of dusty trail.",
+        "description": "You are standing outside the northwestern corner of the city wall.\nThe trail 通向东方 following the north wall and south towards the gate.  \n"
+      },
+      "3903": {
+        "name": "Dusty trail along north wall.",
+        "description": "You are walking on the trail following the outside of Midgaard's\nnorthern wall.  \n"
+      },
+      "3904": {
+        "name": "The long dusty trail following the north wall.",
+        "description": "You are just outside the northern gate of Midgaard.  You can continue along\nthe trail 向东 or west, head onwards to the plains of the north, or\nenter Midgaard 向南.  You can just barely make out the buildings of\nMidgaard from here, the Temple of Mota looks impressive even from this\ndistance.  \n"
+      },
+      "3905": {
+        "name": "Dusty trail along north wall.",
+        "description": "You are walking on the trail following the outside of Midgaard's\nnorthern wall.  \n"
+      },
+      "3906": {
+        "name": "Northeast corner of dusty trail.",
+        "description": "You are standing outside the northeastern corner of the city wall.\nThe trail 通向西方 following the north wall and south towards the gate.  \n"
+      },
+      "3907": {
+        "name": "East trail around Midgaard",
+        "description": "You are on a dusty trail following the outside wall of Midgaard.\nTo the west the wall towers over you and far 向东 you see\nsome mountains. The trail 通向北方 and south along the wall. \n"
+      },
+      "3908": {
+        "name": "East trail around Midgaard",
+        "description": "You are on a dusty trail following the outside wall of Midgaard.\nTo the west the wall towers over you and far 向东 you see\nsome mountains. The trail 通向北方 and south along the wall. \n"
+      },
+      "4000": {
+        "name": "The hills",
+        "description": "You are on a small bewildered path winding its way between the hills in\nlack of better things to do. To the south you have a splendid view over the\nflat, vast, desolate plains. To the north the hills grow steadily 暗er and\nforeboding. This is the cause of no sunset, it is rather the power of evil\npenetrating these quiet hills. Glancing around you notice only a single bird.\nThe mountains of 矮人的 kingdom rise up to your east, you can barely\nmake out the queen's 矿坑s from here.\n"
+      },
+      "4001": {
+        "name": "The hills",
+        "description": "You are surrounded by 暗 and sinister hills. Although they seemed fairly\nsmall from a distance you now get the feeling that they're closing in on you,\ntowering over you, overwhelming you ...  The small path seems to have second\nthoughts about these hills because it starts winding unnecessarily, turning\nseveral times around itself.  To the south the hills have a lighter hue of\n暗. To the north however, the hills have become nightblack holes in the\ndistant mountains.\n"
+      },
+      "4002": {
+        "name": "End of the path",
+        "description": "At this point the path has had enough. With a terrified shudder it cowers\nto the ground, only staying here because you're standing on it. with a slight\nfeeling of unease you look around noticing only a few bushes and a large sign\ncarved into the mountain.  You feel you can hear the cry of help from a\nthousand silent voices all coming from an even 暗er hole in the mountain to\nthe north marking the entrance to a 洞穴 (or a grave :-).\n"
+      },
+      "4010": {
+        "name": "The 洞穴",
+        "description": "你在 a large 洞穴. The ceiling is lost somewhere above the reach of\nyour light. The floor, however, is highly illuminated, your light flickering\nover several tombstones. Only one is whole, the rest have been shattered by\nsome savage blow. The remaining tombstone looks disturbingly new...\nA small breeze of fresh air enters from the south (probably lost too). Take a\ngood breath, it may be your last mouthful of air in a long, long time that\nothers haven't breathed before you.\nTo the north a small 隧道 continues into the mountain.\n"
+      },
+      "4011": {
+        "name": "The 隧道",
+        "description": "You squeeze your way through a small, narrow 隧道. The sharp-edged rocks\nprotruding from the walls threaten to scratch and cut you. \nTo the south you sense a freshness in the air which is rather unusual in these\ndamp, stuffy 隧道s. To the north 隧道 continues.\n"
+      },
+      "4012": {
+        "name": "The 隧道",
+        "description": "你在 a part of 隧道 that looks uncannily like the rest except\nthat it goes in a east-north direction. To the north 隧道 widens into\na 洞穴.\n"
+      },
+      "4013": {
+        "name": "The 隧道",
+        "description": "This 隧道, leading east-west, seems seldom used.  A thick layer of dust\ncovers the floor, making the air stuffy and dry. \n"
+      },
+      "4014": {
+        "name": "The 隧道",
+        "description": "You are walking in a narrow 隧道. The walls are only roughly shaped,\nsharp rocks protruding everywhere, even from the floor making you stumble in\nthe flickering light. To the south 隧道 narrows even more making it\nalmost impossible to pass. To the north it slowly widens into a 洞穴. There\nis a branch of 隧道 going west.\n"
+      },
+      "4015": {
+        "name": "The 隧道",
+        "description": "你在 a corner 隧道 leading west and north.\n"
+      },
+      "4016": {
+        "name": "The large 洞穴",
+        "description": "你在 a large 洞穴, 洞穴 continues east and west, 向南\nyou notice a small 隧道.\n"
+      },
+      "4017": {
+        "name": "The large 洞穴",
+        "description": "你在 the east end of the large 洞穴.\n"
+      },
+      "4018": {
+        "name": "The 洞穴",
+        "description": "你在 the south end of a 洞穴, 向南 you see a 隧道. You\nnotice a large pile of bones in the corner.\n"
+      },
+      "4019": {
+        "name": "The 隧道",
+        "description": "你在 a north-south leading 隧道.\n"
+      },
+      "4020": {
+        "name": "The hole",
+        "description": "You are by a hole in the floor, you can leave down, or north.\n"
+      },
+      "4021": {
+        "name": "The hole",
+        "description": "A hole in the floor leads down here.\n"
+      },
+      "4022": {
+        "name": "The damp 隧道",
+        "description": "你在 a damp 隧道.  Your clothes feel wet.  隧道 continues\n向北; 向西 you see a hole in the floor; and 向东\nthere is a large 洞穴.\n"
+      },
+      "4023": {
+        "name": "The large 洞穴",
+        "description": "你在 the western part of the large 洞穴, 向南 you see\na damp 隧道.\n"
+      },
+      "4024": {
+        "name": "The damp 隧道",
+        "description": "你在 a corner of a damp 隧道.  You can go west or south.\n"
+      },
+      "4025": {
+        "name": "The 洞穴",
+        "description": "你在 the north end of a 洞穴.  To the east you see many 隧道s.\n"
+      },
+      "4026": {
+        "name": "The many 隧道s",
+        "description": "You are at the intersection of many 隧道s.\n"
+      },
+      "4027": {
+        "name": "The 隧道",
+        "description": "你在 a north-south leading 隧道, you also notice a 隧道 to\nthe west. From the north you sense the fresh air!\n"
+      },
+      "4028": {
+        "name": "The smelly 隧道",
+        "description": "你在 a north-south leading 隧道, you see a small light\n向北. You notice a strange smell from the north..\n"
+      },
+      "4029": {
+        "name": "The 洞穴",
+        "description": "你在 a 洞穴 that is filled with fresh air, you sense the\nwind blowing from the north. To the south you see a small 隧道\ncontinue into the mountain.\n"
+      },
+      "4030": {
+        "name": "The light 洞穴",
+        "description": "你在 a light 洞穴, through a hole large above you, you see \nthe sky. A small 隧道 向南 is the only way out.\n"
+      },
+      "4031": {
+        "name": "The valley",
+        "description": "你在 a small valley, surrounded by hills and a mountain to \nthe south. In the mountain there is a 洞穴.\n"
+      },
+      "4032": {
+        "name": "The foothills",
+        "description": "You are on a winding path that leads through the foothills on the\nother side of the mountain.  The path continues north.\n"
+      },
+      "4033": {
+        "name": "The intersection in the foothills",
+        "description": "The small path you are following splits here.  The path continues\nnorth and south or you can follow a trail east into the mountains.\n"
+      },
+      "4034": {
+        "name": "The grassy area of the foothills",
+        "description": "The grass here is unusually high.  You notice several areas where\nsomeone or something large has crushed spots of the grass down.  Several very\nlarge rocks litter this area.  You can go north, west or south.\n"
+      },
+      "4035": {
+        "name": "The foothills end",
+        "description": "At this point you are leaving the foothills.  You see a plains area\n向北 of here.  You can spot a small city in the distance from\nhere.\n"
+      },
+      "4036": {
+        "name": "The plains",
+        "description": "The plains.  Exits are south.\n"
+      },
+      "4037": {
+        "name": "The foothills path",
+        "description": "Exits are east and west.\n"
+      },
+      "4038": {
+        "name": "Base of the mountain",
+        "description": "Exits are east and west.\n"
+      },
+      "4039": {
+        "name": "A trail up the mountain",
+        "description": "Exits are east and west.\n"
+      },
+      "4040": {
+        "name": "The mountain top.",
+        "description": "Exits are north, east, and west.\n"
+      },
+      "4041": {
+        "name": "The lion's den",
+        "description": "Exits are south.\n"
+      },
+      "4042": {
+        "name": "The level foothills",
+        "description": "Exits are east and west.\n"
+      },
+      "4043": {
+        "name": "The 洞穴 entrance",
+        "description": "Exits are east and west.\n"
+      },
+      "4044": {
+        "name": "The hill giant 洞穴",
+        "description": "Exits are east.\n"
+      },
+      "4050": {
+        "name": "The 隧道",
+        "description": "隧道 turns here, continuing 向东 and south.\n"
+      },
+      "4051": {
+        "name": "The 隧道",
+        "description": "你在 a narrow east-west 隧道.\n"
+      },
+      "4052": {
+        "name": "The 隧道",
+        "description": "You are at a turn, 隧道 continues south and west.\n"
+      },
+      "4053": {
+        "name": "The 隧道",
+        "description": "You are at a turn, 隧道 continues north and east.\n"
+      },
+      "4054": {
+        "name": "The light 洞穴",
+        "description": "你在 a 洞穴, to south from you there is a large fire that lights\nthe entire 洞穴, 向东 and west 隧道s leads off.\n"
+      },
+      "4055": {
+        "name": "The maze",
+        "description": "你在 a maze of small damp 隧道s.  The only exit is west.\n"
+      },
+      "4056": {
+        "name": "The light 洞穴",
+        "description": "你在 a light 洞穴, a large fire in front of you lights 房间.\n洞穴 continues 向北 and south.\n"
+      },
+      "4057": {
+        "name": "The maze",
+        "description": "你在 a maze of small damp 隧道s.\n"
+      },
+      "4058": {
+        "name": "The maze",
+        "description": "你在 a maze of small damp 隧道s.\n"
+      },
+      "4059": {
+        "name": "The 隧道",
+        "description": "你在 a 隧道, only exit is 向东. You sense that the\n隧道 leads slightly down.\n"
+      },
+      "4060": {
+        "name": "The 隧道",
+        "description": "你在 a small 隧道, 向西 隧道 continues and \n向东 you see some light.\n"
+      },
+      "4061": {
+        "name": "The light 洞穴",
+        "description": "你在 the south end of a light 洞穴.\n"
+      },
+      "4062": {
+        "name": "The maze",
+        "description": "你在 a maze of small damp 隧道s.\n"
+      },
+      "4063": {
+        "name": "The maze",
+        "description": "你在 a maze of small damp 隧道s.\n"
+      },
+      "4064": {
+        "name": "The 隧道",
+        "description": "You are at the eastern end of a 隧道.\n"
+      },
+      "4065": {
+        "name": "The maze",
+        "description": "你在 a maze of small damp 隧道s.\n"
+      },
+      "4066": {
+        "name": "The maze",
+        "description": "你在 a maze of small damp 隧道s.\n"
+      },
+      "4067": {
+        "name": "The maze",
+        "description": "你在 a maze of small damp 隧道s.\n"
+      },
+      "4068": {
+        "name": "The large 洞穴",
+        "description": "你在 the northwest end of a large 洞穴.\n"
+      },
+      "4069": {
+        "name": "The large 洞穴",
+        "description": "你在 the northeast end of a large 洞穴. To the north the\nis a small damp 隧道.\n"
+      },
+      "4070": {
+        "name": "The large 洞穴",
+        "description": "你在 the southwest end of a large 洞穴.\n"
+      },
+      "4071": {
+        "name": "The large 洞穴",
+        "description": "你在 the southeast end of a large 洞穴. To the east you\nnotice a small 隧道.\n"
+      },
+      "4072": {
+        "name": "The 隧道",
+        "description": "你在 a narrow 隧道, which leads both 向东 and the\nsouth. There is also an exit towards the west, where you see a large\n洞穴.\n"
+      },
+      "4073": {
+        "name": "End of 隧道",
+        "description": "隧道 stops here.\n"
+      },
+      "4074": {
+        "name": "The hole",
+        "description": "You are at a small hole in the floor, you can either leave north\nor try your luck and leave down into the unknown!\n"
+      },
+      "4100": {
+        "name": "The 隧道",
+        "description": "Suddenly you feel that 隧道 leads slightly down.\n"
+      },
+      "4101": {
+        "name": "The long 隧道",
+        "description": "你在 a long east-west leading 隧道. 隧道 is quite\nwide at this point.\n"
+      },
+      "4102": {
+        "name": "The long 隧道",
+        "description": "你在 a long east-west leading 隧道. 隧道 becomes\nnarrow 向西.\n"
+      },
+      "4103": {
+        "name": "The long 隧道",
+        "description": "你在 a long east-west leading 隧道. 隧道 is quite\nnarrow at this point. You notice a small hole leading south.\n"
+      },
+      "4104": {
+        "name": "The long 隧道",
+        "description": "你在 a long east-west leading 隧道. 隧道 starts sloping\ndown towards the west.\n"
+      },
+      "4105": {
+        "name": "The golden 洞穴",
+        "description": "你在 a giant 洞穴, all the walls are shining with a soft golden\nlight. 洞穴 continues 向南 and west.\n"
+      },
+      "4106": {
+        "name": "The golden 洞穴",
+        "description": "你在 a giant 洞穴, all the walls are shining with a soft golden\nlight. 洞穴 continues 向南 and east, 向北 is a narrow\n隧道.\n"
+      },
+      "4107": {
+        "name": "The 通道",
+        "description": "你在 a small 通道, it 通向南方, 向西 is a golden\n洞穴.\n"
+      },
+      "4108": {
+        "name": "The golden 洞穴",
+        "description": "你在 a giant 洞穴, all the walls are shining with a soft golden\nlight. 洞穴 continues 向北 and west, east from you there is\na small 通道.\n"
+      },
+      "4109": {
+        "name": "The golden 洞穴",
+        "description": "你在 a giant 洞穴, all the walls are shining with a soft golden\nlight. 洞穴 continues 向南, east and north.\n"
+      },
+      "4110": {
+        "name": "The 隧道",
+        "description": "You are at the end of 隧道.\n"
+      },
+      "4111": {
+        "name": "The 隧道",
+        "description": "你在 a small 隧道, it leads from east 向西.\n"
+      },
+      "4112": {
+        "name": "The 隧道",
+        "description": "你在 a larger 隧道, it leads from west to east.\n"
+      },
+      "4113": {
+        "name": "The 通道",
+        "description": "你在 a 通道 that leads towards the south. To the east \nyou see a 隧道.\n"
+      },
+      "4114": {
+        "name": "The golden 洞穴",
+        "description": "你在 a giant 洞穴, all the walls are shining with a soft golden\nlight. 洞穴 continues 向北, 向西 you see a 暗 \n通道.\n"
+      },
+      "4115": {
+        "name": "The dark 通道.",
+        "description": "你在 a 暗 通道, that 通向东方. In the ceiling you notice\na small hole, just big enough to pass through.\n"
+      },
+      "4116": {
+        "name": "The 通道",
+        "description": "你在 a 通道 that 通向北方-south. You notice a small\nlight 向南.\n"
+      },
+      "4117": {
+        "name": "The secret 房间",
+        "description": "你在 a secret 房间.\n"
+      },
+      "4118": {
+        "name": "The 洞穴",
+        "description": "你在 a light 洞穴, from t兽人hes several feet above your\nhead fire lights 房间. 洞穴 continues 向西 and south.\nTo the north a small hole leads to a 隧道.\n"
+      },
+      "4119": {
+        "name": "The 洞穴",
+        "description": "你在 a light 洞穴, from t兽人hes several feet above your\nhead fire lights 房间. 洞穴 continues 向东 and south.\n"
+      },
+      "4120": {
+        "name": "The 通道",
+        "description": "你在 a north-south leading 通道. To the south you see light.\n"
+      },
+      "4121": {
+        "name": "The secret 隧道",
+        "description": "你在 a secret 隧道 that 通向西方, you feel evilness\napproaching you as you continue west.\n"
+      },
+      "4122": {
+        "name": "The secret 房间",
+        "description": "你在 a secret 房间, 房间 is filled with an evil\nfeeling.\n"
+      },
+      "4123": {
+        "name": "The 洞穴",
+        "description": "你在 a light 洞穴, from t兽人hes several feet above your\nhead fire lights 房间. 洞穴 continues 向北 and west.\n"
+      },
+      "4124": {
+        "name": "The 洞穴",
+        "description": "你在 a light 洞穴, from t兽人hes several feet above your\nhead fire lights 房间. 洞穴 continues 向东 and north.\nTo the west a 通道 通向北方.\n"
+      },
+      "4125": {
+        "name": "The 通道",
+        "description": "你在 a 通道, 向东 you see a 洞穴. Light from the\n洞穴 lights up 通道. To the north 通道 leads into\n黑暗.\n"
+      },
+      "4150": {
+        "name": "The dark hole",
+        "description": "You are standing at a hole, a small 通道 通向南方. You see\nsome inscriptions on the wall, most of 'em the usual stuff, like:\n'Super Snude was here' and 'Why does the mayor likes secretaries with\nsmall hands?' - But one inscription gets your attention, it says:\nThe Balrog is ALIVE ...\n"
+      },
+      "4151": {
+        "name": "The small 通道",
+        "description": "你在 a small 通道, 向北 you see a hole, and to\nthe south you see a large 隧道. The air is damp in this area.\n"
+      },
+      "4152": {
+        "name": "The 隧道",
+        "description": "You suddenly feel that 隧道 leads down.\n"
+      },
+      "4153": {
+        "name": "The large 隧道",
+        "description": "你在 a large 隧道 leading from the south 向东. The\nair is damp in the area.\n"
+      },
+      "4154": {
+        "name": "The large 隧道",
+        "description": "你在 a large east-west leading 隧道, the air is damp and\nthe floor is wet.\n"
+      },
+      "4155": {
+        "name": "The large 隧道",
+        "description": "你在 a large 隧道, 隧道 通向西方, and 向东\nyou notice a long 隧道. The air is damp in this area.\n"
+      },
+      "4156": {
+        "name": "The long 隧道",
+        "description": "You are standing in a long north-south 隧道.\n"
+      },
+      "4157": {
+        "name": "The wet 隧道",
+        "description": "你在 a wet, north-south leading 隧道, the floor is\npartly covered by water.\n"
+      },
+      "4158": {
+        "name": "The small maze",
+        "description": "你在 a small maze, exits leads off 向东,  south\nand west. The floor is partly covered by water.\n"
+      },
+      "4159": {
+        "name": "The small maze",
+        "description": "你在 a small maze, exits leads off only 向南\nand west. The air is damp in this maze.\n"
+      },
+      "4160": {
+        "name": "In the 隧道 at the inscription",
+        "description": "你在 a north-south leading 隧道, the air is damp. On\nthe wall there is an inscription.\n"
+      },
+      "4161": {
+        "name": "The wet 隧道",
+        "description": "你在 a north-south leading 隧道.  The floor is fully\ncovered by water.\n"
+      },
+      "4162": {
+        "name": "The small maze",
+        "description": "你在 a small maze. The floor is mainly covered by\nwater, exits 通向北方, east and south.\n"
+      },
+      "4163": {
+        "name": "The small maze",
+        "description": "你在 a small maze, where the air is damp. Exits\nleads 向北 and east.\n"
+      },
+      "4164": {
+        "name": "The entrance to the small maze",
+        "description": "你在 a north-south leading 隧道, and the air is damp.\nTo the west you see a small maze.\n"
+      },
+      "4165": {
+        "name": "In the water",
+        "description": "You are standing in water, 隧道 continues both to the\nnorth and south.\n"
+      },
+      "4166": {
+        "name": "The wet maze",
+        "description": "你在 a part of the maze where the floor is fully covered\nby water. The maze continues 向北, east and south.\n"
+      },
+      "4167": {
+        "name": "The wet maze",
+        "description": "你在 a small maze, the floor is covered by water, the\nmaze continues east, west and south.\n"
+      },
+      "4168": {
+        "name": "The end of the 隧道",
+        "description": "隧道 suddenly stops here, only exit is 向西.\nThe air is damp here.\n"
+      },
+      "4169": {
+        "name": "In the water",
+        "description": "You are standing in the water, exits leads both north and east.\n"
+      },
+      "4170": {
+        "name": "In the water",
+        "description": "You are standing in the water, it continues east and west.\n"
+      },
+      "4171": {
+        "name": "End of maze",
+        "description": "You are at the end of the small maze which continues north.\nAbove you a hole leads up.\n"
+      },
+      "4172": {
+        "name": "At the sand bar",
+        "description": "You are on a little sand bar in the water.\n"
       }
     },
     "objects": {}
