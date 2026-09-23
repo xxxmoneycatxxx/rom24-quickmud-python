@@ -339,6 +339,28 @@ class TestHelpTranslation:
         result = translate_help(["RACE"], original)
         assert result == original
 
+    def test_translate_help_newbie_topics(self):
+        """Verify high-frequency newbie help topics are translated."""
+        set_language("zh")
+        # areas/commands/score overview
+        result = translate_help(["areas"], "AREAS shows you a list...")
+        assert "区域" in result
+        # practice/training
+        result = translate_help(["practice"], "PRACTICE without an argument...")
+        assert "练习" in result
+        # recall
+        result = translate_help(["recall"], "RECALL transports you...")
+        assert "神殿" in result
+        # death
+        result = translate_help(["death"], "When your character dies...")
+        assert "死亡" in result or "重生" in result
+        # follow/group
+        result = translate_help(["follow"], "FOLLOW starts you following...")
+        assert "跟随" in result
+        # train
+        result = translate_help(["train"], "TRAIN increases one...")
+        assert "属性" in result
+
 
 class TestPronounConversion:
     """Tests for actor pronoun token conversion in templates."""
