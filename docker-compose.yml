@@ -10,7 +10,6 @@ services:
       - LANGUAGE=${LANGUAGE:-zh}
     volumes:
       - .:/app
-      - ./data:/app/data  # 持久化数据目录
     working_dir: /app
     command: mud runserver
     restart: unless-stopped
