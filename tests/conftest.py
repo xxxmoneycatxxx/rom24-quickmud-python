@@ -46,6 +46,21 @@ def _enable_world_invariant_checks(request):
 
 
 @pytest.fixture(autouse=True)
+def _force_english_unit():
+    """Force English for unit tests so message assertions see raw strings.
+
+    The .env LANGUAGE=zh setting would activate the i18n translation layer
+    and cause tests that check for English message substrings to fail.
+    The i18n test file (test_i18n.py) manages its own language state.
+    """
+    from mud.i18n import get_language, set_language
+    saved = get_language()
+    set_language("en")
+    yield
+    set_language(saved or "en")
+
+
+@pytest.fixture(autouse=True)
 def _reset_tick_prompt_state():
     """Reset INV-053 tick-output prompt tracking between tests.
 

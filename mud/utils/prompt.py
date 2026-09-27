@@ -16,19 +16,21 @@ def _is_npc(char: Any) -> bool:
 
 
 def _alignment_word(alignment: int) -> str:
+    from mud.i18n import t
     # mirroring ROM src/comm.c:1537 (IS_GOOD/IS_EVIL/neutral thresholds)
     if alignment >= 350:
-        return "good"
+        return t("good")
     if alignment <= -350:
-        return "evil"
-    return "neutral"
+        return t("evil")
+    return t("neutral")
 
 
 def _exits_token(char: Any) -> str:
+    from mud.i18n import t
     # mirroring ROM src/comm.c:1465-1483 — visible exit letters or "none"
     room = getattr(char, "room", None)
     if room is None:
-        return "none"
+        return t("none")
     exits = getattr(room, "exits", None) or []
     letters = ["N", "E", "S", "W", "U", "D"]
     found: list[str] = []
@@ -42,7 +44,7 @@ def _exits_token(char: Any) -> str:
         # treat any non-None destination as visible. Closed-door / blind
         # filtering can be tightened in a follow-up gap.
         found.append(letters[door])
-    return "".join(found) if found else "none"
+    return "".join(found) if found else t("none")
 
 
 def _next_level_exp(char: Any) -> int:

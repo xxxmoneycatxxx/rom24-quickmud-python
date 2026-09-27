@@ -16,6 +16,22 @@ from mud.utils import rng_mm
 
 
 @pytest.fixture(autouse=True)
+def _force_english():
+    """Force English language for integration tests.
+
+    Integration tests assert on English message substrings (e.g. 'fades',
+    'kill', 'wear').  The .env LANGUAGE=zh setting would activate the
+    i18n translation layer and break these assertions.  Save/restore
+    the language so each test runs in a clean English context.
+    """
+    from mud.i18n import get_language, set_language
+    saved = get_language()
+    set_language("en")
+    yield
+    set_language(saved or "en")
+
+
+@pytest.fixture(autouse=True)
 def _seed_rng():
     """Seed Mitchell-Moore RNG to a known state before every integration test.
 

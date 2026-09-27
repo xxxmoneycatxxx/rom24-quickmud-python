@@ -21,6 +21,15 @@ _POSITION_SUFFIX: dict[Position, str] = {
     # FIGHTING: handled separately (target-aware)
 }
 
+
+def _translated_position_suffix(pos: Position) -> str:
+    """Return the position suffix, translated if i18n is active."""
+    from mud.i18n import is_translated, t
+    raw = _POSITION_SUFFIX.get(pos, "")
+    if is_translated():
+        return t(raw)
+    return raw
+
 # LOOK-018: ROM show_char_to_char_0 furniture branch (src/act_info.c:304-401).
 # When victim->on != NULL these positions render "is <verb> <at|on|in>
 # <furniture>." — the preposition comes from the furniture's value[2] bits
@@ -60,6 +69,13 @@ def _furniture_position_suffix(position, on) -> str | None:
     else:
         prep = "in"
     short_descr = getattr(on, "short_descr", None) or getattr(getattr(on, "prototype", None), "short_descr", "") or ""
+    # i18n: translate the furniture position template.
+    from mud.i18n import is_translated, t
+    template = f" is {verb} {prep} {{}}." 
+    if is_translated():
+        translated_template = t(f" is {verb} {prep} FURN.")
+        if translated_template != f" is {verb} {prep} FURN.":
+            return translated_template.replace("FURN", short_descr)
     return f" is {verb} {prep} {short_descr}."
 
 
@@ -179,7 +195,7 @@ def _room_occupant_line(observer: Character, victim) -> str:
         if furn_suffix is not None:
             line = base + furn_suffix
         else:
-            suffix = _POSITION_SUFFIX.get(position, "") if position is not None else ""
+            suffix = _translated_position_suffix(position) if position is not None else ""
             line = base + suffix
     # mirroring ROM src/act_info.c:421 buf[0] = UPPER(buf[0])
     return line[0].upper() + line[1:] if line else line
@@ -418,22 +434,25 @@ def _look_char(char: Character, victim: Character) -> str:
     percent = c_div(hit * 100, max_hit) if max_hit > 0 else -1
 
     short = getattr(victim, "short_descr", None) or getattr(victim, "name", "Someone")
-    if percent >= 100:
-        condition = f"{short} is in excellent condition."
-    elif percent >= 90:
-        condition = f"{short} has a few scratches."
-    elif percent >= 75:
-        condition = f"{short} has some small wounds and bruises."
-    elif percent >= 50:
-        condition = f"{short} has quite a few wounds."
-    elif percent >= 30:
-        condition = f"{short} has some big nasty wounds and scratches."
-    elif percent >= 15:
-        condition = f"{short} looks pretty hurt."
-    elif percent >= 0:
-        condition = f"{short} is in awful condition."
-    else:
-        condition = f"{short} is bleeding to death."
+    # i18n: translate health condition templates via t() at lookup time.
+    from mud.i18n import is_translated, t
+    _CONDITION_TEMPLATES = [
+        (100, " is in excellent condition."),
+        (90, " has a few scratches."),
+        (75, " has some small wounds and bruises."),
+        (50, " has quite a few wounds."),
+        (30, " has some big nasty wounds and scratches."),
+        (15, " looks pretty hurt."),
+        (0, " is in awful condition."),
+    ]
+    condition_suffix = " is bleeding to death."
+    for threshold, tmpl in _CONDITION_TEMPLATES:
+        if percent >= threshold:
+            condition_suffix = tmpl
+            break
+    if is_translated():
+        condition_suffix = t(condition_suffix)
+    condition = f"{short}{condition_suffix}"
     # ROM src/act_info.c:480 — `buf[0] = UPPER(buf[0])` capitalizes the first
     # char of the health line, so a mob's lowercase short_descr ("the beastly
     # fido ...") renders "The beastly fido ..." (LOOK-014).
