@@ -677,9 +677,16 @@ class TelnetStream:
         return buffer.decode(errors="ignore") if buffer else ""
 
     async def close(self) -> None:
-        await self.flush()
-        self.writer.close()
-        await self.writer.wait_closed()
+        try:
+            await self.flush()
+        except ConnectionError:
+            # Socket already gone — nothing to flush, just tear down.
+            pass
+        try:
+            self.writer.close()
+            await self.writer.wait_closed()
+        except ConnectionError:
+            pass
 
 
 async def _send(conn: TelnetStream, message: str) -> None:
@@ -2277,6 +2284,11 @@ async def handle_connection_with_stream(
                 traceback.print_exc()
                 break
 
+    except ConnectionError as exc:
+        # Client disconnected before login completed (health checks, port
+        # probes, web-client keepalives).  Not an error — log at info level.
+        if session:
+            print(f"[INFO] {connection_type} connection lost: {exc}")
     except Exception as exc:
         print(f"[ERROR] {connection_type} connection handler error: {exc}")
     finally:
@@ -2288,8 +2300,8 @@ async def handle_connection_with_stream(
 
         try:
             await conn.close()
-        except Exception as exc:
-            print(f"[ERROR] Failed to close connection: {exc}")
+        except ConnectionError:
+            pass  # socket already dead — expected during cleanup
         _unregister_descriptor(conn)
 
         print(f"[{connection_type} DISCONNECT] {session.name if session else 'unknown'}")
@@ -2517,6 +2529,10 @@ async def handle_connection(reader: asyncio.StreamReader, writer: asyncio.Stream
                 traceback.print_exc()
                 break
 
+    except ConnectionError:
+        # Client disconnected before login completed (health checks, port
+        # probes, web-client keepalives).  Not an error — silent cleanup.
+        pass
     except Exception as exc:
         print(f"[ERROR] Connection handler error for {addr}: {exc}")
     finally:
@@ -2528,8 +2544,8 @@ async def handle_connection(reader: asyncio.StreamReader, writer: asyncio.Stream
 
         try:
             await conn.close()
-        except Exception as exc:
-            print(f"[ERROR] Failed to close connection: {exc}")
+        except ConnectionError:
+            pass  # socket already dead — expected during cleanup
         _unregister_descriptor(conn)
 
         print(f"[DISCONNECT] {addr} as {session.name if session else 'unknown'}")
