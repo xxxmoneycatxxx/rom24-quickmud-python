@@ -204,26 +204,42 @@ def do_board(char: Character, args: str) -> str:
 
     args = args.strip()
     if not args:
-        lines = [
-            "{RNum          Name Unread Description{x",
-            "{R==== ============ ====== ============================={x",
-        ]
+        from mud.i18n import t, is_translated
+        # Translate header when in translated mode
+        if is_translated():
+            lines = [
+                "{R" + t("Num") + "          " + t("Name") + " " + t("Unread") + " " + t("Description") + "{x",
+                "{R==== ============ ====== ============================={x",
+            ]
+        else:
+            lines = [
+                "{RNum          Name Unread Description{x",
+                "{R==== ============ ====== ============================={x",
+            ]
         for idx, board in available:
             last_read = _board_last_read(pcdata, board)
             # ROM unread_notes (src/board.c:444-460) filters by is_note_to.
             unread = board.unread_count_for(char, last_read)
             unread_color = "{G" if unread else "{g"
+            # Translate board name and description when in translated mode
+            if is_translated():
+                board_name = t(board.name)
+                board_desc = t(board.description)
+            else:
+                board_name = board.name
+                board_desc = board.description
             lines.append(
-                f"({{W{idx:2d}{{x) {{g{board.name:<12}{{x [{unread_color}{unread:4}{{x] {{y{board.description}{{x"
+                f"({{W{idx:2d}{{x) {{g{board_name:<12}{{x [{unread_color}{unread:4}{{x] {{y{board_desc}{{x"
             )
         lines.append("")
-        lines.append(f"You current board is {{W{current_board.name}{{x.")
+        board_display = "{W" + (t(current_board.name) if is_translated() else current_board.name) + "{x"
+        lines.append(t("You current board is {board}.").format(board=board_display))
         if not current_board.can_read(trust):
-            lines.append("You cannot read nor write notes on this board.")
+            lines.append(t("You cannot read nor write notes on this board."))
         elif trust < current_board.write_level:
-            lines.append("You can only read notes from this board.")
+            lines.append(t("You can only read notes from this board."))
         else:
-            lines.append("You can both read and write on this board.")
+            lines.append(t("You can both read and write on this board."))
         return "\n".join(lines)
 
     if pcdata.in_progress:

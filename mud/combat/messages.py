@@ -12,6 +12,27 @@ TYPE_HIT = 1000
 MAX_DAMAGE_MESSAGE = len(ATTACK_TABLE)
 
 
+def _get_combat_translation(key: str, default: str) -> str:
+    """Get a combat-related translation from zh.json combat section."""
+    try:
+        from mud.i18n import is_translated, _ensure_loaded, _table
+        if not is_translated():
+            return default
+        _ensure_loaded()
+        combat = _table.get("combat", {})
+        # Support nested keys like "damage_tiers.scratch"
+        parts = key.split(".")
+        val = combat
+        for part in parts:
+            if isinstance(val, dict):
+                val = val.get(part)
+            else:
+                return default
+        return val if val is not None else default
+    except Exception:
+        return default
+
+
 @dataclass(frozen=True)
 class DamageMessages:
     """Container for ROM-style attacker/victim/room combat templates.
@@ -107,12 +128,12 @@ def _reflexive_pronoun(character: object) -> str:
     except ValueError:
         sex = Sex.NONE
     if sex == Sex.MALE:
-        return "himself"
+        return _get_combat_translation("pronouns.reflexive.male", "himself")
     if sex == Sex.FEMALE:
-        return "herself"
+        return _get_combat_translation("pronouns.reflexive.female", "herself")
     if sex == Sex.NONE:
-        return "itself"
-    return "themselves"
+        return _get_combat_translation("pronouns.reflexive.none", "itself")
+    return _get_combat_translation("pronouns.reflexive.other", "themselves")
 
 
 def _possessive_pronoun(character: object) -> str:
@@ -121,17 +142,19 @@ def _possessive_pronoun(character: object) -> str:
     except ValueError:
         sex = Sex.NONE
     if sex == Sex.MALE:
-        return "his"
+        return _get_combat_translation("pronouns.possessive.male", "his")
     if sex == Sex.FEMALE:
-        return "her"
+        return _get_combat_translation("pronouns.possessive.female", "her")
     if sex == Sex.NONE:
-        return "its"
-    return "their"
+        return _get_combat_translation("pronouns.possessive.none", "its")
+    return _get_combat_translation("pronouns.possessive.other", "their")
 
 
 def _severity_terms(damage: int, victim: object) -> tuple[str, str, int]:
     if damage <= 0:
-        return "miss", "misses", 0
+        vs = _get_combat_translation("damage_tiers.miss.self", "miss")
+        vp = _get_combat_translation("damage_tiers.miss.other", "misses")
+        return vs, vp, 0
     max_hit = getattr(victim, "max_hit", 0) or 0
     # ROM src/fight.c:dam_message divides damage*100/victim->max_hit raw (SIGFPE if 0).
     # Zero-ONLY guard (`x or 1`): a negative max_hit flows through (ROM-faithful raw
@@ -141,8 +164,12 @@ def _severity_terms(damage: int, victim: object) -> tuple[str, str, int]:
     dam_percent = c_div(int(damage) * 100, divisor)
     for threshold, vs, vp in _DAMAGE_TIERS:
         if dam_percent <= threshold:
-            return vs, vp, dam_percent
-    return "do UNSPEAKABLE things to", "does UNSPEAKABLE things to", dam_percent
+            vs_t = _get_combat_translation(f"damage_tiers.{vs}.self", vs)
+            vp_t = _get_combat_translation(f"damage_tiers.{vp}.other", vp)
+            return vs_t, vp_t, dam_percent
+    vs = _get_combat_translation("damage_tiers.do UNSPEAKABLE things to.self", "do UNSPEAKABLE things to")
+    vp = _get_combat_translation("damage_tiers.do UNSPEAKABLE things to.other", "does UNSPEAKABLE things to")
+    return vs, vp, dam_percent
 
 
 def _resolve_attack_noun(dt: int | str | None) -> str | None:
@@ -150,7 +177,9 @@ def _resolve_attack_noun(dt: int | str | None) -> str | None:
         return None
     if isinstance(dt, str):
         stripped = dt.strip()
-        return stripped or None
+        if stripped:
+            return _get_combat_translation(f"attack_nouns.{stripped}", stripped)
+        return None
     if isinstance(dt, DamageType):
         dt = int(dt)
     if isinstance(dt, int):
@@ -160,7 +189,9 @@ def _resolve_attack_noun(dt: int | str | None) -> str | None:
             idx = dt - TYPE_HIT
             if 0 <= idx < len(ATTACK_TABLE):
                 noun = ATTACK_TABLE[idx].noun
-                return noun or "hit"
+                if noun:
+                    return _get_combat_translation(f"attack_nouns.{noun}", noun)
+                return "hit"
             return "hit"
     return None
 

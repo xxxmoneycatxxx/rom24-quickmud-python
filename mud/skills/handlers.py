@@ -1277,10 +1277,17 @@ def armor(caster: Character, target: Character | None = None) -> bool:
         # mirroring ROM src/magic.c:758-763. MAGIC-016: the cross-target line is
         # act("$N is already armored.", ch, NULL, victim, TO_CHAR) — $N = PERS
         # (NPC short_descr), cap buf[0]; not the baked keyword name.
+        try:
+            from mud.i18n import translate_skill
+            armored_msg = translate_skill("You are already armored.")
+            other_armored_msg = translate_skill("$N is already armored.")
+        except ImportError:
+            armored_msg = "You are already armored."
+            other_armored_msg = "$N is already armored."
         if target is caster:
-            _send_to_char(caster, "You are already armored.")
+            _send_to_char(caster, armored_msg)
         else:
-            _send_to_char(caster, act_format("$N is already armored.", recipient=caster, actor=caster, arg2=target))
+            _send_to_char(caster, act_format(other_armored_msg, recipient=caster, actor=caster, arg2=target))
         return False
 
     level = max(int(getattr(caster, "level", 0) or 0), 0)
@@ -1291,10 +1298,17 @@ def armor(caster: Character, target: Character | None = None) -> bool:
 
     # mirroring ROM src/magic.c:771-775 — send_to_char TO_VICT, then act TO_CHAR
     # only when ch != victim.
-    _send_to_char(target, "You feel someone protecting you.")
+    try:
+        from mud.i18n import translate_skill
+        protect_msg = translate_skill("You feel someone protecting you.")
+        other_protect_msg = translate_skill("$N is protected by your magic.")
+    except ImportError:
+        protect_msg = "You feel someone protecting you."
+        other_protect_msg = "$N is protected by your magic."
+    _send_to_char(target, protect_msg)
     if caster is not target:
         # MAGIC-016: ROM act("$N is protected by your magic.", ch, NULL, victim, TO_CHAR).
-        _send_to_char(caster, act_format("$N is protected by your magic.", recipient=caster, actor=caster, arg2=target))
+        _send_to_char(caster, act_format(other_protect_msg, recipient=caster, actor=caster, arg2=target))
     return True
 
 

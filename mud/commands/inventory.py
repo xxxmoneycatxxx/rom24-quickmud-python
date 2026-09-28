@@ -871,8 +871,10 @@ def do_inventory(char: Character, args: str = "") -> str:
 
     ROM Reference: src/act_info.c do_inventory (lines 2254-2259)
     """
+    from mud.i18n import t
+
     # ROM C line 2256: send_to_char ("You are carrying:\n\r", ch);
-    output = "You are carrying:\n"
+    output = t("You are carrying:") + "\n"
 
     # ROM C line 2257: show_list_to_char (ch->carrying, ch, TRUE, TRUE);
     inventory = list(getattr(char, "inventory", []) or [])
@@ -888,32 +890,33 @@ def do_equipment(char: Character, args: str = "") -> str:
     ROM Reference: src/act_info.c:do_equipment (lines 2263-2295)
     """
     from mud.models.constants import WearLocation
+    from mud.i18n import t
 
     # ROM slot names mapping (src/act_info.c:48-67 where_name array)
     slot_names = {
-        int(WearLocation.LIGHT): "<used as light>     ",
-        int(WearLocation.FINGER_L): "<worn on finger>    ",
-        int(WearLocation.FINGER_R): "<worn on finger>    ",
-        int(WearLocation.NECK_1): "<worn around neck>  ",
-        int(WearLocation.NECK_2): "<worn around neck>  ",
-        int(WearLocation.BODY): "<worn on torso>     ",
-        int(WearLocation.HEAD): "<worn on head>      ",
-        int(WearLocation.LEGS): "<worn on legs>      ",
-        int(WearLocation.FEET): "<worn on feet>      ",
-        int(WearLocation.HANDS): "<worn on hands>     ",
-        int(WearLocation.ARMS): "<worn on arms>      ",
-        int(WearLocation.SHIELD): "<worn as shield>    ",
-        int(WearLocation.ABOUT): "<worn about body>   ",
-        int(WearLocation.WAIST): "<worn about waist>  ",
-        int(WearLocation.WRIST_L): "<worn around wrist> ",
-        int(WearLocation.WRIST_R): "<worn around wrist> ",
-        int(WearLocation.WIELD): "<wielded>           ",
-        int(WearLocation.HOLD): "<held>              ",
-        int(WearLocation.FLOAT): "<floating nearby>   ",
+        int(WearLocation.LIGHT): t("<used as light>     "),
+        int(WearLocation.FINGER_L): t("<worn on finger>    "),
+        int(WearLocation.FINGER_R): t("<worn on finger>    "),
+        int(WearLocation.NECK_1): t("<worn around neck>  "),
+        int(WearLocation.NECK_2): t("<worn around neck>  "),
+        int(WearLocation.BODY): t("<worn on torso>     "),
+        int(WearLocation.HEAD): t("<worn on head>      "),
+        int(WearLocation.LEGS): t("<worn on legs>      "),
+        int(WearLocation.FEET): t("<worn on feet>      "),
+        int(WearLocation.HANDS): t("<worn on hands>     "),
+        int(WearLocation.ARMS): t("<worn on arms>      "),
+        int(WearLocation.SHIELD): t("<worn as shield>    "),
+        int(WearLocation.ABOUT): t("<worn about body>   "),
+        int(WearLocation.WAIST): t("<worn about waist>  "),
+        int(WearLocation.WRIST_L): t("<worn around wrist> "),
+        int(WearLocation.WRIST_R): t("<worn around wrist> "),
+        int(WearLocation.WIELD): t("<wielded>           "),
+        int(WearLocation.HOLD): t("<held>              "),
+        int(WearLocation.FLOAT): t("<floating nearby>   "),
     }
 
     # ROM C line 2268: send_to_char ("You are using:\n\r", ch);
-    output = "You are using:\n"
+    output = t("You are using:") + "\n"
 
     # ROM C lines 2269-2289: Iterate through equipment slots in numeric wear
     # order (`for (iWear = 0; iWear < MAX_WEAR; iWear++)`), not dict insertion
@@ -937,14 +940,14 @@ def do_equipment(char: Character, args: str = "") -> str:
             obj_name = format_obj_to_char(obj, char, f_short=True) or obj.short_descr or obj.name or "object"
         else:
             # ROM C line 2283: send_to_char ("something.\n\r", ch);
-            obj_name = "something."
+            obj_name = t("something.")
 
         output += f"{slot_name}{obj_name}\n"
         found = True
 
     # ROM C line 2291: if (!found) send_to_char ("Nothing.\n\r", ch);
     if not found:
-        output += "Nothing.\n"
+        output += t("Nothing.") + "\n"
 
     return output
 

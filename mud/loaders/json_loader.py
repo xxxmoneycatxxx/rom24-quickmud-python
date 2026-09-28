@@ -821,22 +821,49 @@ def _load_mob_programs_from_json(programs_data: list[dict[str, Any]]) -> None:
                 register_program_code(vnum, code)
 
 
-def load_all_areas_from_json(json_dir: str) -> dict[int, Area]:
-    """Load all areas from JSON files in a directory."""
+def load_all_areas_from_json(json_dir: str, list_path: str = "area/area.lst") -> dict[int, Area]:
+    """Load all areas from JSON files in directory order defined by area.lst.
+
+    ROM C loads areas strictly in ``area.lst`` order (``src/db.c boot_db``).
+    Cross-area D resets (e.g. grave.json locking a door in midgaard room 3124)
+    require the referenced room's area to be loaded first.  ``Path.glob``
+    returns filesystem order which is arbitrary and breaks these dependencies,
+    so we read ``area.lst`` to determine the canonical sequence.
+    """
 
     json_path = Path(json_dir)
     if not json_path.exists():
         logger.error(f"JSON directory not found: {json_dir}")
         return {}
 
-    areas = {}
+    # Build ordered file list from area.lst (mirrors ROM boot_db load order).
+    ordered_files: list[Path] = []
+    lst = Path(list_path)
+    if lst.exists():
+        with open(lst, encoding="latin-1") as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith("#") or line == "$":
+                    continue
+                # area.lst has "midgaard.are" → map to "midgaard.json"
+                stem = Path(line).stem
+                candidate = json_path / f"{stem}.json"
+                if candidate.exists():
+                    ordered_files.append(candidate)
 
-    for json_file in json_path.glob("*.json"):
+    # Append any JSON files not mentioned in area.lst (OLC-created areas).
+    listed_stems = {p.stem for p in ordered_files}
+    for p in sorted(json_path.glob("*.json")):
+        if p.stem not in listed_stems:
+            ordered_files.append(p)
+
+    areas: dict[int, Area] = {}
+    for json_file in ordered_files:
         try:
             area = load_area_from_json(str(json_file))
             areas[area.vnum] = area
         except Exception as e:
             logger.error(f"Failed to load {json_file}: {e}")
 
-    logger.info(f"Loaded {len(areas)} areas from JSON")
+    logger.info(f"Loaded {len(areas)} areas from JSON (order from {list_path})")
     return areas

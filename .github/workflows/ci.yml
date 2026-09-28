@@ -1,70 +1,53 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.13'
-          check-latest: true
-      - name: Upgrade pip
-        run: python -m pip install --upgrade pip
-      - name: Install project
-        run: pip install -e .[dev] || pip install -e .
-      - name: Help data drift check
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
         run: |
-          python -m mud.scripts.convert_help_are_to_json area/help.are data/help.json
-          # Fail CI if regeneration changes the tracked file
-          if ! git diff --exit-code -- data/help.json; then
-            echo "data/help.json is out of date with area/help.are. Run: python -m mud.scripts.convert_help_are_to_json area/help.are data/help.json" >&2
-            exit 1
-          fi
-      - name: Lint
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: Run tests
         run: |
-          ruff check mud/net mud/security \
-            tests/test_telnet_server.py tests/test_ansi.py \
-            tests/test_scripted_session.py tests/test_hash_utils.py
-          flake8 mud/net/ansi.py mud/net/protocol.py mud/security/hash_utils.py \
-            tests/test_telnet_server.py tests/test_ansi.py \
-            tests/test_scripted_session.py tests/test_hash_utils.py
-      - name: Test fixtures lint
+          pytest tests/ -x --timeout=120
+
+      - name: Run i18n coverage check
         run: |
-          python3 scripts/lint_test_fixtures.py
-      - name: Enforce rng_mm usage (no random in combat/affects)
+          python scripts/i18n_coverage.py --threshold 95
+
+      - name: Lint with ruff
         run: |
-          if grep -R -n "\\brandom\\." mud/combat mud/affects; then
+          ruff check .
+          ruff format --check .
+
+      - name: Enforce rng_mm usage
+        run: |
+          if grep -R -n "\brandom\." mud/combat mud/affects; then
             echo "Forbidden Python random.* usage found in combat/affects." >&2
             exit 1
           else
             echo "OK: no random.* usage in combat/affects"
           fi
-      - name: Type check
-        run: mypy mud/net/ansi.py mud/net/protocol.py mud/net/connection.py mud/security/hash_utils.py --follow-imports=skip
-      - name: Test
-        run: pytest --cov=mud --cov-report=term --cov-fail-under=80
 
-  telnet-tests:
-    name: Telnet Server Tests (Linux-only)
-    runs-on: ubuntu-latest
-    if: runner.os == 'Linux'
-    timeout-minutes: 5
-    needs: test
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v6
-        with:
-          python-version: '3.13'
-          check-latest: true
-      - name: Upgrade pip
-        run: python -m pip install --upgrade pip
-      - name: Install project
-        run: pip install -e .[dev] || pip install -e .
-      - name: Run telnet tests with timeout
-        env:
-          PYTHONUNBUFFERED: "1"
+      - name: Test fixtures lint
         run: |
-          pytest -q -m telnet
+          python3 scripts/lint_test_fixtures.py

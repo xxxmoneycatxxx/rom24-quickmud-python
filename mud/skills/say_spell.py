@@ -109,9 +109,14 @@ def say_spell(caster: Any, spell_name: str) -> tuple[str, str]:
 
     garbled_words = "".join(garbled)
 
-    # Format messages
-    actual_msg = f"$n utters the words, '{spell_name}'."
-    garbled_msg = f"$n utters the words, '{garbled_words}'."
+    # Format messages - translate if i18n is active
+    try:
+        from mud.i18n import translate_skill
+        actual_msg = translate_skill(f"$n utters the words, '{spell_name}'.")
+        garbled_msg = translate_skill(f"$n utters the words, '{garbled_words}'.")
+    except ImportError:
+        actual_msg = f"$n utters the words, '{spell_name}'."
+        garbled_msg = f"$n utters the words, '{garbled_words}'."
 
     return (actual_msg, garbled_msg)
 

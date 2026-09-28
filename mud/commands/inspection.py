@@ -185,24 +185,28 @@ def do_exits(char: Character, args: str = "") -> str:
     auto_mode = args.strip().lower() == "auto"
 
     # Build header based on mode and immortal status
+    from mud.i18n import is_translated, t as _t
     if auto_mode:
         # ROM: sprintf (buf, "{o[Exits:")
-        output = "{o[Exits:"
+        output = "{o[" + (_t("Exits") if is_translated() else "Exits") + ":"
     elif char.is_immortal():
         # ROM: sprintf (buf, "Obvious exits from room %d:\n\r", ch->in_room->vnum)
-        output = f"Obvious exits from room {char.room.vnum}:\n"
+        header = _t("Obvious exits from room {vnum}:").format(vnum=char.room.vnum) if is_translated() else f"Obvious exits from room {char.room.vnum}:"
+        output = header + "\n"
     else:
         # ROM: sprintf (buf, "Obvious exits:\n\r")
-        output = "Obvious exits:\n"
+        output = (_t("Obvious exits:") if is_translated() else "Obvious exits:") + "\n"
 
     # Iterate through all 6 directions (N, E, S, W, U, D)
     # ROM: for (door = 0; door <= 5; door++)
     exits = getattr(char.room, "exits", None)
     if not exits:
         if auto_mode:
-            return "{o[Exits: none]{x\n"
+            none_text = _t("none") if is_translated() else "none"
+            return "{o[" + (_t("Exits") if is_translated() else "Exits") + ": " + none_text + "]{x}\n"
         else:
-            return output + "None.\n"
+            none_text = _t("None.") if is_translated() else "None.\n"
+            return output + none_text
 
     found_exits = []
 
@@ -252,20 +256,32 @@ def do_exits(char: Character, args: str = "") -> str:
             and not (pexit.exit_info & EX_CLOSED)
         ):
             dir_name = dir_names[direction]
+            # Translate direction name in i18n mode
+            from mud.i18n import is_translated, get_direction
 
             if auto_mode:
-                # ROM: strcat (buf, " "); strcat (buf, dir_name[door]);
-                found_exits.append(dir_name)
+                if is_translated():
+                    # Bilingual format: 中文(english, destination)
+                    translated_dir = get_direction(dir_name)
+                    dest_name = pexit.to_room.name or "Unknown"
+                    # Translate destination room name if available
+                    from mud.i18n import translate_room
+                    dest_vnum = getattr(pexit.to_room, "vnum", 0)
+                    dest_name = translate_room(dest_vnum, "name", dest_name)
+                    found_exits.append(f"{translated_dir}({dir_name}, {dest_name})")
+                else:
+                    found_exits.append(dir_name)
             else:
                 # ROM: sprintf (buf + strlen (buf), "%-5s - %s",
                 #              capitalize (dir_name[door]),
                 #              room_is_dark (pexit->u1.to_room)
                 #              ? "Too dark to tell" : pexit->u1.to_room->name)
-                dir_capitalized = dir_name.capitalize()
+                display_dir = get_direction(dir_name) if is_translated() else dir_name
+                dir_capitalized = display_dir.capitalize()
 
                 # Check if target room is dark (SEPARATE from permission check)
                 if room_is_dark(pexit.to_room):
-                    room_desc = "Too dark to tell"
+                    room_desc = _t("Too dark to tell") if is_translated() else "Too dark to tell"
                 else:
                     room_desc = pexit.to_room.name or "Unknown"
 
@@ -284,7 +300,8 @@ def do_exits(char: Character, args: str = "") -> str:
         if found_exits:
             output += " " + " ".join(found_exits)
         else:
-            output += " none"
+            none_text = _t("none") if is_translated() else "none"
+            output += " " + none_text
         # ROM: if (fAuto) strcat (buf, "]{x\n\r")
         output += "]{x\n"
     else:
@@ -292,6 +309,7 @@ def do_exits(char: Character, args: str = "") -> str:
             output += "\n".join(found_exits) + "\n"
         else:
             # ROM: "None.\n\r"
-            output += "None.\n"
+            none_text = _t("None.") if is_translated() else "None.\n"
+            output += none_text
 
     return output

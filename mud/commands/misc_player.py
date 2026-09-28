@@ -78,10 +78,12 @@ def do_config(char: Character, args: str) -> str:
 
     Shows current configuration settings.
     """
-    if getattr(char, "is_npc", False):
-        return "NPCs don't have configurations."
+    from mud.i18n import t
 
-    lines = ["[ Keyword  ] Option"]
+    if getattr(char, "is_npc", False):
+        return t("NPCs don't have configurations.")
+
+    lines = [t("[ Keyword  ] Option")]
     lines.append("-" * 40)
 
     # Auto flags
@@ -92,21 +94,21 @@ def do_config(char: Character, args: str) -> str:
     # canonical IntEnum values the toggle commands set, so the display
     # always disagreed with the actual flag state. Use the enums directly.
     configs = [
-        ("autoassist", int(PlayerFlag.AUTOASSIST), act_flags, "You automatically assist group members."),
-        ("autoexit", int(PlayerFlag.AUTOEXIT), act_flags, "You automatically see exits."),
-        ("autogold", int(PlayerFlag.AUTOGOLD), act_flags, "You automatically loot gold from corpses."),
-        ("autoloot", int(PlayerFlag.AUTOLOOT), act_flags, "You automatically loot corpses."),
-        ("autosac", int(PlayerFlag.AUTOSAC), act_flags, "You automatically sacrifice corpses."),
-        ("autosplit", int(PlayerFlag.AUTOSPLIT), act_flags, "You automatically split gold with group."),
-        ("compact", int(CommFlag.COMPACT), comm_flags, "You see no extra blank lines."),
-        ("brief", int(CommFlag.BRIEF), comm_flags, "You see brief room descriptions."),
-        ("prompt", int(CommFlag.PROMPT), comm_flags, "You have a prompt."),
-        ("combine", int(CommFlag.COMBINE), comm_flags, "You combine items in inventory."),
-        ("afk", int(CommFlag.AFK), comm_flags, "You are Away From Keyboard."),
+        ("autoassist", int(PlayerFlag.AUTOASSIST), act_flags, t("You automatically assist group members.")),
+        ("autoexit", int(PlayerFlag.AUTOEXIT), act_flags, t("You automatically see exits.")),
+        ("autogold", int(PlayerFlag.AUTOGOLD), act_flags, t("You automatically loot gold from corpses.")),
+        ("autoloot", int(PlayerFlag.AUTOLOOT), act_flags, t("You automatically loot corpses.")),
+        ("autosac", int(PlayerFlag.AUTOSAC), act_flags, t("You automatically sacrifice corpses.")),
+        ("autosplit", int(PlayerFlag.AUTOSPLIT), act_flags, t("You automatically split gold with group.")),
+        ("compact", int(CommFlag.COMPACT), comm_flags, t("You see no extra blank lines.")),
+        ("brief", int(CommFlag.BRIEF), comm_flags, t("You see brief room descriptions.")),
+        ("prompt", int(CommFlag.PROMPT), comm_flags, t("You have a prompt.")),
+        ("combine", int(CommFlag.COMBINE), comm_flags, t("You combine items in inventory.")),
+        ("afk", int(CommFlag.AFK), comm_flags, t("You are Away From Keyboard.")),
     ]
 
     for name, flag, flags, desc in configs:
-        status = "ON" if flags & flag else "OFF"
+        status = t("ON") if flags & flag else t("OFF")
         lines.append(f"[{name:^10s}] {status:<3s} - {desc if flags & flag else ''}")
 
     return "\n".join(lines)

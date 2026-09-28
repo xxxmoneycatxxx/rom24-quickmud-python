@@ -57,7 +57,7 @@ from mud.security import bans
 from mud.security.bans import BanFlag
 from mud.security.hash_utils import hash_password
 from mud.skills.groups import get_group, list_groups
-from mud.i18n import t
+from mud.i18n import is_translated, t
 from mud.utils.act import act_format
 from mud.utils.messaging import push_message
 from mud.utils.prompt import bust_a_prompt
@@ -975,8 +975,20 @@ async def _send_login_motd(char: Character) -> None:
         # When `motd` resolves to the auto-generated command help instead of
         # an actual MOTD topic, fall back to the MOTD slice of the greeting
         # banner so login still surfaces the rules text.
-        if topic == "motd" and (not text or text.lstrip().startswith("Command: motd")):
+        # Check for both English and translated "Command:" prefix.
+        from mud.i18n import t as _t
+        cmd_prefix_en = "Command: " + topic
+        cmd_prefix_local = _t("Command:") + " " + topic
+        is_command_help = text and (
+            text.lstrip().startswith(cmd_prefix_en)
+            or text.lstrip().startswith(cmd_prefix_local)
+        )
+        if topic == "motd" and (not text or is_command_help):
             text = _extract_motd_from_greeting()
+            # Translate the extracted MOTD via i18n help table
+            if text:
+                from mud.i18n import translate_help
+                text = translate_help(["motd"], text)
         if not text:
             continue
         text = _strip_motd_trailer(text)
@@ -1423,7 +1435,12 @@ async def _run_character_login(
 async def _prompt_for_race(conn: TelnetStream, help_character: object | None = None) -> PcRaceType | None:
     races = get_creation_races()
     # mirroring ROM src/nanny.c:461 — "The following races are available:\n\r  "
-    race_listing = t("The following races are available:\n\r  ") + " ".join(race.name for race in races) + " "
+    # Show both English and translated names when in translated mode: "human(人类) elf(精灵)..."
+    if is_translated():
+        race_names = " ".join(f"{race.name}({t(race.name)})" for race in races)
+    else:
+        race_names = " ".join(race.name for race in races)
+    race_listing = t("The following races are available:\n\r  ") + race_names + " "
     await _send_line(conn, race_listing)
     helper = help_character or SimpleNamespace(name="", trust=0, level=0, is_npc=False, room=None)
     prompt = t("What is your race (help for more information)? ")
@@ -1471,8 +1488,12 @@ async def _prompt_for_sex(conn: TelnetStream) -> Sex | None:
 
 async def _prompt_for_class(conn: TelnetStream) -> ClassType | None:
     classes = get_creation_classes()
-    class_list = " ".join(cls.name for cls in classes)
-    prompt = t("Select a class [").format() + class_list + t("]: ")
+    # Show both English and translated names when in translated mode: "mage(法师) cleric(牧师)..."
+    if is_translated():
+        class_list = " ".join(f"{cls.name}({t(cls.name)})" for cls in classes)
+    else:
+        class_list = " ".join(cls.name for cls in classes)
+    prompt = t("Select a class [") + class_list + t("]: ")
     while True:
         response = await _prompt(conn, prompt)
         if response is None:
@@ -1806,8 +1827,13 @@ async def _prompt_for_hometown(conn: TelnetStream) -> int | None:
 async def _prompt_for_weapon(conn: TelnetStream, class_type: ClassType) -> int | None:
     choices = get_weapon_choices(class_type)
     normalized = {choice.lower(): choice for choice in choices}
+    # Show both English and translated names when in translated mode: "sword(剑) mace(锤)"
+    if is_translated():
+        weapon_list = " ".join(f"{c}({t(c)})" for c in choices)
+    else:
+        weapon_list = " ".join(choices)
     # mirroring ROM src/nanny.c:612-622 — weapon prompt uses \n\r line endings
-    prompt = t("Please pick a weapon from the following choices:\n\r") + " ".join(choices) + " \n\rYour choice? "
+    prompt = t("Please pick a weapon from the following choices:\n\r") + weapon_list + " \n\r" + t("Your choice? ")
     while True:
         response = await _prompt(conn, prompt)
         if response is None:
@@ -1819,7 +1845,7 @@ async def _prompt_for_weapon(conn: TelnetStream, class_type: ClassType) -> int |
                 return vnum
         # mirroring ROM src/nanny.c:638-649 — invalid retry also uses \n\r
         await _send_line(conn, t("That's not a valid selection. Choices are:"))
-        prompt = " ".join(choices) + " \n\rYour choice? "
+        prompt = weapon_list + " \n\r" + t("Your choice? ")
 
 
 async def _run_character_creation_flow(

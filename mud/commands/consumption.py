@@ -19,6 +19,15 @@ if TYPE_CHECKING:
     from mud.models.object import Object
 
 
+def _t_item(msg: str) -> str:
+    """Translate an item usage message if i18n is active."""
+    try:
+        from mud.i18n import translate_item
+        return translate_item(msg)
+    except ImportError:
+        return msg
+
+
 def do_eat(ch: Character, args: str) -> str:
     """
     Consume food to restore hunger.
@@ -35,13 +44,13 @@ def do_eat(ch: Character, args: str) -> str:
     args = args.strip()
 
     if not args:
-        return "Eat what?"
+        return _t_item("Eat what?")
 
     # Find object in inventory — ROM src/act_obj.c:1296 uses get_obj_carry, which
     # parses the `N.name` count prefix and matches keywords (EAT-008).
     obj = get_obj_carry(ch, args)
     if not obj:
-        return "You do not have that item."
+        return _t_item("You do not have that item.")
 
     # Normalize item_type to int for comparison (obj.item_type may be int or enum)
     item_type_raw = getattr(obj, "item_type", int(ItemType.TRASH))
@@ -53,7 +62,7 @@ def do_eat(ch: Character, args: str) -> str:
         # EAT-001/EAT-002: accept FOOD or PILL; reject everything else
         # ROM src/act_obj.c:1304
         if item_type_int != int(ItemType.FOOD) and item_type_int != int(ItemType.PILL):
-            return "That's not edible."
+            return _t_item("That's not edible.")
 
         # EAT-003: fullness pre-check for mortal PCs
         # ROM src/act_obj.c:1310-1314  condition lives on pcdata (mirroring do_drink)
@@ -62,7 +71,7 @@ def do_eat(ch: Character, args: str) -> str:
             condition = getattr(_pcdata, "condition", None) if _pcdata else None
             if isinstance(condition, list) and len(condition) > _COND_FULL:
                 if condition[_COND_FULL] > 40:
-                    return "You are too full to eat more."
+                    return _t_item("You are too full to eat more.")
 
     # EAT-004: TO_ROOM broadcast fires before TO_CHAR
     # ROM src/act_obj.c:1317
@@ -73,7 +82,8 @@ def do_eat(ch: Character, args: str) -> str:
         act_to_room(room, "$n eats $p.", ch, arg1=obj, exclude=ch)
 
     obj_name = getattr(obj, "short_descr", "something")
-    messages = [f"You eat {obj_name}."]
+    eat_msg = _t_item(f"You eat {obj_name}.")
+    messages = [eat_msg]
 
     # EAT-001: PILL path — cast spells then extract (no hunger/poison logic)
     # ROM src/act_obj.c:1356-1360
@@ -113,9 +123,9 @@ def do_eat(ch: Character, args: str) -> str:
                     gain_condition(ch, Condition.HUNGER, food_value[1] if len(food_value) > 1 else 0)
                 new_hunger = condition[_COND_HUNGER]
                 if old_hunger == 0 and new_hunger > 0:
-                    messages.append("You are no longer hungry.")
+                    messages.append(_t_item("You are no longer hungry."))
                 elif condition[_COND_FULL] > 40:
-                    messages.append("You are full.")
+                    messages.append(_t_item("You are full."))
 
         # EAT-005: poison affect with ROM-correct fields
         # ROM src/act_obj.c:1337-1353
@@ -126,7 +136,7 @@ def do_eat(ch: Character, args: str) -> str:
                 # INV-025: act_to_room renders $n per-recipient (PERS masking) +
                 # dispatches TRIG_ACT (ROM src/act_obj.c:1342, no MOBtrigger wrap).
                 act_to_room(room, "$n chokes and gags.", ch, exclude=ch)
-            messages.append("You choke and gag.")
+            messages.append(_t_item("You choke and gag."))
 
             # EAT-005: apply poison flag; store ROM-correct affect metadata on ch.affects
             # ROM af: level=number_fuzzy(value[0]), duration=2*value[0], location=APPLY_NONE=0, modifier=0
@@ -197,13 +207,13 @@ def do_drink(ch: Character, args: str) -> str:
                 obj = candidate
                 break
         if obj is None:
-            return "Drink what?"
+            return _t_item("Drink what?")
     else:
         # DRINK-003: use get_obj_here (room first, then inventory, then equipment)
         # ROM src/act_obj.c:1186-1190
         obj = get_obj_here(ch, args)
         if obj is None:
-            return "You can't find it."
+            return _t_item("You can't find it.")
 
     # DRINK-002: drunk pre-check — must be before type-switch
     # ROM src/act_obj.c:1193-1197
@@ -213,7 +223,7 @@ def do_drink(ch: Character, args: str) -> str:
         cond = getattr(pcdata, "condition", None) if pcdata else None
         if isinstance(cond, list) and len(cond) > int(Condition.DRUNK):
             if cond[int(Condition.DRUNK)] > 10:
-                return "You fail to reach your mouth.  *Hic*"
+                return _t_item("You fail to reach your mouth.  *Hic*")
 
     # Dispatch by item_type
     # ROM src/act_obj.c:1199-1230
@@ -233,7 +243,7 @@ def do_drink(ch: Character, args: str) -> str:
     elif item_type_int == int(ItemType.DRINK_CON):
         # ROM: check empty, then amount = min(ssize, value[1])
         if len(value) < 2 or value[1] <= 0:
-            return "It is already empty."
+            return _t_item("It is already empty.")
         liquid_idx = value[2] if len(value) > 2 else 0
         if liquid_idx < 0:
             liquid_idx = 0
@@ -241,7 +251,7 @@ def do_drink(ch: Character, args: str) -> str:
         amount = min(liq.ssize, value[1])
 
     else:
-        return "You can't drink from that."
+        return _t_item("You can't drink from that.")
 
     # DRINK-009: immortal bypasses fullness check
     # ROM src/act_obj.c:1231-1236
@@ -250,7 +260,7 @@ def do_drink(ch: Character, args: str) -> str:
         cond = getattr(pcdata, "condition", None) if pcdata else None
         if not ch.is_immortal() and isinstance(cond, list) and len(cond) > int(Condition.FULL):
             if cond[int(Condition.FULL)] > 45:
-                return "You're too full to drink more."
+                return _t_item("You're too full to drink more.")
 
     # DRINK-007: TO_ROOM and TO_CHAR act() messages
     # ROM src/act_obj.c:1238-1241
@@ -260,7 +270,7 @@ def do_drink(ch: Character, args: str) -> str:
         # TRIG_ACT (ROM src/act_obj.c:1238-1241, no MOBtrigger wrap).
         act_to_room(room, "$n drinks $T from $p.", ch, arg1=obj, arg2=liq.name, exclude=ch)
 
-    messages = [f"You drink {liq.name} from {obj_short}."]
+    messages = [_t_item(f"You drink {liq.name} from {obj_short}.")]
 
     # DRINK-005 / DRINK-011: gain_condition using liq_table affect values.
     # ROM src/act_obj.c:1243-1250 uses C integer division (truncates toward zero).
@@ -279,11 +289,11 @@ def do_drink(ch: Character, args: str) -> str:
         cond = getattr(pcdata, "condition", None) if pcdata else None
         if isinstance(cond, list):
             if len(cond) > int(Condition.DRUNK) and cond[int(Condition.DRUNK)] > 10:
-                messages.append("You feel drunk.")
+                messages.append(_t_item("You feel drunk."))
             if len(cond) > int(Condition.FULL) and cond[int(Condition.FULL)] > 40:
-                messages.append("You are full.")
+                messages.append(_t_item("You are full."))
             if len(cond) > int(Condition.THIRST) and cond[int(Condition.THIRST)] > 40:
-                messages.append("Your thirst is quenched.")
+                messages.append(_t_item("Your thirst is quenched."))
 
     # DRINK-008: poison affect with ROM-correct fields
     # ROM src/act_obj.c:1259-1274
@@ -292,7 +302,7 @@ def do_drink(ch: Character, args: str) -> str:
             # INV-025: act_to_room renders $n per-recipient (PERS masking) +
             # dispatches TRIG_ACT (ROM src/act_obj.c:1263, no MOBtrigger wrap).
             act_to_room(room, "$n chokes and gags.", ch, exclude=ch)
-        messages.append("You choke and gag.")
+        messages.append(_t_item("You choke and gag."))
 
         if hasattr(ch, "add_affect"):
             ch.add_affect(AffectFlag.POISON)

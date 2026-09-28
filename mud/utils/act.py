@@ -341,18 +341,20 @@ def format_obj_to_char(obj: Any, char: Any, f_short: bool) -> str:
         if not getattr(obj, "description", None):
             return ""
 
+    from mud.i18n import t as _t
+
     if _obj_flag(obj, ExtraFlag.INVIS):
-        buf += "(Invis) "
+        buf += _t("(Invis) ")
     if _char_affected(char, "detect_evil") and _obj_flag(obj, ExtraFlag.EVIL):
-        buf += "(Red Aura) "
+        buf += _t("(Red Aura) ")
     if _char_affected(char, "detect_good") and _obj_flag(obj, ExtraFlag.BLESS):
-        buf += "(Blue Aura) "
+        buf += _t("(Blue Aura) ")
     if _char_affected(char, "detect_magic") and _obj_flag(obj, ExtraFlag.MAGIC):
-        buf += "(Magical) "
+        buf += _t("(Magical) ")
     if _obj_flag(obj, ExtraFlag.GLOW):
-        buf += "(Glowing) "
+        buf += _t("(Glowing) ")
     if _obj_flag(obj, ExtraFlag.HUM):
-        buf += "(Humming) "
+        buf += _t("(Humming) ")
 
     if f_short:
         raw_short = getattr(obj, "short_descr", "") or ""

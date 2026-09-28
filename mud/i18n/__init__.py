@@ -277,6 +277,25 @@ def translate_room(vnum: int, field: str, default: str) -> str:
     return default
 
 
+def translate_room_extra(vnum: int, keyword: str, default: str) -> str:
+    """Translate a room's extra description by vnum and keyword.
+
+    The ``areas.rooms`` section may contain an ``"extras"`` dict mapping
+    keywords to translated descriptions.  Returns *default* if no
+    translation is available.
+    """
+    if not is_translated():
+        return default
+    _ensure_loaded()
+    rooms = _table.get("areas", {}).get("rooms", {})
+    entry = rooms.get(str(vnum))
+    if entry:
+        extras = entry.get("extras", {})
+        if extras and keyword in extras:
+            return extras[keyword]
+    return default
+
+
 def translate_object(vnum: int, field: str, default: str) -> str:
     """Translate an object's name or description by vnum.
 
@@ -322,6 +341,113 @@ def translate_skill_name(name: str) -> str:
     _ensure_loaded()
     skills = _table.get("skills", {})
     return skills.get(name, name)
+
+
+def translate_social(social_name: str, field: str, default: str) -> str:
+    """Translate a social command message by social name and field.
+
+    The ``socials`` section maps social name to a dict with fields like
+    ``"char_no_arg"``, ``"others_no_arg"``, ``"char_found"``, etc.
+    Returns *default* if no translation is available.
+    """
+    if not is_translated():
+        return default
+    _ensure_loaded()
+    socials = _table.get("socials", {})
+    entry = socials.get(social_name)
+    if entry and field in entry:
+        return entry[field]
+    return default
+
+
+def translate_skill(message: str) -> str:
+    """Translate a skill/spell message string.
+
+    The ``skills.messages`` section maps English message strings to
+    their translations. Returns the original message if no translation
+    is available.
+    """
+    if not is_translated():
+        return message
+    _ensure_loaded()
+    skills = _table.get("skills", {})
+    messages = skills.get("messages", {})
+    return messages.get(message, message)
+
+
+def translate_skill_name(name: str) -> str:
+    """Translate a skill/spell name.
+
+    The ``skills.names`` section maps English skill/spell names to
+    their translations. Returns the original name if no translation
+    is available.
+    """
+    if not is_translated():
+        return name
+    _ensure_loaded()
+    skills = _table.get("skills", {})
+    names = skills.get("names", {})
+    return names.get(name, name)
+
+
+def translate_shop(message: str) -> str:
+    """Translate a shop/shopkeeper message string.
+
+    The ``shop.messages`` section maps English message strings to
+    their translations. Returns the original message if no translation
+    is available.
+    """
+    if not is_translated():
+        return message
+    _ensure_loaded()
+    shop = _table.get("shop", {})
+    messages = shop.get("messages", {})
+    return messages.get(message, message)
+
+
+def translate_shop_type(name: str) -> str:
+    """Translate a shop type name.
+
+    The ``shop.types`` section maps English shop type names to
+    their translations. Returns the original name if no translation
+    is available.
+    """
+    if not is_translated():
+        return name
+    _ensure_loaded()
+    shop = _table.get("shop", {})
+    types = shop.get("types", {})
+    return types.get(name, name)
+
+
+def translate_item(message: str) -> str:
+    """Translate an item usage message string.
+
+    The ``items.messages`` section maps English message strings to
+    their translations. Returns the original message if no translation
+    is available.
+    """
+    if not is_translated():
+        return message
+    _ensure_loaded()
+    items = _table.get("items", {})
+    messages = items.get("messages", {})
+    return messages.get(message, message)
+
+
+def translate_item_type(name: str) -> str:
+    """Translate an item type name.
+
+    The ``items.types`` section maps English item type names to
+    their translations. Returns the original name if no translation
+    is available.
+    """
+    if not is_translated():
+        return name
+    _ensure_loaded()
+    items = _table.get("items", {})
+    types = items.get("types", {})
+    return types.get(name, name)
 
 
 # ---------------------------------------------------------------------------

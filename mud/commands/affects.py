@@ -85,7 +85,8 @@ def affect_loc_name(location: int) -> str:
         25: "none",  # APPLY_SPELL_AFFECT (returns "none" in ROM C)
     }
 
-    return APPLY_NAMES.get(location, "(unknown)")
+    from mud.i18n import t
+    return t(APPLY_NAMES.get(location, "(unknown)"))
 
 
 def _condition_lines(char: Character) -> list[str]:
@@ -107,12 +108,13 @@ def _condition_lines(char: Character) -> list[str]:
         return []
     lines: list[str] = []
     try:
+        from mud.i18n import t
         if conditions[Condition.HUNGER] == 0:
-            lines.append("You are hungry.")
+            lines.append(t("You are hungry."))
         if conditions[Condition.THIRST] == 0:
-            lines.append("You are thirsty.")
+            lines.append(t("You are thirsty."))
         if conditions[Condition.DRUNK] > 10:
-            lines.append("You are drunk.")
+            lines.append(t("You are drunk."))
     except (IndexError, KeyError, TypeError):
         return []
     return lines
@@ -131,16 +133,18 @@ def do_affects(char: Character, args: str) -> str:
     - Level 20+: Shows detailed format (modifier, location, duration)
     - Stacked affects (same spell, multiple modifiers): Indented continuation lines
     """
+    from mud.i18n import t
+
     # Primary ROM C behavior: iterate ch.affected list (AFFECT_DATA structures)
     affected = getattr(char, "affected", [])
     condition_lines = _condition_lines(char)
 
     if not affected:
         if condition_lines:
-            return "You are not affected by any spells.\n" + "\n".join(condition_lines)
-        return "You are not affected by any spells."
+            return t("You are not affected by any spells.") + "\n" + "\n".join(condition_lines)
+        return t("You are not affected by any spells.")
 
-    lines = ["You are affected by the following spells:"]
+    lines = [t("You are affected by the following spells:")]
     paf_last = None
 
     for paf in affected:
@@ -161,7 +165,7 @@ def do_affects(char: Character, args: str) -> str:
             # For now, assume paf.type is already a skill name string (temporary until spell system updated)
             spell_name = str(paf.type) if paf.type else "(unknown)"
 
-            buf = f"Spell: {spell_name:15s}"
+            buf = f"{t('Spell: ')}{spell_name:15s}"
 
         # Level 20+: Show detailed modifier information
         if char.level >= 20:
@@ -171,12 +175,12 @@ def do_affects(char: Character, args: str) -> str:
             modifier_str = str(paf.modifier)
 
             if paf.duration == -1:
-                duration_str = "permanently"
+                duration_str = t("permanently")
             else:
-                duration_str = f"for {paf.duration} hours"
+                duration_str = f"{t('for')} {paf.duration} {t('hours')}"
 
             # ROM C line 1736: ": modifies..." (colon prefix)
-            buf += f": modifies {location_name} by {modifier_str} {duration_str}"
+            buf += f": {t('modifies')} {location_name} {t('by')} {modifier_str} {duration_str}"
 
         lines.append(buf)
         paf_last = paf

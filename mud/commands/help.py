@@ -138,6 +138,7 @@ def _generate_command_help(ch: Character, term: str) -> str | None:
         return None
 
     from mud.commands.dispatcher import COMMANDS, resolve_command
+    from mud.i18n import t
 
     lookup = term.lower()
     raw_trust = getattr(ch, "trust", 0) or 0
@@ -177,24 +178,24 @@ def _generate_command_help(ch: Character, term: str) -> str | None:
     aliases = ", ".join(command.aliases) if command.aliases else "None"
     position = command.min_position.name.replace("_", " ").title()
     if command.admin_only:
-        restriction = "Immortal-only command (admin flag required)."
+        restriction = t("Immortal-only command (admin flag required).")
     elif command.min_trust >= LEVEL_IMMORTAL or command.min_trust >= LEVEL_HERO:
-        restriction = "Immortal-only command."
+        restriction = t("Immortal-only command.")
     elif command.min_trust > 0:
-        restriction = f"Available from level {command.min_trust}."
+        restriction = t("Available from level {level}.").format(level=command.min_trust)
     else:
-        restriction = "Available to mortals."
+        restriction = t("Available to mortals.")
 
     lines = [
-        f"Command: {command.name}",
-        f"Aliases: {aliases}",
-        f"Minimum position: {position}",
+        f"{t('Command:')} {command.name}",
+        f"{t('Aliases:')} {aliases}",
+        f"{t('Minimum position:')} {t(position)}",
         restriction,
     ]
 
     if command.name == "cast":
-        lines.append("Usage: cast '<spell>' [target]")
-        lines.append("Casting a learned spell consumes mana based on the spell level.")
+        lines.append(t("Usage: cast '<spell>' [target]"))
+        lines.append(t("Casting a learned spell consumes mana based on the spell level."))
 
     return _rom_lines(lines)
 

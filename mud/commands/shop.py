@@ -37,6 +37,15 @@ _CLOSED_LATE = "Sorry, I am closed. Come back tomorrow."
 _CANT_SEE = "I don't trade with folks I can't see."
 
 
+def _t_shop(msg: str) -> str:
+    """Translate a shop message if i18n is active."""
+    try:
+        from mud.i18n import translate_shop
+        return translate_shop(msg)
+    except ImportError:
+        return msg
+
+
 def _keeper_says(keeper, ch, message: str, *, obj=None) -> str:
     """Emit a keeper-spoken message and set ch.reply.
 
@@ -51,6 +60,8 @@ def _keeper_says(keeper, ch, message: str, *, obj=None) -> str:
     if obj is not None:
         obj_name = getattr(obj, "short_descr", None) or getattr(obj, "name", "it") or "it"
         message = message.replace("$p", obj_name)
+    # Translate the message if i18n is active
+    message = _t_shop(message)
     # mirroring ROM src/comm.c:2376-2379 — first char of act() output is capitalised
     return capitalize_act_line(f"{keeper_name} tells you '{message}")
 
@@ -66,6 +77,8 @@ def _act_to_char(keeper, message: str, *, obj=None) -> str:
     if obj is not None:
         obj_name = getattr(obj, "short_descr", None) or getattr(obj, "name", "it") or "it"
         result = result.replace("$p", obj_name)
+    # Translate the message if i18n is active
+    result = _t_shop(result)
     return capitalize_act_line(result)
 
 

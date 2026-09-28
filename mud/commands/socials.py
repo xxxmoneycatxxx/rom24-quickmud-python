@@ -63,6 +63,16 @@ def perform_social(char: Character, name: str, arg: str) -> str:
     # allowed while asleep. `social` was already resolved via find_social above.
     if position == Position.SLEEPING and social.name.lower() != "snore":
         return "In your dreams, or what?"
+    # Translate social messages if i18n is active
+    from mud.i18n import translate_social as _ts
+    social_name = social.name
+    char_no_arg = _ts(social_name, "char_no_arg", social.char_no_arg)
+    others_no_arg = _ts(social_name, "others_no_arg", social.others_no_arg)
+    char_found = _ts(social_name, "char_found", social.char_found)
+    others_found = _ts(social_name, "others_found", social.others_found)
+    vict_found = _ts(social_name, "vict_found", social.vict_found)
+    char_auto = _ts(social_name, "char_auto", social.char_auto)
+    others_auto = _ts(social_name, "others_auto", social.others_auto)
     victim = None
     if arg:
         # mirroring ROM src/interp.c:637 — do_social resolves the target via
@@ -76,9 +86,9 @@ def perform_social(char: Character, name: str, arg: str) -> str:
         # mirroring ROM src/interp.c:648-650 — TO_NOTVICT excludes the victim;
         # TO_CHAR/TO_VICT go to the directed recipient. act_to_room / _act_to_char
         # render $n/$N through per-recipient PERS masking and dispatch TRIG_ACT.
-        _act_to_char(char, social.char_found, char, arg2=victim)
-        act_to_room(char.room, social.others_found, char, arg2=victim, exclude=victim)
-        _act_to_char(victim, social.vict_found, char, arg2=victim)
+        _act_to_char(char, char_found, char, arg2=victim)
+        act_to_room(char.room, others_found, char, arg2=victim, exclude=victim)
+        _act_to_char(victim, vict_found, char, arg2=victim)
         # mirroring ROM src/interp.c:652-685 — NPC auto-react when a player
         # socials at an awake, non-charmed, non-switched NPC. number_bits(4)
         # rolls 0..15: 0..8 echo the social back, 9..12 slap, 13..15 silent.
@@ -93,9 +103,9 @@ def perform_social(char: Character, name: str, arg: str) -> str:
             roll = rng_mm.number_bits(4)
             if roll <= 8:
                 # mirroring ROM src/interp.c:668-673 — actor/victim swapped.
-                act_to_room(victim.room, social.others_found, victim, arg2=char, exclude=char)
-                _act_to_char(victim, social.char_found, victim, arg2=char)
-                _act_to_char(char, social.vict_found, victim, arg2=char)
+                act_to_room(victim.room, others_found, victim, arg2=char, exclude=char)
+                _act_to_char(victim, char_found, victim, arg2=char)
+                _act_to_char(char, vict_found, victim, arg2=char)
             elif roll <= 12:
                 # mirroring ROM src/interp.c:680-682 — slap.
                 act_to_room(victim.room, "$n slaps $N.", victim, arg2=char, exclude=char)
@@ -104,8 +114,8 @@ def perform_social(char: Character, name: str, arg: str) -> str:
             # 13..15 falls through silently (ROM has no case for these).
     elif arg and victim is char:
         # mirroring ROM src/interp.c:643-644 — TO_ROOM (excludes only the actor).
-        _act_to_char(char, social.char_auto, char, arg2=victim)
-        act_to_room(char.room, social.others_auto, char, arg2=victim)
+        _act_to_char(char, char_auto, char, arg2=victim)
+        act_to_room(char.room, others_auto, char, arg2=victim)
     elif arg and not victim:
         # mirroring ROM src/interp.c:637-640 — get_char_room → NULL emits
         # the literal "They aren't here." There is no `not_found` field in
@@ -113,6 +123,6 @@ def perform_social(char: Character, name: str, arg: str) -> str:
         push_message(char, "They aren't here.")
     else:
         # mirroring ROM src/interp.c:634-635 — TO_ROOM (excludes only the actor).
-        _act_to_char(char, social.char_no_arg, char)
-        act_to_room(char.room, social.others_no_arg, char)
+        _act_to_char(char, char_no_arg, char)
+        act_to_room(char.room, others_no_arg, char)
     return ""

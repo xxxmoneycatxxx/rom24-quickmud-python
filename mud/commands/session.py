@@ -86,6 +86,8 @@ def do_score(ch: Character, args: str) -> str:
 
     ROM Reference: src/act_info.c lines 580-732 (do_score)
     """
+    from mud.i18n import t
+
     # Build score output mirroring ROM format
     lines = []
 
@@ -110,23 +112,26 @@ def do_score(ch: Character, args: str) -> str:
     total_hours = c_div(int(played + (current_time - logon)), 3600)
 
     if title:
-        lines.append(f"You are {name}{title}, level {level}, {age} years old ({total_hours} hours).")
+        lines.append(t("You are {name}{title}, level {level}, {age} years old ({hours} hours).").format(
+            name=name, title=title, level=level, age=age, hours=total_hours))
     else:
-        lines.append(f"You are {name}, level {level}, {age} years old ({total_hours} hours).")
+        lines.append(t("You are {name}, level {level}, {age} years old ({hours} hours).").format(
+            name=name, level=level, age=age, hours=total_hours))
 
     # Trust level - ROM src/act_info.c lines 1490-1494
     from mud.commands.imm_commands import get_trust
 
     trust = get_trust(ch)
     if trust != level:
-        lines.append(f"You are trusted at level {trust}.")
+        lines.append(t("You are trusted at level {trust}.").format(trust=trust))
 
     # Race, sex, class - ROM src/act_info.c lines 1496-1500
     race = getattr(ch, "race", "unknown")
     sex = getattr(ch, "sex", 0)
-    sex_name = "sexless" if sex == 0 else ("male" if sex == 1 else "female")
-    class_label = "mobile" if getattr(ch, "is_npc", False) else class_name(getattr(ch, "ch_class", 0))
-    lines.append(f"Race: {race_name(race)}  Sex: {sex_name}  Class: {class_label}")
+    sex_name = t("sexless") if sex == 0 else (t("male") if sex == 1 else t("female"))
+    class_label = t("mobile") if getattr(ch, "is_npc", False) else t(class_name(getattr(ch, "ch_class", 0)))
+    lines.append(t("Race: {race}  Sex: {sex}  Class: {cls}").format(
+        race=t(race_name(race)), sex=sex_name, cls=class_label))
 
     # SCORE-001: emit lines in ROM `do_score` order (src/act_info.c:1503-1690).
     # The prior implementation grouped carrying / Wimpy / conditions / position /
@@ -140,13 +145,15 @@ def do_score(ch: Character, args: str) -> str:
     max_mana = getattr(ch, "max_mana", 0)
     move = getattr(ch, "move", 0)
     max_move = getattr(ch, "max_move", 0)
-    lines.append(f"You have {hp}/{max_hp} hit, {mana}/{max_mana} mana, {move}/{max_move} movement.")
+    lines.append(t("You have {hp}/{max_hp} hit, {mana}/{max_mana} mana, {move}/{max_move} movement.").format(
+        hp=hp, max_hp=max_hp, mana=mana, max_mana=max_mana, move=move, max_move=max_move))
 
     # Practice and training sessions - ROM src/act_info.c:1509-1512
     if not getattr(ch, "is_npc", False):
         practice = getattr(ch, "practice", 0)
         train = getattr(ch, "train", 0)
-        lines.append(f"You have {practice} practices and {train} training sessions.")
+        lines.append(t("You have {practice} practices and {train} training sessions.").format(
+            practice=practice, train=train))
 
     # Carrying - ROM src/act_info.c:1514-1518 (immediately after practices)
     carry_number = getattr(ch, "carry_number", 0)
@@ -159,8 +166,9 @@ def do_score(ch: Character, args: str) -> str:
     max_carry_number = can_carry_n(ch)
     max_carry_weight = can_carry_w(ch) // 10  # ROM divides by 10 for display
     lines.append(
-        f"You are carrying {carry_number}/{max_carry_number} items "
-        f"with weight {get_carry_weight(ch) // 10}/{max_carry_weight} pounds."
+        t("You are carrying {n}/{max_n} items with weight {w}/{max_w} pounds.").format(
+            n=carry_number, max_n=max_carry_number,
+            w=get_carry_weight(ch) // 10, max_w=max_carry_weight)
     )
 
     # Stats - ROM src/act_info.c:1520-1531 (perm(current) per stat).
@@ -177,48 +185,48 @@ def do_score(ch: Character, args: str) -> str:
     curr_dex = ch.get_curr_stat(3) if hasattr(ch, "get_curr_stat") else perm_dex
     curr_con = ch.get_curr_stat(4) if hasattr(ch, "get_curr_stat") else perm_con
     lines.append(
-        f"Str: {perm_str}({curr_str})  "
-        f"Int: {perm_int}({curr_int})  "
-        f"Wis: {perm_wis}({curr_wis})  "
-        f"Dex: {perm_dex}({curr_dex})  "
-        f"Con: {perm_con}({curr_con})"
+        t("Str: {ps}({cs})  Int: {pi}({ci})  Wis: {pw}({cw})  Dex: {pd}({cd})  Con: {pc}({cc})").format(
+            ps=perm_str, cs=curr_str, pi=perm_int, ci=curr_int,
+            pw=perm_wis, cw=curr_wis, pd=perm_dex, cd=curr_dex,
+            pc=perm_con, cc=curr_con)
     )
 
     # Experience and gold - ROM src/act_info.c:1533-1536
     exp = getattr(ch, "exp", 0)
     gold = getattr(ch, "gold", 0)
     silver = getattr(ch, "silver", 0)
-    lines.append(f"You have scored {exp} exp, and have {gold} gold and {silver} silver coins.")
+    lines.append(t("You have scored {exp} exp, and have {gold} gold and {silver} silver coins.").format(
+        exp=exp, gold=gold, silver=silver))
 
     # Experience to level - ROM src/act_info.c:1538-1546
     if not getattr(ch, "is_npc", False) and level < 51:  # LEVEL_HERO = 51
         from mud.advancement import exp_per_level
 
         exp_needed = ((level + 1) * exp_per_level(ch)) - exp
-        lines.append(f"You need {exp_needed} exp to level.")
+        lines.append(t("You need {exp} exp to level.").format(exp=exp_needed))
 
     # Wimpy - ROM src/act_info.c:1548-1549 — printed UNCONDITIONALLY (even at 0).
     wimpy = getattr(ch, "wimpy", 0)
-    lines.append(f"Wimpy set to {wimpy} hit points.")
+    lines.append(t("Wimpy set to {wimpy} hit points.").format(wimpy=wimpy))
 
     # Conditions - ROM src/act_info.c:1551-1556 (before the position line)
     if not getattr(ch, "is_npc", False):
         # COND_DRUNK = 0, COND_FULL = 1, COND_THIRST = 2, COND_HUNGER = 3
         condition = getattr(ch, "condition", [0, 48, 48, 48])
         if len(condition) > 0 and condition[0] > 10:  # COND_DRUNK
-            lines.append("You are drunk.")
+            lines.append(t("You are drunk."))
         if len(condition) > 2 and condition[2] == 0:  # COND_THIRST
-            lines.append("You are thirsty.")
+            lines.append(t("You are thirsty."))
         if len(condition) > 3 and condition[3] == 0:  # COND_HUNGER
-            lines.append("You are hungry.")
+            lines.append(t("You are hungry."))
 
     # Position - ROM src/act_info.c:1558-1587 (before the AC block)
     position = ch.position
     try:
         pos_enum = Position(position)
-        lines.append(f"You are {pos_enum.name.lower()}.")
+        lines.append(t("You are {pos}.").format(pos=t(pos_enum.name.lower())))
     except ValueError:
-        lines.append("You are standing.")
+        lines.append(t("You are standing."))
 
     # Armor class - ROM displays individual ACs at level 25+ (src/act_info.c:1591-1650).
     # ROM uses GET_AC (src/merc.h:2104-2106) which adds dex_app[DEX].defensive when IS_AWAKE.
@@ -229,10 +237,11 @@ def do_score(ch: Character, args: str) -> str:
         ac_bash = get_ac(ch, 1)
         ac_slash = get_ac(ch, 2)
         ac_magic = get_ac(ch, 3)
-        lines.append(f"Armor: pierce: {ac_pierce}  bash: {ac_bash}  slash: {ac_slash}  magic: {ac_magic}")
+        lines.append(t("Armor: pierce: {p}  bash: {b}  slash: {s}  magic: {m}").format(
+            p=ac_pierce, b=ac_bash, s=ac_slash, m=ac_magic))
     for ac_type, damage_name in enumerate(("piercing", "bashing", "slashing", "magic")):
-        lines.append(f"You are {_armor_class_description(get_ac(ch, ac_type), damage_name)}")
-
+        ac_desc = _armor_class_description(get_ac(ch, ac_type), damage_name)
+        lines.append(t(f"You are {ac_desc}"))
     # Immortal info - ROM src/act_info.c:1654-1675
     from mud.models.constants import LEVEL_IMMORTAL, PlayerFlag
 
@@ -240,15 +249,15 @@ def do_score(ch: Character, args: str) -> str:
         imm_parts = []
         act_flags = getattr(ch, "act", 0)
         if act_flags & PlayerFlag.HOLYLIGHT:
-            imm_parts.append("Holy Light: on")
+            imm_parts.append(t("Holy Light: on"))
         else:
-            imm_parts.append("Holy Light: off")
+            imm_parts.append(t("Holy Light: off"))
         invis_level = getattr(ch, "invis_level", 0)
         if invis_level:
-            imm_parts.append(f"Invisible: level {invis_level}")
+            imm_parts.append(t("Invisible: level {level}").format(level=invis_level))
         incog_level = getattr(ch, "incog_level", 0)
         if incog_level:
-            imm_parts.append(f"Incognito: level {incog_level}")
+            imm_parts.append(t("Incognito: level {level}").format(level=incog_level))
         if imm_parts:
             lines.append("  ".join(imm_parts))
 
@@ -256,16 +265,19 @@ def do_score(ch: Character, args: str) -> str:
     if level >= 15:
         hitroll = getattr(ch, "hitroll", 0)
         damroll = getattr(ch, "damroll", 0)
-        lines.append(f"Hitroll: {hitroll}  Damroll: {damroll}")
+        lines.append(t("Hitroll: {hr}  Damroll: {dr}").format(hr=hitroll, dr=damroll))
 
     # Alignment - ROM src/act_info.c:1684-1708 (LAST line). At level 10+ ROM
     # prefixes "Alignment: %d.  " (no newline) then always prints "You are <desc>."
     alignment = getattr(ch, "alignment", 0)
     alignment_desc = _get_alignment_description(alignment)
+    # Strip trailing period for translation, template adds it back
+    desc_key = alignment_desc.rstrip(".")
     if level >= 10:
-        lines.append(f"Alignment: {alignment}.  You are {alignment_desc}")
+        lines.append(t("Alignment: {align}.  You are {desc}.").format(
+            align=alignment, desc=t(desc_key)))
     else:
-        lines.append(f"You are {alignment_desc}")
+        lines.append(t("You are {desc}.").format(desc=t(desc_key)))
 
     result = "\n".join(lines)
 
@@ -283,7 +295,10 @@ def do_score(ch: Character, args: str) -> str:
 
 
 def _armor_class_description(ac: int, damage_name: str) -> str:
-    """Convert armor class to ROM score wording."""
+    """Convert armor class to ROM score wording.
+
+    Returns a translatable key that can be looked up via t().
+    """
     if ac >= 101:
         return f"hopelessly vulnerable to {damage_name}."
     if ac >= 80:
@@ -315,24 +330,26 @@ def _get_alignment_description(alignment: int) -> str:
 
     ROM Reference: src/act_info.c lines 1690-1708
     """
+    from mud.i18n import t
+
     if alignment > 900:
-        return "angelic."
+        return t("angelic.")
     elif alignment > 700:
-        return "saintly."
+        return t("saintly.")
     elif alignment > 350:
-        return "good."
+        return t("good.")
     elif alignment > 100:
-        return "kind."
+        return t("kind.")
     elif alignment > -100:
-        return "neutral."
+        return t("neutral.")
     elif alignment > -350:
-        return "mean."
+        return t("mean.")
     elif alignment > -700:
-        return "evil."
+        return t("evil.")
     elif alignment > -900:
-        return "demonic."
+        return t("demonic.")
     else:
-        return "satanic."
+        return t("satanic.")
 
 
 def do_recall(ch: Character, args: str) -> str:

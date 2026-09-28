@@ -61,6 +61,9 @@ _ENGLISH_RE = re.compile(r"[A-Za-z]{2,}")
 _RE_CODE_FRAGMENT = re.compile(
     r'(?:^|[\s.])join\s*\(|\.split\s*\(|\.format\s*\(|\{[\w.]+:[\w]+\}|^\{\{'
 )
+# Lines containing these patterns already have translation calls — the regex
+# extractor sometimes captures the surrounding expression as a "string".
+_RE_ALREADY_TRANSLATED = re.compile(r'(?:_t|translate_\w+)\s*\(')
 _SKIP_PREFIXES = (
     "mirroring", "ROM ", "TODO", "FIXME", "HACK", "NOTE",
     "INV-", "LOOK-", "BUY-", "TRAIN-", "INTERP-", "PARALLEL-",
@@ -86,6 +89,8 @@ def _is_player_facing(s: str) -> bool:
     if re.search(r"[\u4e00-\u9fff]", s):
         return False
     if _RE_CODE_FRAGMENT.search(s):
+        return False
+    if _RE_ALREADY_TRANSLATED.search(s):
         return False
     # Filter regex artefacts from apostrophe-split contractions
     last_word = s.rsplit(None, 1)[-1] if " " in s else s

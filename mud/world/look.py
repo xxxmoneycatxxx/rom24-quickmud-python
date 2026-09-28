@@ -88,43 +88,44 @@ def _char_tags(observer: Character, victim) -> str:
     alignment; KILLER/THIEF are PC-only PLR flags. Tags live here (the room
     listing), not in PERS/``describe_character`` — see ``pers`` docstring.
     """
+    from mud.i18n import t as _t
     tags: list[str] = []
     has_affect = getattr(victim, "has_affect", None)
 
     if int(getattr(victim, "comm", 0) or 0) & int(CommFlag.AFK):
-        tags.append("[AFK]")
+        tags.append(_t("[AFK]"))
     if callable(has_affect):
         if victim.has_affect(AffectFlag.INVISIBLE):
-            tags.append("(Invis)")
+            tags.append(_t("(Invis)"))
     if int(getattr(victim, "invis_level", 0) or 0) >= LEVEL_HERO:
-        tags.append("(Wizi)")
+        tags.append(_t("(Wizi)"))
     if callable(has_affect):
         if victim.has_affect(AffectFlag.HIDE):
-            tags.append("(Hide)")
+            tags.append(_t("(Hide)"))
         if victim.has_affect(AffectFlag.CHARM):
-            tags.append("(Charmed)")
+            tags.append(_t("(Charmed)"))
         if victim.has_affect(AffectFlag.PASS_DOOR):
-            tags.append("(Translucent)")
+            tags.append(_t("(Translucent)"))
         if victim.has_affect(AffectFlag.FAERIE_FIRE):
-            tags.append("(Pink Aura)")
+            tags.append(_t("(Pink Aura)"))
 
     victim_align = int(getattr(victim, "alignment", 0) or 0)
     obs_has_affect = getattr(observer, "has_affect", None)
     # ROM IS_EVIL: alignment <= -350; IS_GOOD: alignment >= 350.
     if victim_align <= -350 and callable(obs_has_affect) and observer.has_affect(AffectFlag.DETECT_EVIL):
-        tags.append("(Red Aura)")
+        tags.append(_t("(Red Aura)"))
     if victim_align >= 350 and callable(obs_has_affect) and observer.has_affect(AffectFlag.DETECT_GOOD):
-        tags.append("(Golden Aura)")
+        tags.append(_t("(Golden Aura)"))
 
     if callable(has_affect) and victim.has_affect(AffectFlag.SANCTUARY):
-        tags.append("(White Aura)")
+        tags.append(_t("(White Aura)"))
 
     if not getattr(victim, "is_npc", False):
         victim_act = int(getattr(victim, "act", 0) or 0)
         if victim_act & int(PlayerFlag.KILLER):
-            tags.append("(KILLER)")
+            tags.append(_t("(KILLER)"))
         if victim_act & int(PlayerFlag.THIEF):
-            tags.append("(THIEF)")
+            tags.append(_t("(THIEF)"))
 
     return (" ".join(tags) + " ") if tags else ""
 
@@ -312,8 +313,26 @@ def look(char: Character, args: str = "") -> str:
     # Check extra descriptions in room
     for ed in getattr(room, "extra_descr", []):
         keyword, description = _ed_fields(ed)
-        if keyword and args.lower() in keyword.lower().split():
-            return description or "You see nothing special."
+        if not keyword:
+            continue
+        # Check both English keyword and translated keyword
+        keywords_to_check = keyword.lower().split()
+        from mud.i18n import is_translated, t as _t, translate_room_extra
+        if is_translated():
+            translated_keyword = _t(keyword).lower()
+            if translated_keyword != keyword.lower():
+                keywords_to_check.append(translated_keyword)
+        # Check if player's input matches any keyword variant
+        if args.lower() in keywords_to_check:
+            if not description:
+                return _t("You see nothing special.")
+            # Try to translate extra description by room vnum + keyword
+            if is_translated():
+                room_vnum = getattr(room, "vnum", 0)
+                translated = translate_room_extra(room_vnum, keyword, description)
+                if translated != description:
+                    return translated
+            return description
 
     return "You do not see that here."
 
@@ -351,9 +370,22 @@ def _look_room(char: Character, room) -> str:
     if not (comm_flags & CommFlag.BRIEF):
         room_desc = room.description or ""
         # Translate room description if i18n is active
-        from mud.i18n import translate_room
+        from mud.i18n import is_translated, translate_room
         room_desc = translate_room(vnum, "description", room_desc)
         lines.append(room_desc)
+        # Show available extra descriptions hint in translated mode
+        if is_translated():
+            extra_keywords = []
+            for ed in getattr(room, "extra_descr", []):
+                keyword, _ = _ed_fields(ed)
+                if keyword:
+                    # Show bilingual format: 中文(english)
+                    from mud.i18n import t as _t
+                    extra_keywords.append(f"{_t(keyword)}({keyword})")
+            if extra_keywords:
+                from mud.i18n import t as _t
+                hint = _t("[可查看：{keywords}]").format(keywords=", ".join(extra_keywords))
+                lines.append(hint)
 
     # Objects in room — ROM src/act_info.c:1106
     # show_list_to_char(ch->in_room->contents, ch, FALSE, FALSE)
@@ -422,8 +454,9 @@ def _look_char(char: Character, victim: Character) -> str:
         # (him/her/it), NOT the name/short_descr (LOOK-009). A sexless char — and
         # any self-look on one — renders "it".
         from mud.utils.act import act_format
+        from mud.i18n import t as _t
 
-        lines.append(act_format("You see nothing special about $M.", recipient=char, actor=char, arg2=victim))
+        lines.append(act_format(_t("You see nothing special about $M."), recipient=char, actor=char, arg2=victim))
 
     # Show health condition - ROM health_str equivalent
     max_hit = getattr(victim, "max_hit", 100) or 100
@@ -561,8 +594,9 @@ def _look_obj(char: Character, obj, keyword: str = "") -> str:
     desc = getattr(obj, "description", None)
     if desc:
         return desc
+    from mud.i18n import t as _t
     short = getattr(obj, "short_descr", None) or getattr(obj, "name", "something")
-    return f"You see nothing special about {short}."
+    return _t(f"You see nothing special about {short}.")
 
 
 def _look_in(char: Character, args: str) -> str:

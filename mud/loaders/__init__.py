@@ -24,7 +24,8 @@ def load_all_areas(list_path: str = "area/area.lst", use_json: bool = True):
 
     if use_json:
         # Load from JSON files (modern, with resets)
-        load_all_areas_from_json("data/areas")
+        # Pass list_path so JSON load order matches area.lst (ROM parity).
+        load_all_areas_from_json("data/areas", list_path)
         return
 
     # Legacy: Load from .are files

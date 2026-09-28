@@ -210,7 +210,7 @@ COMMANDS: list[Command] = [
     Command(
         "north",
         do_north,
-        aliases=("n",),
+        aliases=("n", "\u5317"),
         min_position=Position.STANDING,
         log_level=LogLevel.NEVER,
         show=False,
@@ -218,7 +218,7 @@ COMMANDS: list[Command] = [
     Command(
         "east",
         do_east,
-        aliases=("e",),
+        aliases=("e", "\u4e1c"),
         min_position=Position.STANDING,
         log_level=LogLevel.NEVER,
         show=False,
@@ -226,7 +226,7 @@ COMMANDS: list[Command] = [
     Command(
         "south",
         do_south,
-        aliases=("s",),
+        aliases=("s", "\u5357"),
         min_position=Position.STANDING,
         log_level=LogLevel.NEVER,
         show=False,
@@ -234,7 +234,7 @@ COMMANDS: list[Command] = [
     Command(
         "west",
         do_west,
-        aliases=("w",),
+        aliases=("w", "\u897f"),
         min_position=Position.STANDING,
         log_level=LogLevel.NEVER,
         show=False,
@@ -242,7 +242,7 @@ COMMANDS: list[Command] = [
     Command(
         "up",
         do_up,
-        aliases=("u",),
+        aliases=("u", "\u4e0a"),
         min_position=Position.STANDING,
         log_level=LogLevel.NEVER,
         show=False,
@@ -250,7 +250,7 @@ COMMANDS: list[Command] = [
     Command(
         "down",
         do_down,
-        aliases=("d",),
+        aliases=("d", "\u4e0b"),
         min_position=Position.STANDING,
         log_level=LogLevel.NEVER,
         show=False,
@@ -988,6 +988,11 @@ def _get_trust(char: Character) -> int:
 
 def resolve_command(name: str, *, trust: int | None = None) -> Command | None:
     name = name.lower()
+    # First check exact alias match (for non-prefix aliases like Chinese directions)
+    if name in COMMAND_INDEX:
+        cmd = COMMAND_INDEX[name]
+        if trust is None or trust >= cmd.min_trust:
+            return cmd
     # ROM has no exact-match shortcut (src/interp.c:442-453): interpret()
     # walks cmd_table linearly and the first row whose name starts with
     # the input AND whose level <= trust wins. An exact-name input is
