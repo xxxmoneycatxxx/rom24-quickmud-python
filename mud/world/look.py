@@ -497,6 +497,15 @@ def _look_char(char: Character, victim: Character) -> str:
     short = getattr(victim, "short_descr", None) or getattr(victim, "name", "Someone")
     # i18n: translate health condition templates via t() at lookup time.
     from mud.i18n import is_translated, t
+    # Bilingual: append English keywords for NPCs so players know what to type
+    if is_translated() and getattr(victim, "is_npc", False):
+        _en_name = getattr(victim, "name", "") or ""
+        if _en_name:
+            _keywords = _en_name.lower()
+            for article in ("the ", "a ", "an "):
+                if _keywords.startswith(article):
+                    _keywords = _keywords[len(article):]
+            short = f"{short}({_keywords})"
     _CONDITION_TEMPLATES = [
         (100, " is in excellent condition."),
         (90, " has a few scratches."),
