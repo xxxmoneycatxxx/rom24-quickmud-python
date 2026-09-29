@@ -37,6 +37,24 @@ class WebSocketStream:
         self._in_game = True
         self._character = character
         self._session_state = "game"
+        # Schedule command list delivery for client-side tab completion.
+        try:
+            import asyncio
+            asyncio.create_task(self._send_command_list())
+        except RuntimeError:
+            pass  # No running loop — commands won't be available
+
+    async def _send_command_list(self) -> None:
+        """Send available commands to the client for tab completion."""
+        if self._character is None or self._closed:
+            return
+        from mud.commands.dispatcher import get_available_commands, _get_trust
+        trust = _get_trust(self._character)
+        commands = get_available_commands(trust)
+        try:
+            await self.websocket.send_json({"type": "commands", "commands": commands})
+        except (WebSocketDisconnect, RuntimeError):
+            self._closed = True
 
     def _infer_session_state(self, prompt: str) -> str:
         lowered = prompt.strip().lower()

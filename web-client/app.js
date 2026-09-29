@@ -98,6 +98,12 @@
     let historyIndex    = -1;   // -1 = not browsing history
     let promptShown     = false; // true when a prompt line is on the last terminal row
 
+    // ── Tab completion state ──────────────────────────────────────────────
+    var commandList     = [];    // available commands from server
+    var tabMatches      = [];    // current completion candidates
+    var tabCycleIndex   = -1;    // position in tabMatches cycle
+    var tabPrefix       = "";   // original prefix being completed
+
     // ── UI helpers ────────────────────────────────────────────────────────
     function setStatus(state, label) {
         statusEl.className = state;
@@ -222,6 +228,13 @@
                     ? "输入密码后回车…"
                     : "输入命令后回车…";
                 focusInput();
+                break;
+
+            case "commands":
+                // Server sends available command list for tab completion.
+                if (Array.isArray(msg.commands)) {
+                    commandList = msg.commands;
+                }
                 break;
 
             default:
@@ -547,6 +560,69 @@
     btnSend.addEventListener("click", function () { sendInput(); });
 
     quickInput.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            sendInput();
+            return;
+        }
+
+        // Tab – command completion.
+        if (e.key === "Tab") {
+            e.preventDefault();
+            if (commandList.length === 0) return;
+
+            var val = quickInput.value;
+            // Only complete the first word (command position).
+            var spaceIdx = val.indexOf(" ");
+            var prefix, isCommandWord;
+            if (spaceIdx === -1) {
+                prefix = val.toLowerCase();
+                isCommandWord = true;
+            } else {
+                // After a space, no completion for now.
+                return;
+            }
+
+            // If prefix changed since last Tab, recompute matches.
+            if (prefix !== tabPrefix) {
+                tabPrefix = prefix;
+                tabMatches = [];
+                tabCycleIndex = -1;
+                if (prefix.length > 0) {
+                    for (var i = 0; i < commandList.length; i++) {
+                        if (commandList[i].toLowerCase().indexOf(prefix) === 0) {
+                            tabMatches.push(commandList[i]);
+                        }
+                    }
+                }
+            }
+
+            if (tabMatches.length === 0) return;
+
+            if (tabMatches.length === 1) {
+                // Single match – auto-complete with trailing space.
+                quickInput.value = tabMatches[0] + " ";
+                tabPrefix = "";
+                tabMatches = [];
+                tabCycleIndex = -1;
+            } else {
+                // Multiple matches – cycle through them.
+                tabCycleIndex = (tabCycleIndex + 1) % tabMatches.length;
+                quickInput.value = tabMatches[tabCycleIndex];
+                // Show all options on first cycle.
+                if (tabCycleIndex === 0) {
+                    termWriteLine("\x1b[36m" + tabMatches.join("  ") + "\x1b[0m");
+                    term.scrollToBottom();
+                }
+            }
+            return;
+        }
+
+        // Any non-Tab key resets completion state.
+        tabPrefix = "";
+        tabMatches = [];
+        tabCycleIndex = -1;
+
         if (e.key === "Enter") {
             e.preventDefault();
             sendInput();

@@ -986,6 +986,23 @@ def _get_trust(char: Character) -> int:
     return level
 
 
+def get_available_commands(trust: int) -> list[str]:
+    """Return sorted list of all command names/aliases available at *trust*.
+
+    Used by the WebSocket layer to send the client a command list for
+    local tab-completion.  Includes hidden commands (show=False) and
+    aliases because the client needs every valid input prefix.
+    """
+    names: set[str] = set()
+    for cmd in COMMANDS:
+        if cmd.min_trust > trust:
+            continue
+        names.add(cmd.name)
+        for alias in cmd.aliases:
+            names.add(alias)
+    return sorted(names)
+
+
 def resolve_command(name: str, *, trust: int | None = None) -> Command | None:
     name = name.lower()
     # First check exact alias match (for non-prefix aliases like Chinese directions)
