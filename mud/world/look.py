@@ -373,19 +373,24 @@ def _look_room(char: Character, room) -> str:
         from mud.i18n import is_translated, translate_room
         room_desc = translate_room(vnum, "description", room_desc)
         lines.append(room_desc)
-        # Show available extra descriptions hint in translated mode
-        if is_translated():
-            extra_keywords = []
-            for ed in getattr(room, "extra_descr", []):
-                keyword, _ = _ed_fields(ed)
-                if keyword:
-                    # Show bilingual format: 中文(english)
-                    from mud.i18n import t as _t
+        # Show available extra descriptions hint (UX enhancement — all languages)
+        extra_keywords = []
+        for ed in getattr(room, "extra_descr", []):
+            keyword, _ = _ed_fields(ed)
+            if keyword:
+                from mud.i18n import is_translated, t as _t
+                if is_translated():
+                    # Bilingual format in Chinese mode: 中文(english)
                     extra_keywords.append(f"{_t(keyword)}({keyword})")
-            if extra_keywords:
-                from mud.i18n import t as _t
+                else:
+                    extra_keywords.append(keyword)
+        if extra_keywords:
+            from mud.i18n import is_translated, t as _t
+            if is_translated():
                 hint = _t("[可查看：{keywords}]").format(keywords=", ".join(extra_keywords))
-                lines.append(hint)
+            else:
+                hint = f"[Examine: {', '.join(extra_keywords)}]"
+            lines.append(hint)
 
     # Objects in room — ROM src/act_info.c:1106
     # show_list_to_char(ch->in_room->contents, ch, FALSE, FALSE)

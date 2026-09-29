@@ -501,7 +501,8 @@ class Character:
     exp: int = 0
 
     # Flags
-    act: int = 0
+    # ROM default: PLR_NOSUMMON. We also enable AUTOEXIT by default (modern QoL).
+    act: int = int(PlayerFlag.NOSUMMON) | int(PlayerFlag.AUTOEXIT)
     affected_by: int = 0
 
     # Location
