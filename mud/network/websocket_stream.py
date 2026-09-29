@@ -100,6 +100,7 @@ class WebSocketStream:
         if self._in_game and self._character is not None:
             room = getattr(self._character, "room", None)
             payload["room"] = getattr(room, "vnum", None) if room is not None else None
+            payload["room_name"] = getattr(room, "name", None) if room is not None else None
             payload["hp"] = getattr(self._character, "hit", None)
             payload["sp"] = getattr(self._character, "move", None)
             payload["mana"] = getattr(self._character, "mana", None)
