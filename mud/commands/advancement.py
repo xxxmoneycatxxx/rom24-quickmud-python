@@ -113,8 +113,13 @@ def do_practice(char: Character, args: str) -> str:
             parts: list[str] = []
             column = 0
             for name, learned in known:
-                display_name = translate_skill_name(name) if is_translated() else name
-                parts.append(f"{display_name:<18} {learned:3d}%  ")
+                if is_translated():
+                    translated = translate_skill_name(name)
+                    # Show English(name) format so players know what to type
+                    display_name = f"{name}({translated})" if translated != name else name
+                else:
+                    display_name = name
+                parts.append(f"{display_name:<24} {learned:3d}%  ")
                 column += 1
                 if column % 3 == 0:
                     parts.append("\n")
@@ -181,7 +186,12 @@ def do_practice(char: Character, args: str) -> str:
 
     adept = char.skill_adept_cap()
     if current >= adept:
-        skill_display = translate_skill_name(skill.name) if is_translated() else skill.name
+        # Bilingual display: English(Chinese) so players know the command name
+        if is_translated():
+            translated = translate_skill_name(skill.name)
+            skill_display = f"{skill.name}({translated})" if translated != skill.name else skill.name
+        else:
+            skill_display = skill.name
         return t("You are already learned at {skill}.").format(skill=skill_display)
 
     gain_rate = char.get_int_learn_rate()
@@ -202,7 +212,12 @@ def do_practice(char: Character, args: str) -> str:
     # only. The connection read loop (mud/net/connection.py) sends a command's
     # return AND drains char.messages, so a mailbox append here would
     # double-deliver every practice line (the live "You practice X." x2 bug).
-    skill_display = translate_skill_name(skill.name) if is_translated() else skill.name
+    # Bilingual display: English(Chinese) so players know the command name
+    if is_translated():
+        translated = translate_skill_name(skill.name)
+        skill_display = f"{skill.name}({translated})" if translated != skill.name else skill.name
+    else:
+        skill_display = skill.name
     if new_value >= adept:
         char_msg = t("You are now learned at {skill}.").format(skill=skill_display)
         if char.room:
