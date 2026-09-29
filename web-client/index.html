@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QuickMUD Web Client</title>
+    <link rel="icon" type="image/svg+xml" href="/_static/favicon.svg" />
 
     <!-- xterm.js core (local vendor) -->
     <link rel="stylesheet" href="/_static/vendor/xterm.css" />
@@ -11,8 +12,6 @@
     <!-- xterm.js addons (local vendor) -->
     <script src="/_static/vendor/addon-web-links.js"></script>
     <script src="/_static/vendor/addon-unicode11.js"></script>
-    <script src="/_static/vendor/addon-fit.js"></script>
-    <script src="/_static/vendor/addon-webgl.js"></script>
 
     <link rel="stylesheet" href="/_static/style.css" />
 </head>
@@ -21,13 +20,19 @@
         <header id="topbar">
             <span id="title">QuickMUD</span>
             <span id="status" class="disconnected">未连接</span>
+            <span id="stats"></span>
             <div id="controls">
                 <button id="btn-connect">连接</button>
                 <button id="btn-disconnect" disabled>断开</button>
                 <button id="btn-reconnect" disabled>重连</button>
             </div>
         </header>
-        <div id="terminal-container"></div>
+        <div id="terminal-container">
+            <div id="minimap-panel">
+                <canvas id="minimap" width="150" height="150"></canvas>
+                <div id="minimap-label"></div>
+            </div>
+        </div>
         <footer id="bottombar">
             <input id="quick-input" type="text" placeholder="输入命令后回车…" autocomplete="off" spellcheck="false" autofocus />
             <button id="btn-send">发送</button>

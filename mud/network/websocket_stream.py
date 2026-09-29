@@ -101,6 +101,16 @@ class WebSocketStream:
             room = getattr(self._character, "room", None)
             payload["room"] = getattr(room, "vnum", None) if room is not None else None
             payload["hp"] = getattr(self._character, "hit", None)
+            payload["sp"] = getattr(self._character, "move", None)
+            payload["mana"] = getattr(self._character, "mana", None)
+            # Exits: list of direction names available from current room.
+            if room is not None:
+                _DIR_NAMES = ("north", "east", "south", "west", "up", "down")
+                exits = getattr(room, "exits", None)
+                if exits is not None:
+                    payload["exits"] = [
+                        _DIR_NAMES[i] for i, ex in enumerate(exits) if ex is not None
+                    ]
         try:
             await self.websocket.send_json(payload)
         except (WebSocketDisconnect, RuntimeError):

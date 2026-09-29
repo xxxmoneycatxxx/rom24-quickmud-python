@@ -88,6 +88,11 @@ if _WEB_CLIENT_DIR.is_dir():
     async def _serve_index() -> FileResponse:
         return FileResponse(_WEB_CLIENT_DIR / "index.html", media_type="text/html")
 
+    @app.get("/favicon.ico")
+    async def _serve_favicon() -> FileResponse:
+        favicon = _WEB_CLIENT_DIR / "favicon.svg"
+        return FileResponse(favicon, media_type="image/svg+xml")
+
     app.mount("/_static", StaticFiles(directory=str(_WEB_CLIENT_DIR)), name="web-client")
     print(f"\U0001f310 Web client served from {_WEB_CLIENT_DIR}")
 else:

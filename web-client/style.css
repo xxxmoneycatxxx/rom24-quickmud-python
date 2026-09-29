@@ -61,6 +61,18 @@ html, body {
 #status.connecting   { background: var(--connecting);  color: #1a1a2e; }
 #status.disconnected { background: var(--disconnected); color: #fff; }
 
+#stats {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: var(--fg-dim);
+    margin-left: 12px;
+    white-space: nowrap;
+}
+#stats .hp   { color: #e74c3c; }
+#stats .sp   { color: #f39c12; }
+#stats .mana { color: #3498db; }
+#stats .sep  { color: #444; margin: 0 6px; }
+
 #controls {
     margin-left: auto;
     display: flex;
@@ -87,6 +99,7 @@ html, body {
     padding: 8px;
     overflow: hidden;
     background: #000;
+    position: relative;
 }
 
 /* xterm.js overrides */
@@ -94,6 +107,38 @@ html, body {
 .xterm-viewport::-webkit-scrollbar { width: 8px; }
 .xterm-viewport::-webkit-scrollbar-track { background: #111; }
 .xterm-viewport::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+
+/* ── Minimap panel (floating, top-right) ─────────────── */
+
+#minimap-panel {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.75);
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 4px;
+    pointer-events: none;  /* don't block terminal clicks */
+    opacity: 0.9;
+}
+
+#minimap {
+    display: block;
+    image-rendering: pixelated;
+}
+
+#minimap-label {
+    text-align: center;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.7rem;
+    color: #888;
+    padding: 2px 0 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+}
 
 /* ── Bottom bar (primary input) ──────────────────────── */
 
