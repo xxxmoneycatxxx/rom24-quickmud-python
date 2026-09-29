@@ -151,13 +151,36 @@ def _room_occupant_line(observer: Character, victim) -> str:
     if getattr(victim, "is_npc", False) and long_descr and getattr(victim, "position", None) == ref_pos:
         # i18n: translate mob long_descr by prototype vnum.
         _ld = str(long_descr)
-        from mud.i18n import translate_mob as _i18n_mob
+        from mud.i18n import translate_mob as _i18n_mob, is_translated
         _proto_vnum = getattr(getattr(victim, "prototype", None), "vnum", 0) or 0
         if _proto_vnum:
             _ld = _i18n_mob(_proto_vnum, "long_descr", _ld)
+        # Bilingual: append English name keywords so players know what to type
+        if is_translated():
+            _en_name = getattr(victim, "name", "") or ""
+            if _en_name:
+                # Strip leading articles for cleaner display
+                _keywords = _en_name.lower()
+                for article in ("the ", "a ", "an "):
+                    if _keywords.startswith(article):
+                        _keywords = _keywords[len(article):]
+                _ld = f"{_ld.rstrip()} ({_keywords})"
         return prefix + _ld.rstrip("\r\n")
 
-    base = prefix + pers(victim, observer)
+    # For short_descr display, add bilingual format for NPCs
+    _pers_name = pers(victim, observer)
+    if getattr(victim, "is_npc", False):
+        from mud.i18n import is_translated
+        if is_translated():
+            _en_name = getattr(victim, "name", "") or ""
+            if _en_name:
+                # Strip leading articles for cleaner display
+                _keywords = _en_name.lower()
+                for article in ("the ", "a ", "an "):
+                    if _keywords.startswith(article):
+                        _keywords = _keywords[len(article):]
+                _pers_name = f"{_pers_name}({_keywords})"
+    base = prefix + _pers_name
     position = getattr(victim, "position", None)
     # LOOK-017: ROM src/act_info.c:285-288 appends the victim's pcdata->title
     # after PERS for a standing PC — gated on the OBSERVER's COMM_BRIEF and
