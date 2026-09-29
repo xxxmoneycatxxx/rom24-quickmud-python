@@ -60,9 +60,11 @@ if ($NoColor) {
 
 # ── 配置 ──────────────────────────────────────────────────────────
 $ContainerName = "quickmud-server"
+$WsContainerName = "quickmud-websocket"
 $ProjectName   = "quickmud"
 $BackupDir     = "./backups"
 $ServerPort    = 5001
+$WsPort        = 8000
 $MaxBackups    = 10   # 备份轮转保留数量
 
 # ── 别名规范化 ────────────────────────────────────────────────────
@@ -82,11 +84,13 @@ function _load_env_port {
             if ([string]::IsNullOrEmpty($line) -or $line.StartsWith("#")) { continue }
             if ($line -match '^\s*PORT\s*=\s*"?(\d+)"?\s*$') {
                 $script:ServerPort = [int]$Matches[1]
-                return
+            }
+            if ($line -match '^\s*WS_PORT\s*=\s*"?(\d+)"?\s*$') {
+                $script:WsPort = [int]$Matches[1]
             }
         }
     } catch {
-        Write-Warn ".env 解析失败，使用默认端口 $ServerPort"
+        Write-Warn ".env 解析失败，使用默认端口 (telnet=$ServerPort, ws=$WsPort)"
     }
 }
 _load_env_port
@@ -437,8 +441,9 @@ function Start-Server {
     if ($LASTEXITCODE -eq 0) {
         Write-Success "服务器已启动"
         if (_wait_healthy) {
-            Write-Info "Telnet: localhost:$ServerPort"
-            Write-Info "查看日志: .\manage.ps1 logs"
+            Write-Info "Telnet:      localhost:$ServerPort"
+            Write-Info "Web 客户端:  http://localhost:$WsPort"
+            Write-Info "查看日志:    .\manage.ps1 logs"
         } else {
             Write-Warn "服务器可能未正常启动，请检查日志"
             Write-Info "修复建议: .\manage.ps1 restart"
@@ -593,7 +598,7 @@ function Show-Version {
 function Show-Help {
     Write-Host @"
 
-QuickMUD Docker 管理脚本 (v2.0)
+QuickMUD Docker 管理脚本 (v2.1)
 
 用法: .\manage.ps1 <command> [options]
 
@@ -622,6 +627,10 @@ QuickMUD Docker 管理脚本 (v2.0)
 别名:
   start = up, stop = down, bash = shell
 
+端口配置 (.env):
+  PORT        Telnet 端口 (默认 5001)
+  WS_PORT     WebSocket/Web 客户端端口 (默认 8000)
+
 示例:
   .\manage.ps1 up               # 启动服务器
   .\manage.ps1 logs -f          # 实时查看日志
@@ -629,6 +638,11 @@ QuickMUD Docker 管理脚本 (v2.0)
   .\manage.ps1 update           # 自动备份并更新
   .\manage.ps1 test -- -k login # 运行指定测试
   .\manage.ps1 -NoColor status  # 无彩色输出
+
+连接方式:
+  Telnet:       telnet localhost:<PORT>
+  Web 客户端:   http://localhost:<WS_PORT>
+  SSH:          ssh -p 2222 player@localhost
 
 "@
 }

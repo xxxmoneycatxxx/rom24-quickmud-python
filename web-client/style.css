@@ -1,0 +1,156 @@
+/* QuickMUD Web Client – terminal theme */
+
+:root {
+    --bg:          #1a1a2e;
+    --bg-header:   #16213e;
+    --bg-footer:   #16213e;
+    --fg:          #e0e0e0;
+    --fg-dim:      #888;
+    --accent:      #0f3460;
+    --accent-hover:#1a5276;
+    --border:      #0f3460;
+    --connected:   #2ecc71;
+    --connecting:  #f39c12;
+    --disconnected:#e74c3c;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    overflow: hidden;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* ── Top bar ─────────────────────────────────────────── */
+
+#topbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    background: var(--bg-header);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+#title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #e94560;
+}
+
+#status {
+    font-size: 0.8rem;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+#status.connected    { background: var(--connected);   color: #fff; }
+#status.connecting   { background: var(--connecting);  color: #1a1a2e; }
+#status.disconnected { background: var(--disconnected); color: #fff; }
+
+#controls {
+    margin-left: auto;
+    display: flex;
+    gap: 6px;
+}
+
+#controls button {
+    padding: 4px 14px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--accent);
+    color: var(--fg);
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background 0.15s;
+}
+#controls button:hover:not(:disabled) { background: var(--accent-hover); }
+#controls button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Terminal container ──────────────────────────────── */
+
+#terminal-container {
+    flex: 1;
+    padding: 8px;
+    overflow: hidden;
+    background: #000;
+}
+
+/* xterm.js overrides */
+.xterm                   { height: 100%; }
+.xterm-viewport::-webkit-scrollbar { width: 8px; }
+.xterm-viewport::-webkit-scrollbar-track { background: #111; }
+.xterm-viewport::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+
+/* ── Bottom bar (primary input) ──────────────────────── */
+
+#bottombar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--bg-footer);
+    border-top: 2px solid var(--accent);
+    flex-shrink: 0;
+}
+
+#bottombar::before {
+    content: '>';
+    color: var(--connected);
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+#quick-input {
+    flex: 1;
+    padding: 8px 14px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    background: #0d1117;
+    color: var(--fg);
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+#quick-input:focus {
+    border-color: var(--connected);
+    box-shadow: 0 0 8px rgba(46, 204, 113, 0.25);
+}
+#quick-input::placeholder { color: var(--fg-dim); }
+
+#btn-send {
+    padding: 8px 20px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--accent);
+    color: var(--fg);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.15s;
+}
+#btn-send:hover { background: var(--accent-hover); }
+
+/* ── Responsive ──────────────────────────────────────── */
+
+@media (max-width: 600px) {
+    #topbar   { padding: 6px 10px; gap: 8px; }
+    #title    { font-size: 0.95rem; }
+    #controls button { padding: 4px 8px; font-size: 0.75rem; }
+    #bottombar { padding: 6px 10px; }
+}

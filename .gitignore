@@ -52,3 +52,7 @@ src/diffshim
 src/**/*.diffo
 src/**/*.o
 src/diff_shim/area/
+
+# Web client npm artifacts (re-run npm install to regenerate)
+web-client/node_modules/
+web-client/package-lock.json

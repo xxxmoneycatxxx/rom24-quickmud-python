@@ -2,10 +2,13 @@ from __future__ import annotations
 
 import asyncio
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 import uvicorn
 from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
 from mud.config import CORS_ORIGINS, HOST, PORT, load_qmconfig
 from mud.db.migrations import run_migrations
@@ -15,6 +18,10 @@ from mud.security import bans
 from mud.world.world_state import initialize_world
 
 from .websocket_stream import WebSocketStream
+
+# Resolve web-client static directory relative to project root.
+# websocket_server.py lives in mud/network/; project root is three levels up.
+_WEB_CLIENT_DIR = Path(__file__).resolve().parent.parent.parent / "web-client"
 
 _game_task = None
 
@@ -70,6 +77,21 @@ async def websocket_endpoint(websocket: WebSocket):
         host_for_ban=stream.peer_host,
         connection_type="WebSocket",
     )
+
+
+# ── Static web-client files ───────────────────────────────────────────────
+# Mounted at module level so the routes exist before uvicorn imports the app.
+# The /ws WebSocket route above is registered first and takes priority.
+if _WEB_CLIENT_DIR.is_dir():
+
+    @app.get("/")
+    async def _serve_index() -> FileResponse:
+        return FileResponse(_WEB_CLIENT_DIR / "index.html", media_type="text/html")
+
+    app.mount("/_static", StaticFiles(directory=str(_WEB_CLIENT_DIR)), name="web-client")
+    print(f"\U0001f310 Web client served from {_WEB_CLIENT_DIR}")
+else:
+    print(f"\u26a0\ufe0f  Web client directory not found: {_WEB_CLIENT_DIR}")
 
 
 def run(host: str = HOST, port: int = PORT) -> None:

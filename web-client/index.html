@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QuickMUD Web Client</title>
+
+    <!-- xterm.js core (local vendor) -->
+    <link rel="stylesheet" href="/_static/vendor/xterm.css" />
+    <script src="/_static/vendor/xterm.js"></script>
+    <!-- xterm.js addons (local vendor) -->
+    <script src="/_static/vendor/addon-web-links.js"></script>
+    <script src="/_static/vendor/addon-unicode11.js"></script>
+    <script src="/_static/vendor/addon-fit.js"></script>
+    <script src="/_static/vendor/addon-webgl.js"></script>
+
+    <link rel="stylesheet" href="/_static/style.css" />
+</head>
+<body>
+    <div id="app">
+        <header id="topbar">
+            <span id="title">QuickMUD</span>
+            <span id="status" class="disconnected">未连接</span>
+            <div id="controls">
+                <button id="btn-connect">连接</button>
+                <button id="btn-disconnect" disabled>断开</button>
+                <button id="btn-reconnect" disabled>重连</button>
+            </div>
+        </header>
+        <div id="terminal-container"></div>
+        <footer id="bottombar">
+            <input id="quick-input" type="text" placeholder="输入命令后回车…" autocomplete="off" spellcheck="false" autofocus />
+            <button id="btn-send">发送</button>
+        </footer>
+    </div>
+    <script src="/_static/app.js"></script>
+</body>
+</html>
