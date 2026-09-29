@@ -378,16 +378,26 @@ def translate_skill(message: str) -> str:
 def translate_skill_name(name: str) -> str:
     """Translate a skill/spell name.
 
-    The ``skills.names`` section maps English skill/spell names to
-    their translations. Returns the original name if no translation
-    is available.
+    Lookup order:
+    1. ``skills.names.<name>`` — dedicated name-translation sub-section.
+    2. ``skills.<name>`` — top-level skill entries (legacy / flat layout).
+
+    Returns *name* unchanged if no translation is available.
     """
     if not is_translated():
         return name
     _ensure_loaded()
     skills = _table.get("skills", {})
+    # Prefer dedicated names sub-section, fall back to top-level skill entries
     names = skills.get("names", {})
-    return names.get(name, name)
+    if name in names:
+        return names[name]
+    # Top-level skills section (exclude meta keys like "messages", "names")
+    if name in skills and name not in ("messages", "names"):
+        val = skills[name]
+        if isinstance(val, str):
+            return val
+    return name
 
 
 def translate_shop(message: str) -> str:

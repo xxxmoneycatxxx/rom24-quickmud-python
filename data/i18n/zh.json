@@ -1312,7 +1312,18 @@
     "demonic.": "恶魔般的。",
     "satanic.": "撒旦般的。",
     "You see nothing special.": "你没看到什么特别的。",
-    "You see nothing special about $M.": "你觉得 $M 没什么特别的。"
+    "You see nothing special about $M.": "你觉得 $M 没什么特别的。",
+    "You have {count} training sessions.": "你有 {count} 次训练机会。",
+    "You can train:": "你可以训练：",
+    "Your {stat} increases!": "你的{stat}提升了！",
+    "Your {stat} is already at maximum.": "你的{stat}已经是最大值了。",
+    "You have nothing left to train, you big stud!": "你已经没什么可以训练了，大块头！",
+    "You have nothing left to train, you hot babe!": "你已经没什么可以训练了，辣妹！",
+    "You have nothing left to train, you wild thing!": "你已经没什么可以训练了，狂野的家伙！",
+    "You have {count} practice sessions left.": "你还有 {count} 次练习机会。",
+    "You practice {skill}.": "你练习了{skill}。",
+    "You are now learned at {skill}.": "你现在已经精通了{skill}。",
+    "You are already learned at {skill}.": "你已经精通{skill}了。"
   },
   "templates": {
     "$n is already dead.": "$n 已经死了。",
@@ -4846,7 +4857,7 @@
         "name": "祖姆的公会房间",
         "description": "你在一个堆满武器、书籍和许多战斗假人的房间里，有些被砍刺了很多次，有些被烧焦了。房间里充满了汗水和魔法的气息。墙上有个牌子。\n",
         "extras": {
-          "sign": "欢迎来到 Zump 公会。这里你可以学习技能和法术。\n要查看可学技能，输入 'PRACTICE'。\n要学习技能，输入 'LEARN <技能>'。\n"
+          "sign": "欢迎来到 Zump 公会。这里你可以学习技能和法术。\n要查看可学技能，输入 'PRACTICE'。\n要学习技能，输入 'PRACTICE <技能>'。\n"
         }
       },
       "3760": {

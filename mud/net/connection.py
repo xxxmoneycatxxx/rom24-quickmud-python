@@ -2574,4 +2574,8 @@ async def handle_connection(reader: asyncio.StreamReader, writer: asyncio.Stream
             pass  # socket already dead — expected during cleanup
         _unregister_descriptor(conn)
 
-        print(f"[DISCONNECT] {addr} as {session.name if session else 'unknown'}")
+        # Only log disconnect for connections that completed login.
+        # Health checks and port probes never set session/username — skip them
+        # to avoid log spam (Docker health checks fire every 60s).
+        if session is not None or username:
+            print(f"[DISCONNECT] {addr} as {session.name if session else 'unknown'}")

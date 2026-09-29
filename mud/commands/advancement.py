@@ -67,6 +67,7 @@ def _rating_for_class(skill, ch_class: int) -> int:
 
 def do_practice(char: Character, args: str) -> str:
     """ROM-aligned practice command with trainer, rating, and INT scaling."""
+    from mud.i18n import t, is_translated, translate_skill_name
 
     args = (args or "").strip()
     if char.is_npc:
@@ -112,17 +113,18 @@ def do_practice(char: Character, args: str) -> str:
             parts: list[str] = []
             column = 0
             for name, learned in known:
-                parts.append(f"{name:<18} {learned:3d}%  ")
+                display_name = translate_skill_name(name) if is_translated() else name
+                parts.append(f"{display_name:<18} {learned:3d}%  ")
                 column += 1
                 if column % 3 == 0:
                     parts.append("\n")
             if column % 3 != 0:
                 parts.append("\n")
-            parts.append(f"You have {char.practice} practice sessions left.\n")
+            parts.append(t("You have {count} practice sessions left.").format(count=char.practice) + "\n")
             return "".join(parts)
-        return f"You have {char.practice} practice sessions left.\n"
+        return t("You have {count} practice sessions left.").format(count=char.practice) + "\n"
     if not char.is_awake():
-        return "In your dreams, or what?"
+        return t("In your dreams, or what?")
 
     # PRACTICE-001: ROM src/act_info.c — the ACT_PRACTICE trainer-presence gate
     # ("You can't do that here.") fires BEFORE the practice-count and spell-validity
@@ -130,14 +132,14 @@ def do_practice(char: Character, args: str) -> str:
     # have 0 practices or named an invalid skill.
     trainer = _find_practice_trainer(char)
     if trainer is None and getattr(char, "room", None) is not None:
-        return "You can't do that here."
+        return t("You can't do that here.")
 
     if char.practice <= 0:
-        return "You have no practice sessions left."
+        return t("You have no practice sessions left.")
 
     skill = skill_registry.find_spell(char, args)
     if skill is None:
-        return "You can't practice that."
+        return t("You can't practice that.")
 
     lookup_keys = [skill.name, skill.name.lower()]
     if args:
@@ -145,11 +147,11 @@ def do_practice(char: Character, args: str) -> str:
 
     skill_key = next((key for key in lookup_keys if key in char.skills), None)
     if skill_key is None:
-        return "You can't practice that."
+        return t("You can't practice that.")
 
     current = char.skills.get(skill_key)
     if current is None:
-        return "You can't practice that."
+        return t("You can't practice that.")
 
     levels = getattr(skill, "levels", None)
     required_level = None
@@ -164,22 +166,23 @@ def do_practice(char: Character, args: str) -> str:
             required_level = None
     if required_level is not None:
         if required_level >= LEVEL_IMMORTAL:
-            return "You can't practice that."
+            return t("You can't practice that.")
         # PRACTICE-002: ROM src/act_info.c:2744-2757 gates on
         # `ch->level < skill_table[sn].skill_level[class]` UNCONDITIONALLY (part of
         # the "You can't practice that." OR) — a below-level character cannot
         # practice a skill even when it is already known at >=1%. The old
         # `current <= 0 and` qualifier let a known-but-too-high skill be practiced.
         if char.level < required_level:
-            return "You can't practice that."
+            return t("You can't practice that.")
 
     rating = _rating_for_class(skill, char.ch_class)
     if rating <= 0:
-        return "You can't practice that."
+        return t("You can't practice that.")
 
     adept = char.skill_adept_cap()
     if current >= adept:
-        return f"You are already learned at {skill.name}."
+        skill_display = translate_skill_name(skill.name) if is_translated() else skill.name
+        return t("You are already learned at {skill}.").format(skill=skill_display)
 
     gain_rate = char.get_int_learn_rate()
     # mirrors ROM src/act_info.c:2772-2774 — raw `int_app[INT].learn / rating`
@@ -199,12 +202,13 @@ def do_practice(char: Character, args: str) -> str:
     # only. The connection read loop (mud/net/connection.py) sends a command's
     # return AND drains char.messages, so a mailbox append here would
     # double-deliver every practice line (the live "You practice X." x2 bug).
+    skill_display = translate_skill_name(skill.name) if is_translated() else skill.name
     if new_value >= adept:
-        char_msg = f"You are now learned at {skill.name}."
+        char_msg = t("You are now learned at {skill}.").format(skill=skill_display)
         if char.room:
             act_to_room(char.room, f"$n is now learned at {skill.name}.", char, exclude=char)  # ROM act_info.c:2787
     else:
-        char_msg = f"You practice {skill.name}."
+        char_msg = t("You practice {skill}.").format(skill=skill_display)
         if char.room:
             act_to_room(char.room, f"$n practices {skill.name}.", char, exclude=char)  # ROM act_info.c:2779
 
@@ -263,6 +267,8 @@ def do_train(char: Character, args: str) -> str:
 
     ROM Reference: src/act_move.c lines 1632-1799 (do_train)
     """
+    from mud.i18n import t, is_translated
+
     # NPCs can't train (ROM C lines 1640-1641)
     if char.is_npc:
         return ""
@@ -271,7 +277,7 @@ def do_train(char: Character, args: str) -> str:
     # present in the room, else "You can't do that here." This gate precedes
     # both the no-arg session display and any stat/resource handling. TRAIN-003.
     if _find_trainer(char) is None:
-        return "You can't do that here."
+        return t("You can't do that here.")
 
     # No argument: show training sessions (ROM C lines 1658-1663). ROM prints
     # the session count, then sets `argument = "foo"` and FALLS THROUGH — "foo"
@@ -281,7 +287,7 @@ def do_train(char: Character, args: str) -> str:
     # TRAIN-005.
     session_prefix = ""
     if not args:
-        session_prefix = f"You have {char.train} training sessions.\n"
+        session_prefix = t("You have {count} training sessions.").format(count=char.train) + "\n"
         args = "foo"
 
     args_lower = args.lower()
@@ -317,7 +323,7 @@ def do_train(char: Character, args: str) -> str:
         cost = 1
     else:
         # Show available training options (ROM C lines 1713-1745)
-        options = ["You can train:"]
+        options = [t("You can train:")]
 
         # Check which stats can be trained (ROM C src/act_move.c:1716-1725).
         # ROM reads `ch->perm_stat[STAT_*]`; QuickMUD stores the same list at
@@ -348,18 +354,18 @@ def do_train(char: Character, args: str) -> str:
             # Jordan's easter egg message
             sex = getattr(char, "sex", 0)
             if sex == 1:  # SEX_MALE
-                return session_prefix + "You have nothing left to train, you big stud!"
+                return session_prefix + t("You have nothing left to train, you big stud!")
             elif sex == 2:  # SEX_FEMALE
-                return session_prefix + "You have nothing left to train, you hot babe!"
+                return session_prefix + t("You have nothing left to train, you hot babe!")
             else:
-                return session_prefix + "You have nothing left to train, you wild thing!"
+                return session_prefix + t("You have nothing left to train, you wild thing!")
 
         return session_prefix + "".join(options) + "."
 
     # Train HP (ROM C lines 1747-1762)
     if args_lower == "hp":
         if cost > char.train:
-            return "You don't have enough training sessions."
+            return t("You don't have enough training sessions.")
 
         char.train -= cost
         # ROM C: ch->pcdata->perm_hit += 10
@@ -371,12 +377,12 @@ def do_train(char: Character, args: str) -> str:
         # ROM C act() messages (lines 1759-1760)
         if getattr(char, "room", None):
             act_to_room(char.room, "$n's durability increases!", char, exclude=char)  # ROM act_move.c:1760
-        return "Your durability increases!"
+        return t("Your durability increases!")
 
     # Train mana (ROM C lines 1764-1779)
     if args_lower == "mana":
         if cost > char.train:
-            return "You don't have enough training sessions."
+            return t("You don't have enough training sessions.")
 
         char.train -= cost
         # ROM C: ch->pcdata->perm_mana += 10
@@ -388,10 +394,14 @@ def do_train(char: Character, args: str) -> str:
         # ROM C act() messages (lines 1776-1777)
         if getattr(char, "room", None):
             act_to_room(char.room, "$n's power increases!", char, exclude=char)  # ROM act_move.c:1777
-        return "Your power increases!"
+        return t("Your power increases!")
 
     # Train stat (ROM C lines 1781-1799)
     if stat_index >= 0:
+        # stat_name is always set when stat_index >= 0, but type checker needs guard
+        if stat_name is None:
+            return t("Train what?")
+
         # TRAIN-006: ROM `ch->perm_stat` is a fixed `sh_int[MAX_STATS]`
         # (src/merc.h), so ROM's read at src/act_move.c:1781 and the increment
         # at :1791 are always in-bounds. A malformed Python save (e.g. an
@@ -413,17 +423,19 @@ def do_train(char: Character, args: str) -> str:
         from mud.handler import get_max_train
 
         if current_value >= get_max_train(char, stat_index):
-            return f"Your {stat_name} is already at maximum."
+            return t("Your {stat} is already at maximum.").format(stat=t(stat_name))
 
         if cost > char.train:
-            return "You don't have enough training sessions."
+            return t("You don't have enough training sessions.")
 
         char.train -= cost
         char.perm_stat[stat_index] += 1
 
         # ROM C act() messages (lines 1796-1797)
+        # Use English stat_name for room broadcast (consistent with ROM C)
         if getattr(char, "room", None):
             act_to_room(char.room, f"$n's {stat_name} increases!", char, exclude=char)  # ROM act_move.c:1798
-        return f"Your {stat_name} increases!"
+        # Translate stat_name for the player's own message
+        return t("Your {stat} increases!").format(stat=t(stat_name))
 
-    return "Train what?"
+    return t("Train what?")
