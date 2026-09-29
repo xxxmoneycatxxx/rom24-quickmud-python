@@ -19,7 +19,7 @@ load_dotenv()
 # one run become invisible on the next if the effective CWD differs).
 _REPO_ROOT = Path(__file__).resolve().parent.parent
 DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{_REPO_ROOT / 'mud.db'}")
-PORT = int(os.getenv("PORT", 5001))
+PORT = int(os.getenv("PORT", 5100))
 HOST = os.getenv("HOST", "0.0.0.0")
 
 # Comma separated list of allowed CORS origins

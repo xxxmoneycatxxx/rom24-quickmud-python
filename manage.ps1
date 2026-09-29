@@ -60,10 +60,9 @@ if ($NoColor) {
 
 # ── 配置 ──────────────────────────────────────────────────────────
 $ContainerName = "quickmud-server"
-$WsContainerName = "quickmud-websocket"
 $ProjectName   = "quickmud"
 $BackupDir     = "./backups"
-$ServerPort    = 5001
+$ServerPort    = 5100
 $WsPort        = 8000
 $MaxBackups    = 10   # 备份轮转保留数量
 
@@ -212,7 +211,8 @@ function _check_files {
         Write-Warn ".env 文件不存在，正在创建默认配置..."
         $envContent = @(
             "DATABASE_URL=sqlite:///mud.db",
-            "PORT=5001",
+            "PORT=5100",
+            "WS_PORT=8000",
             "HOST=0.0.0.0",
             "LANGUAGE=zh"
         ) -join "`n"
@@ -627,9 +627,9 @@ QuickMUD Docker 管理脚本 (v2.1)
 别名:
   start = up, stop = down, bash = shell
 
-端口配置 (.env):
-  PORT        Telnet 端口 (默认 5001)
-  WS_PORT     WebSocket/Web 客户端端口 (默认 8000)
+端口配置 (.env) — 单容器双协议:
+  PORT        Telnet 端口 (默认 5100)
+  WS_PORT     WebSocket 端口 (默认 8000)
 
 示例:
   .\manage.ps1 up               # 启动服务器

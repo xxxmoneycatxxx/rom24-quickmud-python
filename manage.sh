@@ -26,7 +26,7 @@ export LC_ALL=en_US.UTF-8 2>/dev/null || export LC_ALL=C.UTF-8
 # ── 配置 ──────────────────────────────────────────────────────────
 BACKUP_DIR="./backups"
 CONTAINER_NAME="quickmud-server"
-SERVER_PORT=5001
+SERVER_PORT=5100
 COMPOSE_CMD=""
 
 # 从 .env 读取端口（如果存在）
@@ -95,7 +95,8 @@ preflight() {
         log_warn ".env 文件不存在，正在创建默认配置..."
         cat > .env << 'ENVEOF'
 DATABASE_URL=sqlite:///mud.db
-PORT=5001
+PORT=5100
+WS_PORT=8000
 HOST=0.0.0.0
 LANGUAGE=zh
 ENVEOF

@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 from contextlib import asynccontextmanager
 from pathlib import Path
+from typing import Any
 
 import uvicorn
 from fastapi import FastAPI, WebSocket
@@ -26,15 +27,19 @@ _WEB_CLIENT_DIR = Path(__file__).resolve().parent.parent.parent / "web-client"
 _game_task = None
 
 
-async def startup() -> None:
+async def startup(game_task: Any = None) -> None:
     global _game_task
-    load_qmconfig()
-    run_migrations()
-    initialize_world("area/area.lst")
-    bans.load_bans_file()
-    # Start game loop as background task
-    _game_task = asyncio.create_task(async_game_loop())
-    print("🎮 Game loop started for WebSocket server")
+    if game_task is not None:
+        # Unified server already initialized world; just reuse the game loop.
+        _game_task = game_task
+        print("Game loop shared (unified server)")
+    else:
+        load_qmconfig()
+        run_migrations()
+        initialize_world("area/area.lst")
+        bans.load_bans_file()
+        _game_task = asyncio.create_task(async_game_loop())
+        print("Game loop started for WebSocket server")
 
 
 async def shutdown() -> None:
@@ -46,10 +51,16 @@ async def shutdown() -> None:
         except asyncio.CancelledError:
             print("Game loop stopped")
             pass
+        _game_task = None
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
+    # In unified mode, _game_task is already set before uvicorn starts.
+    # Skip redundant init/teardown — unified_server.py manages the lifecycle.
+    if _game_task is not None:
+        yield
+        return
     await startup()
     try:
         yield

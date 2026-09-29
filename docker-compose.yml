@@ -3,40 +3,19 @@ services:
     build: .
     container_name: quickmud-server
     ports:
-      - "${PORT:-5001}:${PORT:-5001}"
-    env_file:
-      - .env
-    environment:
-      - LANGUAGE=${LANGUAGE:-zh}
-    volumes:
-      - .:/app
-    working_dir: /app
-    command: mud runserver
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "python -c \"import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1', int('${PORT:-5001}'))); s.send(b'\\n'); s.close()\" || exit 1"]
-      interval: 60s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
-
-  websocket:
-    build: .
-    container_name: quickmud-websocket
-    ports:
+      - "${PORT:-5100}:${PORT:-5100}"
       - "${WS_PORT:-8000}:${WS_PORT:-8000}"
     env_file:
       - .env
     environment:
       - LANGUAGE=${LANGUAGE:-zh}
-      - PORT=${WS_PORT:-8000}
     volumes:
       - .:/app
     working_dir: /app
-    command: mud websocketserver --port ${WS_PORT:-8000}
+    command: mud unified --telnet-port ${PORT:-5100} --ws-port ${WS_PORT:-8000}
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "python -c \"import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1', int('${WS_PORT:-8000}'))); s.close()\" || exit 1"]
+      test: ["CMD-SHELL", "python -c \"import socket; s=socket.socket(); s.settimeout(2); s.connect(('127.0.0.1', int('${PORT:-5100}'))); s.close()\" || exit 1"]
       interval: 60s
       timeout: 10s
       retries: 3

@@ -5,6 +5,7 @@ import typer
 from mud.db.migrations import run_migrations
 from mud.net.telnet_server import start_server as start_telnet
 from mud.network.websocket_server import run as start_websocket
+from mud.network.unified_server import run as start_unified
 from mud.server import run_game_loop
 
 cli = typer.Typer()
@@ -31,7 +32,7 @@ def loadtestuser():
 
 
 @cli.command()
-def socketserver(host: str = "0.0.0.0", port: int = 5001):
+def socketserver(host: str = "0.0.0.0", port: int = 5100):
     """Start the telnet server."""
     asyncio.run(start_telnet(host=host, port=port))
 
@@ -40,6 +41,12 @@ def socketserver(host: str = "0.0.0.0", port: int = 5001):
 def websocketserver(host: str = "0.0.0.0", port: int = 8000):
     """Start the websocket server."""
     start_websocket(host=host, port=port)
+
+
+@cli.command()
+def unified(telnet_port: int = 5100, ws_port: int = 8000):
+    """Start unified server (telnet + WebSocket in one process, shared game loop)."""
+    start_unified(telnet_port=telnet_port, ws_port=ws_port)
 
 
 @cli.command()
