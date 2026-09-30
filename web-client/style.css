@@ -130,14 +130,14 @@ html, body {
     pointer-events: auto;   /* P4: allow click/hover on canvas */
 }
 
-/* P4: Tooltip overlay */
+/* P4: Tooltip overlay – positioned to the LEFT of the panel to avoid topbar overlap */
 #minimap-tooltip {
     display: none;
     position: absolute;
-    left: 6px;
-    bottom: 100%;
-    margin-bottom: 4px;
-    background: rgba(0, 0, 0, 0.9);
+    right: 100%;
+    top: 0;
+    margin-right: 6px;
+    background: rgba(0, 0, 0, 0.92);
     border: 1px solid #555;
     border-radius: 4px;
     padding: 4px 8px;
@@ -146,7 +146,7 @@ html, body {
     color: #ddd;
     white-space: nowrap;
     pointer-events: none;
-    z-index: 20;
+    z-index: 30;
     line-height: 1.4;
 }
 

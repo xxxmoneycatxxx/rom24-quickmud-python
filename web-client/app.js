@@ -720,10 +720,20 @@
             var rect = minimapCanvas.getBoundingClientRect();
             var hit = canvasToWorld(e.clientX - rect.left, e.clientY - rect.top);
             if (hit && String(currentVnum) !== hit.vnum) {
-                // Show tooltip info in the terminal for immortal users
-                if (quickInput && ws && ws.readyState === WebSocket.OPEN) {
-                    ws.send(JSON.stringify({ text: "goto " + hit.vnum }));
-                }
+                // Display room info in terminal (works for all players, no goto required)
+                var rm = hit.room;
+                var info = "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n";
+                info += "  Room #" + hit.vnum;
+                if (rm.name) info += " \u2014 " + rm.name;
+                if (rm.area) info += " [" + rm.area + "]";
+                info += "\n";
+                var exs = (rm.exits || []).join(", ");
+                if (exs) info += "  Exits: " + exs + "\n";
+                var zStr = (rm.z === 0) ? "" : (rm.z > 0 ? " (level +" + rm.z + ")" : " (level " + rm.z + ")");
+                if (zStr) info += "  " + zStr + "\n";
+                info += "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500";
+                termWriteLine(info);
+                term.scrollToBottom();
             }
         });
     }
