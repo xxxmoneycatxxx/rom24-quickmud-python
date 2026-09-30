@@ -30,8 +30,13 @@
         <div id="terminal-container">
             <div id="minimap-panel">
                 <canvas id="minimap" width="180" height="180"></canvas>
+                <div id="minimap-tooltip"></div>
                 <div id="minimap-label"></div>
-                <button id="minimap-clear" title="清除已探索地图"></button>
+                <div id="minimap-controls">
+                    <button id="minimap-zoom-out" title="缩小 (-2)">−</button>
+                    <button id="minimap-clear" title="清除已探索地图"></button>
+                    <button id="minimap-zoom-in" title="放大 (+2)">+</button>
+                </div>
             </div>
         </div>
         <footer id="bottombar">

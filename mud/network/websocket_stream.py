@@ -130,6 +130,12 @@ class WebSocketStream:
                     payload["exits"] = [
                         _DIR_NAMES[i] for i, ex in enumerate(exits) if ex is not None
                     ]
+                # Sector type (terrain) for minimap colouring.
+                payload["sector"] = int(getattr(room, "sector_type", 0) or 0)
+                # Area name for minimap area label.
+                area = getattr(room, "area", None)
+                if area is not None:
+                    payload["area_name"] = getattr(area, "name", None)
         try:
             await self.websocket.send_json(payload)
         except (WebSocketDisconnect, RuntimeError):

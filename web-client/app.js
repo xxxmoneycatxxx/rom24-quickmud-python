@@ -244,16 +244,19 @@
 
     // ── Minimap ──────────────────────────────────────────────────────────
     //
-    // Local room graph: vnum → { x, y, z, exits: string[], name: string }
+    // Local room graph: vnum → { x, y, z, exits, name, sector, area }
     // Coordinates assigned by tracking player movement direction.
-    // Rendered as a 5×5 grid centred on the current room, colour-coded by z.
+    // Teleports/recalls detected and placed via collision avoidance.
+    // Rendered as a zoomable grid (3×3 – 9×9), terrain-coloured by sector.
     // Persisted to localStorage so explored rooms survive page reloads.
     //
     var STORAGE_KEY = "quickmud_minimap";
-    var roomMap       = {};   // vnum → { x, y, z, exits, name }
+    var roomMap       = {};   // vnum → { x, y, z, exits, name, sector, area }
     var currentVnum   = null;
     var currentZ      = 0;
     var pendingMove   = null; // direction string of last movement command
+    var gridSize      = 5;    // current zoom level (3–9, odd preferred)
+    var hoveredRoom   = null; // vnum of room under cursor (for tooltip)
 
     var DIR_DELTA = {
         north: [0, -1, 0], south: [0, 1, 0],
@@ -265,6 +268,39 @@
         n: "north", s: "south", e: "east", w: "west",
         u: "up", d: "down"
     };
+
+    // P1: Sector type → terrain colour (ROM merc.h SECT_* 0–10)
+    var SECTOR_COLORS = {
+        0: "#7f8c8d",  // INSIDE   – grey
+        1: "#bdc3c7",  // CITY     – light grey
+        2: "#a8d8a8",  // FIELD    – light green
+        3: "#27ae60",  // FOREST   – dark green
+        4: "#d4a76a",  // HILLS    – brown/tan
+        5: "#8b6914",  // MOUNTAIN – dark brown
+        6: "#3498db",  // WATER_SWIM – blue
+        7: "#1a5276",  // WATER_NOSWIM – dark blue
+        8: "#555555",  // UNUSED
+        9: "#aed6f1",  // AIR      – sky blue
+        10: "#f0c040"  // DESERT   – sandy yellow
+    };
+
+    // P3: Area name → distinct border colour (hash-based)
+    var AREA_BORDER_PALETTE = [
+        "#e74c3c", "#3498db", "#2ecc71", "#f39c12", "#9b59b6",
+        "#1abc9c", "#e67e22", "#00bcd4", "#ff7043", "#ab47bc"
+    ];
+    var areaColorCache = {};
+    function areaBorderColor(areaName) {
+        if (!areaName) return "#555";
+        if (areaColorCache[areaName]) return areaColorCache[areaName];
+        var hash = 0;
+        for (var i = 0; i < areaName.length; i++) {
+            hash = ((hash << 5) - hash + areaName.charCodeAt(i)) | 0;
+        }
+        var color = AREA_BORDER_PALETTE[Math.abs(hash) % AREA_BORDER_PALETTE.length];
+        areaColorCache[areaName] = color;
+        return color;
+    }
 
     /** Load saved roomMap from localStorage. */
     function loadMinimap() {
@@ -318,46 +354,90 @@
 
         // If we just moved, assign coordinates relative to previous room.
         if (pendingMove && currentVnum != null && vnum !== currentVnum) {
-            var delta = DIR_DELTA[pendingMove];
-            if (delta && roomMap[currentVnum]) {
-                var prev = roomMap[currentVnum];
-                if (!roomMap[vnum]) {
-                    roomMap[vnum] = { x: 0, y: 0, z: 0, exits: [], name: null };
+            var prev = roomMap[currentVnum];
+            if (prev) {
+                var prevExits = prev.exits || [];
+                if (prevExits.indexOf(pendingMove) >= 0) {
+                    // Normal move: direction matches an exit from previous room.
+                    var delta = DIR_DELTA[pendingMove];
+                    if (!roomMap[vnum]) {
+                        roomMap[vnum] = { x: 0, y: 0, z: 0, exits: [], name: null, sector: 0, area: null };
+                    }
+                    var nr = roomMap[vnum];
+                    nr.x = prev.x + delta[0];
+                    nr.y = prev.y + delta[1];
+                    nr.z = prev.z + delta[2];
+                } else {
+                    // P0: Teleport / portal / recall — direction not in exits.
+                    // Place new room at a unique offset to avoid coordinate collision.
+                    if (!roomMap[vnum]) {
+                        roomMap[vnum] = { x: 0, y: 0, z: 0, exits: [], name: null, sector: 0, area: null };
+                    }
+                    var tr = roomMap[vnum];
+                    tr.x = prev.x + 1;
+                    tr.y = prev.y;
+                    tr.z = prev.z;
+                    // Collision resolution: shift east until we find an empty slot.
+                    while (_roomAt(tr.x, tr.y, tr.z, vnum)) {
+                        tr.x++;
+                    }
                 }
-                var nr = roomMap[vnum];
-                nr.x = prev.x + delta[0];
-                nr.y = prev.y + delta[1];
-                nr.z = prev.z + delta[2];
+            }
+        } else if (!pendingMove && currentVnum != null && vnum !== currentVnum) {
+            // No pending move but room changed (login teleport, server redirect).
+            if (!roomMap[vnum]) {
+                var cur2 = roomMap[currentVnum];
+                roomMap[vnum] = { x: 0, y: 0, z: 0, exits: [], name: null, sector: 0, area: null };
+                var nr2 = roomMap[vnum];
+                if (cur2) {
+                    nr2.x = cur2.x + 1;
+                    nr2.y = cur2.y;
+                    nr2.z = cur2.z;
+                    while (_roomAt(nr2.x, nr2.y, nr2.z, vnum)) { nr2.x++; }
+                }
             }
         }
         pendingMove = null;
 
         currentVnum = vnum;
         if (!roomMap[vnum]) {
-            roomMap[vnum] = { x: 0, y: 0, z: 0, exits: [], name: null };
+            roomMap[vnum] = { x: 0, y: 0, z: 0, exits: [], name: null, sector: 0, area: null };
         }
         var r = roomMap[vnum];
         if (msg.exits) r.exits = msg.exits;
         if (msg.room_name) r.name = msg.room_name;
+        if (msg.sector != null) r.sector = msg.sector;
+        if (msg.area_name) r.area = msg.area_name;
         currentZ = r.z;
         saveMinimap();
         renderMinimap();
     }
 
-    /** Height → colour mapping (height color scale). */
-    function zColor(dz) {
-        if (dz > 0)  return "#5dade2";  // above: blue
-        if (dz < 0)  return "#e67e22";  // below: orange
-        return "#2ecc71";               // same level: green
+    /** Check if any room other than excludeVnum occupies (x, y, z). */
+    function _roomAt(x, y, z, excludeVnum) {
+        for (var vn in roomMap) {
+            if (vn === String(excludeVnum)) continue;
+            var rm = roomMap[vn];
+            if (rm.x === x && rm.y === y && rm.z === z) return true;
+        }
+        return false;
     }
 
-    /** Render the 5×5 minimap grid on the canvas. */
+    /** Height → brightness modifier for terrain colour. */
+    function zAlpha(dz) {
+        if (dz > 0)  return 0.7;   // above: slightly dim
+        if (dz < 0)  return 0.55;  // below: dimmer
+        return 1.0;                 // same level: full brightness
+    }
+
+    /** Render the minimap grid on the canvas. */
     function renderMinimap() {
         if (!minimapCtx || !minimapCanvas) return;
         var ctx = minimapCtx;
         var W = minimapCanvas.width;
         var H = minimapCanvas.height;
-        var GRID = 5;
+        var GRID = gridSize;
+        var HALF = Math.floor(GRID / 2);
         var CELL = Math.floor(Math.min(W, H) / GRID);
         var PAD  = Math.floor((W - CELL * GRID) / 2);
 
@@ -372,7 +452,7 @@
             ctx.font = "12px monospace";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
-            ctx.fillText("等待连接…", W / 2, H / 2);
+            ctx.fillText("\u7B49\u5F85\u8FDE\u63A5\u2026", W / 2, H / 2);
             return;
         }
         var cur = roomMap[currentVnum];
@@ -382,8 +462,8 @@
         // Draw grid cells
         for (var gy = 0; gy < GRID; gy++) {
             for (var gx = 0; gx < GRID; gx++) {
-                var wx = cx + (gx - 2);  // world x
-                var wy = cy + (gy - 2);  // world y
+                var wx = cx + (gx - HALF);  // world x
+                var wy = cy + (gy - HALF);  // world y
                 var px = PAD + gx * CELL;
                 var py = PAD + gy * CELL;
 
@@ -394,10 +474,12 @@
 
                 // Check if any known room exists at this (wx, wy, cz)
                 var found = null;
+                var foundVnum = null;
                 for (var vn in roomMap) {
                     var rm = roomMap[vn];
                     if (rm.x === wx && rm.y === wy && rm.z === cz) {
                         found = rm;
+                        foundVnum = vn;
                         break;
                     }
                 }
@@ -405,10 +487,28 @@
                 if (found) {
                     var dz = found.z - cz;
                     var isCurrent = (found === cur);
-                    ctx.fillStyle = zColor(dz);
-                    ctx.globalAlpha = isCurrent ? 1.0 : 0.55;
+                    var isHovered = (foundVnum === String(hoveredRoom));
+
+                    // P1: Terrain-coloured fill with z-level alpha modifier
+                    var sectorType = found.sector != null ? found.sector : 0;
+                    ctx.fillStyle = SECTOR_COLORS[sectorType] || SECTOR_COLORS[0];
+                    ctx.globalAlpha = isCurrent ? 1.0 : zAlpha(dz) * 0.65;
                     ctx.fillRect(px + 2, py + 2, CELL - 4, CELL - 4);
                     ctx.globalAlpha = 1.0;
+
+                    // P3: Area border colour (thin coloured outline)
+                    if (found.area) {
+                        ctx.strokeStyle = areaBorderColor(found.area);
+                        ctx.lineWidth = isCurrent ? 2 : 1;
+                        ctx.strokeRect(px + 2.5, py + 2.5, CELL - 5, CELL - 5);
+                    }
+
+                    // Hover highlight
+                    if (isHovered && !isCurrent) {
+                        ctx.strokeStyle = "rgba(255,255,255,0.7)";
+                        ctx.lineWidth = 1;
+                        ctx.strokeRect(px + 1.5, py + 1.5, CELL - 3, CELL - 3);
+                    }
 
                     // Up/down exit arrows
                     ctx.fillStyle = "#fff";
@@ -429,9 +529,9 @@
             }
         }
 
-        // Current room marker – bright pulsing border
-        var cpx = PAD + 2 * CELL;
-        var cpy = PAD + 2 * CELL;
+        // Current room marker – bright white border + inner dot
+        var cpx = PAD + HALF * CELL;
+        var cpy = PAD + HALF * CELL;
         ctx.strokeStyle = "#fff";
         ctx.lineWidth = 2;
         ctx.strokeRect(cpx + 1, cpy + 1, CELL - 2, CELL - 2);
@@ -445,16 +545,16 @@
         ctx.lineWidth = 1;
         var exits = cur.exits || [];
         var dirArrow = {
-            north: [2, 1], south: [2, 3],
-            east:  [3, 2], west:  [1, 2]
+            north: [HALF, HALF - 1], south: [HALF, HALF + 1],
+            east:  [HALF + 1, HALF], west:  [HALF - 1, HALF]
         };
         for (var i = 0; i < exits.length; i++) {
             var d = exits[i];
             var a = dirArrow[d];
             if (!a) continue;
             // Check if target room is known
-            var twx = cx + (a[0] - 2);
-            var twy = cy + (a[1] - 2);
+            var twx = cx + (a[0] - HALF);
+            var twy = cy + (a[1] - HALF);
             var targetKnown = false;
             for (var vn2 in roomMap) {
                 var rm2 = roomMap[vn2];
@@ -480,15 +580,152 @@
         ctx.fillText("W", PAD - labelPad, PAD + GRID * CELL / 2);
         ctx.fillText("E", PAD + GRID * CELL + labelPad, PAD + GRID * CELL / 2);
 
-        // Update label: room name, vnum, exits, z-level, explored count
+        // Zoom indicator (bottom-right of canvas)
+        ctx.fillStyle = "#444";
+        ctx.font = "8px monospace";
+        ctx.textAlign = "right";
+        ctx.textBaseline = "bottom";
+        ctx.fillText(GRID + "\u00D7" + GRID, W - 4, H - 3);
+
+        // Update label: room name, area, vnum, exits, z-level, explored count
         if (minimapLabel) {
             var nameStr = cur.name || "";
             var zStr = (cz === 0) ? "" : (cz > 0 ? " +" + cz : " " + cz);
             var explored = Object.keys(roomMap).length;
+            var areaStr = cur.area ? cur.area : "";
             var line1 = nameStr ? nameStr : "Room " + currentVnum;
-            var line2 = explored + " rooms" + (exits.length ? " \u00B7 " + exits.length + " exits" : "") + zStr;
+            var line2 = (areaStr ? areaStr + " \u00B7 " : "") + explored + " rooms" + zStr;
             minimapLabel.textContent = line1 + "  |  " + line2;
         }
+
+        // Update tooltip if hovering
+        _updateTooltip();
+    }
+
+    // ── P2: Zoom controls ────────────────────────────────────────────────
+
+    /** Set grid size and re-render. */
+    function setGridSize(n) {
+        gridSize = Math.max(3, Math.min(9, n));
+        // Ensure odd for symmetric center
+        if (gridSize % 2 === 0) gridSize = (gridSize > 5) ? gridSize - 1 : gridSize + 1;
+        renderMinimap();
+    }
+
+    // Mouse wheel zoom on minimap canvas
+    if (minimapCanvas) {
+        minimapCanvas.addEventListener("wheel", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            setGridSize(gridSize + (e.deltaY < 0 ? 2 : -2));
+        }, { passive: false });
+    }
+
+    // Keyboard shortcuts: +/- when minimap is focused (optional)
+    // Zoom buttons in the clear button area
+    var zoomInBtn = document.getElementById("minimap-zoom-in");
+    var zoomOutBtn = document.getElementById("minimap-zoom-out");
+    if (zoomInBtn) {
+        zoomInBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            setGridSize(gridSize + 2);
+        });
+    }
+    if (zoomOutBtn) {
+        zoomOutBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            setGridSize(gridSize - 2);
+        });
+    }
+
+    // ── P4: Click & hover interaction ────────────────────────────────────
+
+    /** Convert canvas (px, py) to world (wx, wy, wz) or null. */
+    function canvasToWorld(px, py) {
+        if (!minimapCanvas || currentVnum == null) return null;
+        var cur = roomMap[currentVnum];
+        if (!cur) return null;
+        var W = minimapCanvas.width;
+        var H = minimapCanvas.height;
+        var GRID = gridSize;
+        var HALF = Math.floor(GRID / 2);
+        var CELL = Math.floor(Math.min(W, H) / GRID);
+        var PAD  = Math.floor((W - CELL * GRID) / 2);
+
+        var gx = Math.floor((px - PAD) / CELL);
+        var gy = Math.floor((py - PAD) / CELL);
+        if (gx < 0 || gx >= GRID || gy < 0 || gy >= GRID) return null;
+
+        var wx = cur.x + (gx - HALF);
+        var wy = cur.y + (gy - HALF);
+        var wz = cur.z;
+
+        // Find room at this world position
+        for (var vn in roomMap) {
+            var rm = roomMap[vn];
+            if (rm.x === wx && rm.y === wy && rm.z === wz) {
+                return { vnum: vn, room: rm };
+            }
+        }
+        return null;
+    }
+
+    // Tooltip element (created once, repositioned on hover)
+    var tooltipEl = document.getElementById("minimap-tooltip");
+
+    function _updateTooltip() {
+        if (!tooltipEl || hoveredRoom == null) {
+            if (tooltipEl) tooltipEl.style.display = "none";
+            return;
+        }
+        var rm = roomMap[hoveredRoom];
+        if (!rm) { tooltipEl.style.display = "none"; return; }
+
+        var name = rm.name || ("Room " + hoveredRoom);
+        var area = rm.area || "";
+        var exits = (rm.exits || []).join(", ");
+        var zStr = (rm.z === 0) ? "" : (rm.z > 0 ? " +" + rm.z : " " + rm.z);
+
+        tooltipEl.innerHTML = "<b>" + name + "</b><br>"
+            + "#" + hoveredRoom + zStr
+            + (area ? "<br>" + area : "")
+            + (exits ? "<br>\u2192 " + exits : "");
+        tooltipEl.style.display = "block";
+    }
+
+    if (minimapCanvas) {
+        // Enable pointer events on canvas for interaction
+        minimapCanvas.style.pointerEvents = "auto";
+
+        minimapCanvas.addEventListener("mousemove", function (e) {
+            var rect = minimapCanvas.getBoundingClientRect();
+            var px = e.clientX - rect.left;
+            var py = e.clientY - rect.top;
+            var hit = canvasToWorld(px, py);
+            var newHover = hit ? hit.vnum : null;
+            if (newHover !== hoveredRoom) {
+                hoveredRoom = newHover;
+                renderMinimap();
+            }
+        });
+
+        minimapCanvas.addEventListener("mouseleave", function () {
+            if (hoveredRoom !== null) {
+                hoveredRoom = null;
+                renderMinimap();
+            }
+        });
+
+        minimapCanvas.addEventListener("click", function (e) {
+            var rect = minimapCanvas.getBoundingClientRect();
+            var hit = canvasToWorld(e.clientX - rect.left, e.clientY - rect.top);
+            if (hit && String(currentVnum) !== hit.vnum) {
+                // Show tooltip info in the terminal for immortal users
+                if (quickInput && ws && ws.readyState === WebSocket.OPEN) {
+                    ws.send(JSON.stringify({ text: "goto " + hit.vnum }));
+                }
+            }
+        });
     }
 
     // ── Reconnect with exponential back-off + countdown ───────────────────
